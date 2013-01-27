@@ -46,7 +46,7 @@ function fixTrigFunctions(line){
 		r2=(new String(matches[i]));
 		r3=/(?!.htaM)/;
 		rege=new RegExp(r1.source+r2.substr(0,3).reverse() + r3.source,"g");
-		line= line.reverse().replace(rege, new_word.reverse()).reverse();
+		line= '('+line.reverse().replace(rege, new_word.reverse()).reverse()+')';
 	}
 	return line;
 }
@@ -99,6 +99,7 @@ function fixExpFunctions(line){
 		}
 		//if exponential without brackets (something)^2 
 		}else if (line.charAt(exp_index-1)==')'){
+			document.getElementById("error").innerHTML="its inside brackets";
 			var brack_pairs=0;
 			for (i=exp_index-1 ; i>=0; i--){ 
 				if (line.charAt(i)==')'){ 
@@ -111,7 +112,7 @@ function fixExpFunctions(line){
 				}
 			}
 		}else{
-			document.getElementById("error").innerHTML="syntax error in Maxima code!";
+			document.getElementById("error").innerHTML="syntax error in eqaution code!";
 		}		
 		exp_index=line.indexOf('^');
 		//exp_index=null;	
