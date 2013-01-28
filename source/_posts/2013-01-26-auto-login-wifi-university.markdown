@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Auto login WiFi – University"
+title: "Auto login WiFi – University, hotels etc"
 date: 2013-01-26 01:23
 comments: true
 categories: 
