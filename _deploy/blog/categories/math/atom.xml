@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: math | SA Cybernetics]]></title>
+  <link href="http://simena86.github.com/blog/categories/math/atom.xml" rel="self"/>
+  <link href="http://simena86.github.com/"/>
+  <updated>2013-02-26T20:41:39-08:00</updated>
+  <id>http://simena86.github.com/</id>
+  <author>
+    <name><![CDATA[Simen Andresen]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Convert Math equations to Java or C++ syntax]]></title>
+    <link href="http://simena86.github.com/blog/2013/01/26/convert-math-equations-to-java-or-c-plus-plus-syntax/"/>
+    <updated>2013-01-26T09:28:00-08:00</updated>
+    <id>http://simena86.github.com/blog/2013/01/26/convert-math-equations-to-java-or-c-plus-plus-syntax</id>
+    <content type="html"><![CDATA[<p>When writing programs that uses alot of math equations, e.g. in simulations, animations etc I found it tiresome to have to convert equations I got from symbolic math software like Maxima and Maple into c++ or java syntax. I therefor wrote a simple JavaScript that does this automatically, and can be found <a href="/blog/math2javacpp/">here</a>. The source is available at <a href="https://github.com/simena86/math2javacpp" title="Math2javacpp">github</a> .</p>
+]]></content>
+  </entry>
+  
+</feed>

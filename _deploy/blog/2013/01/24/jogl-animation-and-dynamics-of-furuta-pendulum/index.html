@@ -1,0 +1,394 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>JOGL - Animation and Dynamics of Furuta pendulum - SA Cybernetics</title>
+  <meta name="author" content="Simen Andresen">
+
+  
+  <meta name="description" content="I wanted to animate a furuta pendulum, and include the real dynamics in the animation. First off, what is a Furuta pendulum? It is a pendulum with &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://simena86.github.com/blog/2013/01/24/jogl-animation-and-dynamics-of-furuta-pendulum/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="SA Cybernetics" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">SA Cybernetics</a></h1>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:simena86.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives/">Archives</a></li>
+  <li><a href="/blog/about">About</a></li>
+
+  <li><a href="/blog/math2javacpp">Math 2 Java & C/C++</a></li>
+
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <script language="JavaScript">
+	MathJax.Hub.Config({
+    	  tex2jax: {
+        	skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      	}
+    	});
+</script>
+
+<script languge="JavaScript">
+MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    });
+</script>
+
+
+<div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">JOGL - Animation and Dynamics of Furuta Pendulum</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-24T20:44:00-08:00" pubdate data-updated="true">Jan 24<span>th</span>, 2013</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>I wanted to animate a furuta pendulum, and include the real dynamics in the animation. First off, what is a Furuta pendulum? It is a pendulum with two degrees of freedom (see wikipedia) where, from a control engineers’ point of view, one is interested in stabilizing the second arm of the pendulum, by applying torque to the first arm. This poses quite an interesting control problem (much the same as in e.g. a segway). First lets look at the dynamimcs of the furuta pendulum:
+<!-- more --></p>
+
+<p>The dynamics of the furuta pendulum can be modeled with two second order differential equations. For simulations we will reduce the order and model the system with 4 first order ODE’s. The following state space vector will be used:
+$$
+ \begin{aligned} x=\begin{bmatrix} \ \frac{d\theta<em>{1}}{dt} &amp; \frac{d\theta</em>1}{dt}&amp; \theta<em>{1}&amp;\theta</em>{2}\end{bmatrix}  \end{aligned}
+$$</p>
+
+<p>With the use of Lagrangian or Newton dynamics one can model the system which yields the following 2. order ODE’s:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+
+{ \scriptsize
+\begin{aligned}
+& \frac{d^2\theta_1}{dt^2}= \\
+&  \frac{ (mx_1^2cos(x_4)
+sin(x_4)^3L_2^3+(gmsin(x_4)^3-2mx_1x_2cos(x_4)^2sin(x_4)L_1)L_2^2+((mx_1^2-mx_2^2)cos(x_4)sin(x_4)L_1^2+x_1^2cos(x_4)sin(x_4)J_1)
+L_2+gmsin(x_4)L_1^2+\tau cos(x_4)L_1+gsin(x_4)J_1)}{(msin(x_4)^2L_2^3+((m-mcos(x_4)^2)L_1^2+J_1)L_2)}
+\\
+&\frac{d^2\theta_2}{dt^2}=\\
+& \frac{(mx_1^2cos(x_4) 
+sin(x_4)^3L_2^3+(gmsin(x_4)^3-2mx_1x_2cos(x_4)^2sin(x_4)L_1)L_2^2+((mx_1^2-mx_2^2)cos(x_4)sin(x_4)L_1^2+x_1^2cos(x_4)sin(x_4)J_1)
+L_2+gmsin(x_4)L_1^2+taucos(x_4)L_1+gsin(x_4)J_1)}{(msin(x_4)^2L_2^3+((m-mcos(x_4)^2)L_1^2+J_1)L_2)}
+\end{aligned}
+}
+ %]]></script>
+
+<p>The following state space equations used in the simulation is therefor
+$$
+\dot{x}= \begin{bmatrix}\ddot{\theta}<em>1 \ \ddot{\theta}</em>2 \ \theta<em>1 \ \theta</em>2 \end{bmatrix} = f(x)
+$$</p>
+
+<p>And one can easily solve the dynamics by numerical integration. I have solved the system using Explicit Runge Kutta 4 which yields a discrete solution that can easily be used in a OpenGl 3d animation. The main idea for capturing the dynamics in the animation is to, in  each call to the display() function (each new frame of the animation), calculate the next iterate of the numerical integrator (RK4 in this case). This can be seen in the code below, where <script type="math/tex"> f_1=\ddot{\theta}_1 </script> and f2, f3,f4 (not shown in the code) each calculates their derrivatives which is used in one multiple input, multiple output function f. Lastly this is used in solve_dyn() to calculate an iterate from the RK4 method.</p>
+
+<div class="highlight"><pre><code class="java"><span class="kd">public</span> <span class="kt">double</span> <span class="nf">f1</span><span class="o">(</span><span class="n">Matrix</span> <span class="n">x</span><span class="o">,</span> <span class="kt">double</span> <span class="n">u</span> <span class="o">){</span>
+	<span class="kt">double</span> <span class="n">x1</span><span class="o">,</span><span class="n">x2</span><span class="o">,</span><span class="n">x4</span><span class="o">;</span>
+	<span class="kt">double</span> <span class="n">tau</span><span class="o">;</span>
+	<span class="n">x1</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span><span class="mi">0</span><span class="o">);</span> <span class="n">x2</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span><span class="mi">1</span><span class="o">);</span> <span class="n">x4</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span><span class="mi">3</span><span class="o">);</span>
+	<span class="kt">double</span> <span class="n">sign</span><span class="o">;</span>
+	<span class="k">if</span> <span class="o">(</span><span class="n">x1</span><span class="o">&lt;</span><span class="mi">0</span><span class="o">){</span><span class="n">sign</span><span class="o">=</span><span class="mi">1</span><span class="o">;}</span><span class="k">else</span><span class="o">{</span><span class="n">sign</span><span class="o">=-</span><span class="mi">1</span><span class="o">;}</span>
+	<span class="n">u</span><span class="o">=</span><span class="n">u</span><span class="o">+</span><span class="n">sign</span><span class="o">*</span><span class="mf">5.0</span><span class="o">;</span>
+	<span class="n">tau</span><span class="o">=</span><span class="n">u</span><span class="o">;</span>
+
+	<span class="kt">double</span> <span class="n">f_num</span><span class="o">=(</span><span class="n">arm1</span><span class="o">*</span><span class="n">arm2</span><span class="o">*</span><span class="n">m</span><span class="o">*</span><span class="n">Math</span><span class="o">.</span><span class="na">pow</span><span class="o">(</span><span class="n">x1</span><span class="o">,</span><span class="mi">2</span><span class="o">)*</span><span class="n">Math</span><span class="o">.</span><span class="na">pow</span><span class="o">((</span><span class="n">Math</span><span class="o">.</span><span class="na">cos</span><span class="o">(</span><span class="n">x4</span><span class="o">)),</span><span class="mi">2</span><span class="o">)+(</span><span class="n">arm1</span><span class="o">*</span><span class="n">g</span><span class="o">*</span><span class="n">m</span><span class="o">-</span>
+              <span class="mi">2</span><span class="o">*</span><span class="n">Math</span><span class="o">.</span><span class="na">pow</span><span class="o">(</span><span class="n">arm2</span><span class="o">,</span><span class="mi">2</span><span class="o">)*</span><span class="n">m</span><span class="o">*</span><span class="n">x1</span><span class="o">*</span><span class="n">x2</span><span class="o">)</span>
+	 	<span class="o">*(</span><span class="n">Math</span><span class="o">.</span><span class="na">cos</span><span class="o">(</span><span class="n">x4</span><span class="o">))-</span><span class="n">arm1</span><span class="o">*</span><span class="n">arm2</span><span class="o">*</span><span class="n">m</span><span class="o">*</span><span class="n">Math</span><span class="o">.</span><span class="na">pow</span><span class="o">(</span><span class="n">x2</span><span class="o">,</span><span class="mi">2</span><span class="o">))*(</span><span class="n">Math</span><span class="o">.</span><span class="na">sin</span><span class="o">(</span><span class="n">x4</span><span class="o">))+</span><span class="n">tau</span><span class="o">;</span>
+	<span class="kt">double</span> <span class="n">f_denum</span><span class="o">=</span><span class="n">Math</span><span class="o">.</span><span class="na">pow</span><span class="o">(</span><span class="n">arm2</span><span class="o">,</span><span class="mi">2</span><span class="o">)*</span><span class="n">m</span><span class="o">*</span><span class="n">Math</span><span class="o">.</span><span class="na">pow</span><span class="o">((</span><span class="n">Math</span><span class="o">.</span><span class="na">sin</span><span class="o">(</span><span class="n">x4</span><span class="o">)),</span><span class="mi">2</span><span class="o">)-</span><span class="n">Math</span><span class="o">.</span><span class="na">pow</span><span class="o">(</span><span class="n">arm1</span><span class="o">,</span><span class="mi">2</span><span class="o">)*</span><span class="n">m</span><span class="o">*</span><span class="n">Math</span><span class="o">.</span><span class="na">pow</span><span class="o">((</span><span class="n">Math</span><span class="o">.</span><span class="na">cos</span><span class="o">(</span><span class="n">x4</span><span class="o">)),</span><span class="mi">2</span><span class="o">)+</span>                  <span class="n">Math</span><span class="o">.</span><span class="na">pow</span><span class="o">(</span><span class="n">arm1</span><span class="o">,</span><span class="mi">2</span><span class="o">)*</span><span class="n">m</span><span class="o">+</span><span class="n">J1</span><span class="o">;</span>
+	<span class="k">if</span><span class="o">(</span><span class="n">f_denum</span><span class="o">==</span><span class="mi">0</span><span class="o">){</span>
+		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;divide by zero&quot;</span><span class="o">);</span>
+	        <span class="k">return</span> <span class="mf">1.0f</span><span class="o">;</span>
+	<span class="o">}</span><span class="k">else</span>
+	        <span class="k">return</span> <span class="n">f_num</span><span class="o">/</span><span class="n">f_denum</span><span class="o">;</span>
+	<span class="o">}</span>
+
+<span class="kd">public</span> <span class="n">Matrix</span> <span class="nf">f</span><span class="o">(</span><span class="n">Matrix</span> <span class="n">x</span><span class="o">,</span> <span class="kt">double</span> <span class="n">u</span><span class="o">){</span>
+       <span class="n">Matrix</span> <span class="n">retVal</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Matrix</span><span class="o">(</span><span class="k">new</span> <span class="kt">double</span><span class="o">[]{</span><span class="n">f1</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">u</span><span class="o">)</span> <span class="o">,</span><span class="n">f2</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">u</span><span class="o">),</span><span class="n">f3</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">u</span><span class="o">),</span><span class="n">f4</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">u</span><span class="o">)},</span><span class="mi">1</span><span class="o">);</span>
+       <span class="k">return</span> <span class="n">retVal</span><span class="o">;</span>
+ <span class="o">}</span>
+
+<span class="kd">public</span> <span class="kt">double</span> <span class="o">[]</span> <span class="n">solve_dyn</span><span class="o">(){</span>
+       <span class="n">k1</span><span class="o">=</span> <span class="n">f</span><span class="o">(</span><span class="n">x</span><span class="o">,</span><span class="n">tau</span><span class="o">).</span><span class="na">times</span><span class="o">(</span><span class="n">h</span><span class="o">);</span>
+       <span class="n">k2</span><span class="o">=</span> <span class="n">f</span><span class="o">(</span> <span class="n">x</span><span class="o">.</span><span class="na">plus</span><span class="o">(</span><span class="n">k1</span><span class="o">.</span><span class="na">times</span><span class="o">(</span><span class="mf">0.5</span><span class="o">)),</span><span class="n">tau</span><span class="o">).</span><span class="na">times</span><span class="o">(</span><span class="n">h</span><span class="o">);</span>
+       <span class="n">k3</span><span class="o">=</span> <span class="n">f</span><span class="o">(</span><span class="n">x</span><span class="o">.</span><span class="na">plus</span><span class="o">(</span><span class="n">k2</span><span class="o">.</span><span class="na">times</span><span class="o">(</span><span class="mf">0.5</span><span class="o">)),</span><span class="n">tau</span><span class="o">).</span><span class="na">times</span><span class="o">(</span><span class="n">h</span><span class="o">);</span>
+       <span class="n">k4</span><span class="o">=</span> <span class="n">f</span><span class="o">(</span> <span class="n">x</span><span class="o">.</span><span class="na">plus</span><span class="o">(</span><span class="n">k3</span><span class="o">),</span><span class="n">tau</span><span class="o">).</span><span class="na">times</span><span class="o">(</span><span class="n">h</span><span class="o">);</span>
+       <span class="n">x_next</span><span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="na">plus</span><span class="o">(</span><span class="n">k1</span><span class="o">.</span><span class="na">times</span><span class="o">((</span><span class="mf">1.0</span><span class="o">/</span><span class="mf">6.0</span><span class="o">))).</span><span class="na">plus</span><span class="o">(</span><span class="n">k2</span><span class="o">.</span><span class="na">times</span><span class="o">((</span><span class="mf">1.0</span><span class="o">/</span><span class="mf">3.0</span><span class="o">))).</span>
+               <span class="n">plus</span><span class="o">(</span><span class="n">k3</span><span class="o">.</span><span class="na">times</span><span class="o">(</span><span class="mf">1.0</span><span class="o">/</span><span class="mf">3.0</span><span class="o">)).</span><span class="na">plus</span><span class="o">(</span><span class="n">k4</span><span class="o">.</span><span class="na">times</span><span class="o">(</span><span class="mf">1.0</span><span class="o">/</span><span class="mf">6.0</span><span class="o">));</span>
+       <span class="n">x</span><span class="o">=</span><span class="n">x_next</span><span class="o">;</span>
+       <span class="k">return</span> <span class="k">new</span> <span class="kt">double</span> <span class="o">[]</span> <span class="o">{</span><span class="n">x</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span><span class="mi">2</span><span class="o">)*</span><span class="n">rad2deg</span><span class="o">,</span> <span class="n">x</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span><span class="mi">3</span><span class="o">)*</span><span class="n">rad2deg</span><span class="o">};</span>
+ <span class="o">}</span>
+</code></pre></div>
+
+<p>The animation:</p>
+
+<div class="embed-video-container"><iframe src="http://www.youtube.com/embed/Lmvn_uDE4HE "></iframe></div>
+
+<p>The source can now be cloned from git here.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Simen Andresen</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-24T20:44:00-08:00" pubdate data-updated="true">Jan 24<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/java/'>java</a>, <a class='category' href='/blog/categories/jogl/'>jogl</a>, <a class='category' href='/blog/categories/linux/'>linux</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://simena86.github.com/blog/2013/01/24/jogl-animation-and-dynamics-of-furuta-pendulum/" data-via="" data-counturl="http://simena86.github.com/blog/2013/01/24/jogl-animation-and-dynamics-of-furuta-pendulum/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+      
+        <a class="basic-alignment right" href="/blog/2013/01/26/makefiles-and-autocomplete-with-latex/" title="Next Post: Makefiles and autocomplete with Latex">Makefiles and autocomplete with Latex &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/02/26/asdf/">asdf</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/26/convert-math-equations-to-java-or-c-plus-plus-syntax/">Convert Math equations to Java or C++ syntax</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/26/auto-login-wifi-university/">Auto login WiFi – University, hotels etc</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/26/logging-accelerometer-from-android-phone-on-pc/">Logging accelerometer from Android phone on PC</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/26/makefiles-and-autocomplete-with-latex/">Makefiles and autocomplete with Latex</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/simena86">@simena86</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'simena86',
+            count: 4,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Simen Andresen -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'sa-cybernetics';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://simena86.github.com/blog/2013/01/24/jogl-animation-and-dynamics-of-furuta-pendulum/';
+        var disqus_url = 'http://simena86.github.com/blog/2013/01/24/jogl-animation-and-dynamics-of-furuta-pendulum/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

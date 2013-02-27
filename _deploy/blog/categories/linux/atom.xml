@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: linux | SA Cybernetics]]></title>
+  <link href="http://simena86.github.com/blog/categories/linux/atom.xml" rel="self"/>
+  <link href="http://simena86.github.com/"/>
+  <updated>2013-02-26T20:41:39-08:00</updated>
+  <id>http://simena86.github.com/</id>
+  <author>
+    <name><![CDATA[Simen Andresen]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Logging accelerometer from Android phone on PC]]></title>
+    <link href="http://simena86.github.com/blog/2013/01/26/logging-accelerometer-from-android-phone-on-pc/"/>
+    <updated>2013-01-26T00:25:00-08:00</updated>
+    <id>http://simena86.github.com/blog/2013/01/26/logging-accelerometer-from-android-phone-on-pc</id>
+    <content type="html"><![CDATA[<p>I am pretty new to Android and decided to play around with the sensors. I always find accelerometers fun to play with, and like to visualize the sensor reading through a real time plot. In the java-script for the android app below, the acceleration in the x axis is read and streamed through a TCP socket to the PC over wlan. A simple python server script reads the data from a socket and writes it to a perl script, logging the data in GnuPlot, and thus setting my personal record for mixing different languages.
+<!-- more--></p>
+
+<p><div class="embed-video-container"><iframe src="http://www.youtube.com/embed/OOufu8sdyKA "></iframe></div></p>
+
+<p><img class="left" src="http://sacybernetics.files.wordpress.com/2012/06/2012-06-03-23-07-43.png" width="300" height="180" title="" ></p>
+
+<p>The Android script:</p>
+
+<p>show source
+The simple python server script below opens a TCP socket and receives the readings from the Android app over WLAN. Note that the python script reads the last entry in the receive buffer, which then makes up a LIFO que, and no timestamp is added to the reading. For a signal analysis one would add a time stamp and a FIFO que should be used instead. For debugging and pure fun, the method I used is still pretty sufficient.</p>
+
+<p>The plotting is excecuted with piping the output from the python script to the perl script in the linux terminal:</p>
+
+<p><div class="highlight"><pre><code class="bash"><span class="nv">$ </span>./server.py | ./driveGnuPlot.pl 1 500 “Accelerometer Reading”
+</code></pre></div></p>
+
+<p>Python server :
+<div class="highlight"><pre><code class="python"><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">h1</span> <span class="nb">id</span><span class="o">=</span><span class="s">&quot;usrbinpython&quot;</span><span class="o">&gt;</span><span class="err">!</span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">python</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="c">##server.py</span>
+<span class="kn">import</span> <span class="nn">socket</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">sys</span> <span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">serv</span><span class="o">=</span><span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">()</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">HOST</span><span class="o">=</span><span class="err">’’</span>
+<span class="c">##let’s set up some constants</span>
+<span class="c">#HOST=”78.91.80.123”</span>
+<span class="n">PORT</span> <span class="o">=</span> <span class="mi">15000</span>   <span class="c">#arbitrary port not currently in use</span>
+<span class="c">#ADDR = (HOST,PORT)    #we need a tuple for the address</span>
+<span class="n">BUFSIZE</span> <span class="o">=</span> <span class="mi">4096</span>    <span class="c">#reasonably sized buffer for data&lt;/p&gt;</span>
+
+<span class="o">&lt;</span><span class="n">h2</span> <span class="nb">id</span><span class="o">=</span><span class="s">&quot;bind-our-socket-to-the-address&quot;</span><span class="o">&gt;</span><span class="n">bind</span> <span class="n">our</span> <span class="n">socket</span> <span class="n">to</span> <span class="n">the</span> <span class="n">address</span><span class="o">&lt;/</span><span class="n">h2</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">try</span><span class="p">:</span>
+	<span class="n">serv</span><span class="o">.</span><span class="n">bind</span><span class="p">((</span><span class="n">HOST</span><span class="p">,</span> <span class="n">PORT</span><span class="p">))</span>  <span class="o">&lt;</span><span class="n">br</span> <span class="o">/&gt;</span>
+	<span class="n">serv</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="o">&lt;</span><span class="n">br</span> <span class="o">/&gt;</span>
+	<span class="n">conn</span><span class="p">,</span><span class="n">addr</span> <span class="o">=</span> <span class="n">serv</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+<span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+	<span class="k">print</span> <span class="err">“</span><span class="n">Keyboard</span> <span class="n">Interrupt</span><span class="err">”</span>
+	<span class="n">serv</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+	<span class="nb">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">try</span><span class="p">:</span>
+	<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">3100</span><span class="p">):</span>
+		<span class="n">data</span><span class="o">=</span><span class="n">conn</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">4096</span><span class="p">)</span>
+		<span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+		<span class="n">chunk</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+		<span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="err">“</span><span class="mi">0</span><span class="p">:</span><span class="o">%</span><span class="n">s</span>\<span class="n">n</span><span class="err">”</span> <span class="o">%</span> <span class="n">chunk</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="c"># writes the last element in the list</span>
+		<span class="n">sleep</span><span class="p">(</span><span class="mf">0.03</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">sleep</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+	<span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+	<span class="k">print</span> <span class="err">“</span><span class="n">bye</span><span class="err">!”</span>
+<span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+	<span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+	<span class="k">print</span> <span class="err">“</span><span class="n">indexError</span><span class="err">”</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</code></pre></div></p>
+
+<p>And lastly the python script pipes data to a Perl script written by Thanassis Tsiodras.</p>
+
+<p><div class="highlight"><pre><code class="perl"><span class="c1">#!/usr/bin/perl -w</span>
+<span class="k">use</span> <span class="n">strict</span><span class="p">;</span>
+<span class="k">use</span> <span class="nn">Time::</span><span class="n">HiRes</span> <span class="sx">qw/sleep/</span><span class="p">;</span><span class="sr">&lt;/p&gt;</span>
+
+<span class="sr">&lt;p&gt;</span><span class="k">sub </span><span class="nf">usage</span> <span class="p">{</span>
+    <span class="k">print</span> <span class="err">“</span><span class="n">Usage:</span> <span class="nv">$0</span> <span class="sr">&lt;options&gt;</span><span class="o">\</span><span class="n">n</span><span class="s">&quot;;</span>
+<span class="s">    print &amp;lt;&amp;lt;OEF;</span>
+<span class="s">where options are (in order):&lt;/options&gt;&lt;/p&gt;</span>
+
+<span class="s">&lt;p&gt;NumberOfStreams                         How many streams to plot (windows)</span>
+<span class="s">  Stream1_WindowSampleSize &lt;stream2...&gt;   This many window samples for each stream</span>
+<span class="s">  Stream1_Title &lt;stream2_title&gt; ...       Title used for each stream</span>
+<span class="s">  (Optional) Stream1_geometry &lt;stream2_geometry&gt;...  X and Y position in pixels from the top left&lt;/stream2_geometry&gt;&lt;/stream2_title&gt;&lt;/stream2...&gt;&lt;/p&gt;</span>
+
+<span class="s">&lt;p&gt;The last parameters (the optionally provided geometries of the gnuplot windows) </span>
+<span class="s">are of the form: </span>
+<span class="s">  WIDTHxHEIGHT+XOFF+YOFF</span>
+<span class="s">OEF</span>
+<span class="s">    exit(1);</span>
+<span class="s">}&lt;/p&gt;</span>
+
+<span class="s">&lt;p&gt;sub Arg {</span>
+<span class="s">    if ($#ARGV &amp;lt; $&lt;em&gt;[0]) {</span>
+<span class="s">	print “Expected parameter missing…\n\n”;</span>
+<span class="s">	usage;</span>
+<span class="s">    }</span>
+<span class="s">    $ARGV[int($&lt;/em&gt;[0])];</span>
+<span class="s">}&lt;/p&gt;</span>
+
+<span class="s">&lt;p&gt;sub main {</span>
+<span class="s">    my $argIdx = 0;</span>
+<span class="s">    my $numberOfStreams = Arg($argIdx++);</span>
+<span class="s">    print “Will display $numberOfStreams Streams (in $numberOfStreams windows)…\n”;</span>
+<span class="s">    my @sampleSizes;</span>
+<span class="s">    for(my $i=0; $i&amp;lt;$numberOfStreams; $i++) {</span>
+<span class="s">		my $samples = Arg($argIdx++);</span>
+<span class="s">		push @sampleSizes, $samples;</span>
+<span class="s">		print “Stream “.($i+1).” will use a window of $samples samples\n”;</span>
+<span class="s">    }</span>
+<span class="s">    my @titles;</span>
+<span class="s">    for(my $i=0; $i&amp;lt;$numberOfStreams; $i++) {</span>
+<span class="s">	my $title = Arg($argIdx++);</span>
+<span class="s">	push @titles, $title;</span>
+<span class="s">	print “Stream “.($i+1).” will use a title of ‘$title’\n”;</span>
+<span class="s">    }</span>
+<span class="s">    my @geometries;</span>
+<span class="s">    if ($#ARGV &amp;gt;= $argIdx) {</span>
+<span class="s">	for(my $i=0; $i&amp;lt;$numberOfStreams; $i++) {</span>
+<span class="s">	    my $geometry = Arg($argIdx++);</span>
+<span class="s">	    push @geometries, $geometry;</span>
+<span class="s">	    print “Stream “.($i+1).” will use a geometry of ‘$geometry’\n”;</span>
+<span class="s">	}</span>
+<span class="s">    }</span>
+<span class="s">    my $terminal = “”;</span>
+<span class="s">    open GNUPLOT_TERM, “echo ‘show terminal;’ | gnuplot 2&amp;gt;&amp;amp;1 |”;</span>
+<span class="s">    while (&lt;gnuplot_term&gt;) {</span>
+<span class="s">	if (m/terminal type is (\w+)/) {</span>
+<span class="s">	    $terminal=$1;</span>
+<span class="s">	}</span>
+<span class="s">    }</span>
+<span class="s">    close GNUPLOT_TERM;&lt;/gnuplot_term&gt;&lt;/p&gt;</span>
+
+<span class="s">&lt;pre&gt;&lt;code&gt;# unfortunately, the wxt terminal type does not support positioning. </span>
+<span class="s"># hardcode it...</span>
+<span class="s">$terminal  = &quot;</span><span class="n">x11</span><span class="s">&quot;;</span>
+
+<span class="s">my @gnuplots;</span>
+<span class="s">my @buffers;</span>
+<span class="s">my @xcounters;</span>
+<span class="s">shift @ARGV; # number of streams</span>
+<span class="s">for(my $i=0; $i&amp;lt;$numberOfStreams; $i++) {</span>
+<span class="s">	shift @ARGV; # sample size</span>
+<span class="s">	shift @ARGV; # title</span>
+<span class="s">	shift @ARGV; # geometry</span>
+<span class="s">	local *PIPE;</span>
+<span class="s">	my $geometry = &quot;&quot;;</span>
+<span class="s">	if (-1 != $#geometries) {</span>
+<span class="s">	    $geometry = &quot;</span> <span class="o">-</span><span class="n">geometry</span> <span class="s">&quot;.$geometries[$i];</span>
+<span class="s">	}</span>
+<span class="s">open PIPE, &quot;</span><span class="o">|</span><span class="n">gnuplot</span> <span class="nv">$geometry</span> <span class="s">&quot; || die &quot;</span><span class="n">Can</span><span class="s">&#39;t initialize gnuplot number &quot;.($i+1).&quot;\n&quot;;</span>
+<span class="s">select((select(PIPE), $| = 1)[0]);</span>
+<span class="s">push @gnuplots, *PIPE;</span>
+<span class="s">print PIPE &quot;set xtics\n&quot;;</span>
+<span class="s">print PIPE &quot;set ytics\n&quot;;</span>
+<span class="s">print PIPE &quot;set style data lines\n&quot;;</span>
+<span class="s">print PIPE &quot;set grid\n&quot;;</span>
+<span class="s">if ($numberOfStreams == 1) {</span>
+<span class="s">    print PIPE &quot;set terminal $terminal title &#39;&quot;.$titles[0].&quot;&#39; noraise\n&quot;;</span>
+<span class="s">} else {</span>
+<span class="s">    print PIPE &quot;set terminal $terminal noraise\n&quot;;</span>
+<span class="s">}</span>
+<span class="s">print PIPE &quot;set autoscale\n&quot;;</span>
+<span class="s">my @data = [];</span>
+<span class="s">push @buffers, @data;</span>
+<span class="s">push @xcounters, 0;</span>
+<span class="s">}</span>
+<span class="s">my $streamIdx = 0;</span>
+<span class="s">select((select(STDOUT), $| = 1)[0]);</span>
+<span class="s">while(&amp;lt;&amp;gt;) {</span>
+<span class="s">	chomp;</span>
+<span class="s">	my @parts = split /:/;</span>
+<span class="s">	$streamIdx = $parts[0];</span>
+<span class="s">	my $buf = $buffers[$streamIdx];</span>
+<span class="s">	my $pip = $gnuplots[$streamIdx];</span>
+<span class="s">	my $xcounter = $xcounters[$streamIdx];</span>
+<span class="s">	my $title = $titles[$streamIdx];</span>
+
+<span class="s"># data buffering (up to stream sample size)</span>
+<span class="s">push @{$buf}, $parts[1];</span>
+<span class="s">#print &quot;stream $streamIdx: &quot;;</span>
+<span class="s">print $pip &quot;set xrange [&quot;.($xcounter-$sampleSizes[$streamIdx]).&quot;:&quot;.($xcounter+1).&quot;]\n&quot;;</span>
+<span class="s">if ($numberOfStreams == 1) {</span>
+<span class="s">    print $pip &quot;plot \&quot;-\&quot;\n&quot;;</span>
+<span class="s">} else {</span>
+<span class="s">    print $pip &quot;plot \&quot;-\&quot; title &#39;</span><span class="nv">$title</span><span class="err">&#39;</span><span class="o">\</span><span class="n">n</span><span class="s">&quot;;</span>
+<span class="s">}</span>
+<span class="s">my $cnt = 0;</span>
+<span class="s">for my $elem (reverse @{$buf}) {</span>
+<span class="s">    #print &quot;</span> <span class="s">&quot;.$elem;</span>
+<span class="s">    print $pip ($xcounter-$cnt).&quot;</span> <span class="s">&quot;.$elem.&quot;</span><span class="o">\</span><span class="n">n</span><span class="s">&quot;;</span>
+<span class="s">    $cnt += 1;</span>
+<span class="s">}</span>
+<span class="s">#print &quot;</span><span class="o">\</span><span class="n">n</span><span class="s">&quot;;</span>
+<span class="s">print $pip &quot;</span><span class="n">e</span><span class="o">\</span><span class="n">n</span><span class="s">&quot;;</span>
+<span class="s">if ($cnt&amp;gt;=$sampleSizes[$streamIdx]) {</span>
+<span class="s">    shift @{$buf};</span>
+<span class="s">}</span>
+<span class="s">$xcounters[$streamIdx]++;</span>
+<span class="s">}</span>
+<span class="s">for(my $i=0; $i&amp;lt;$numberOfStreams; $i++) {</span>
+<span class="s">my $pip = $gnuplots[$i];</span>
+<span class="s">print $pip &quot;</span><span class="nb">exit</span><span class="p">;</span><span class="o">\</span><span class="n">n</span><span class="err">&quot;</span><span class="p">;</span>
+<span class="nb">close</span> <span class="nv">$pip</span><span class="p">;</span>
+<span class="p">}</span> <span class="p">}</span>
+<span class="sr">&lt;/code&gt;&lt;/pre&gt;</span>
+
+<span class="sr">&lt;p&gt;</span><span class="n">main</span><span class="p">;</span>
+<span class="nb">sleep</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span><span class="sr">&lt;/p&gt;</span>
+
+<span class="sr">&lt;p&gt;</span>
+</code></pre></div></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Makefiles and autocomplete with Latex]]></title>
+    <link href="http://simena86.github.com/blog/2013/01/26/makefiles-and-autocomplete-with-latex/"/>
+    <updated>2013-01-26T00:14:00-08:00</updated>
+    <id>http://simena86.github.com/blog/2013/01/26/makefiles-and-autocomplete-with-latex</id>
+    <content type="html"><![CDATA[<p>I am using Latex a lot and have done some customization in order to speed up the process of writing academic reports. I am using the TeXworks editor. TeXworks is a clean and simple editor, and with the help of a make file and some autotyping it is very efficient.</p>
+
+<!-- more -->
+
+<p>Custom typesetting
+In order to use Texworks efficient i have done some modification to the typesetting process. Instead of using pdflatex which doesn’t allow vector graphics (at least not with the default settings), I am using the power of a make-file. I have written a linux bash script that is run from texworks:</p>
+
+<p>Edit&gt;Preferences&gt;Typesetting&gt;+ to add a Processing tool, and add the script below with the following arguments</p>
+
+<p>$basename</p>
+
+<p>-shell-escape</p>
+
+<p>-enable-write18</p>
+
+<p>The script I use is</p>
+
+<p><div class="highlight"><pre><code class="bash"><span class="c">#!/bin/sh</span>
+<span class="c">##</span>
+<span class="nv">main_file</span><span class="o">=</span><span class="k">$(</span>ls * | grep ‘.tex’ | xargs grep “begin<span class="o">{</span>document<span class="o">}</span>” -sl<span class="k">)</span>
+<span class="nv">main_file</span><span class="o">=</span><span class="k">${</span><span class="nv">main_file</span><span class="p">%”.tex”</span><span class="k">}</span>&lt;/p&gt;
+
+&lt;h1 <span class="nv">id</span><span class="o">=</span><span class="s2">&quot;compile-two-times-to-get-the-reference-alright&quot;</span>&gt;compile two <span class="nb">times </span>to get the reference alright&lt;/h1&gt;
+&lt;p&gt;latex -synctex<span class="o">=</span>1 “<span class="nv">$main_file</span>.tex”
+latex -synctex<span class="o">=</span>1 “<span class="nv">$main_file</span>.tex”
+dvips “<span class="nv">$main_file</span>.dvi” &amp;amp;&amp;amp; ps2pdf “<span class="nv">$main_file</span>.ps”&lt;/p&gt;
+
+&lt;h1 <span class="nv">id</span><span class="o">=</span><span class="s2">&quot;searching-for-mainfiles-that-dosnt-end-with-tex-and-moving-them-to-build&quot;</span>&gt;searching <span class="k">for </span>main_files that dosnt end with .tex and moving them to build&lt;/h1&gt;
+&lt;p&gt;ls * | grep “<span class="nv">$main_file</span>” | 
+<span class="k">while </span><span class="nb">read </span>line ; <span class="k">do </span>
+<span class="k">	</span><span class="nb">echo</span> <span class="nv">$line</span>
+	<span class="k">if </span><span class="nb">echo</span> <span class="nv">$line</span> | grep -Eq ‘tex<span class="nv">$|</span>pdf<span class="nv">$|</span>gz<span class="nv">$’</span> 
+	<span class="k">then</span>
+<span class="k">		</span><span class="nb">echo</span> “not moving tex file”
+	<span class="k">else</span>
+<span class="k">		</span>mv <span class="nv">$line</span> ./build
+	<span class="k">fi</span>
+<span class="k">done</span>&lt;/p&gt;
+
+&lt;p&gt;texworks <span class="nv">$main_file</span>.pdf&lt;/p&gt;
+
+&lt;p&gt;
+</code></pre></div></p>
+
+<p>Put the script somewhere in your PATH and it is automatically run from Texworks every time you typeset the document. What the script does is find the main file for the latex document and typeset that. This allows you to typeset the whole document from a .tex-file included in the main document. One should note that there should be only one main tex file (the file with \begin{document}) in the directory. </p>
+
+<p>Auto complete
+For speeding up the process of writing latex code, auto completion comes in handy. On my computer auto completion is added in ~/.Texworks/completion/tw-basic.txt. Some of the entries in my tx-basic.txt</p>
+
+<p><div class="highlight"><pre><code class="bash">align:<span class="o">=</span><span class="se">\b</span>egin<span class="o">{</span>align<span class="o">}</span><span class="c">#RET#\label{eq:}#RET# #INS# #RET# \end{align}&lt;/p&gt;</span>
+
+&lt;p&gt;figure:<span class="o">=</span><span class="se">\b</span>egin<span class="o">{</span>figure<span class="o">}[</span>h!<span class="o">]</span> <span class="c">#RET# \center #RET# \includegraphics[scale=]{./figures/#INS#}#RET# \caption{ \label{fig:}}#RET# \end{figure}#RET#</span>
+</code></pre></div></p>
+
+<p>With this in your tw-basic.txt you can just type “figure” in the Texworks editor, press tab and it is completed to the align environment with the cursor ready in place for writing your favourite differential equation, matrix or 1+1=3.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[JOGL - Animation and Dynamics of Furuta pendulum]]></title>
+    <link href="http://simena86.github.com/blog/2013/01/24/jogl-animation-and-dynamics-of-furuta-pendulum/"/>
+    <updated>2013-01-24T20:44:00-08:00</updated>
+    <id>http://simena86.github.com/blog/2013/01/24/jogl-animation-and-dynamics-of-furuta-pendulum</id>
+    <content type="html"><![CDATA[<p>I wanted to animate a furuta pendulum, and include the real dynamics in the animation. First off, what is a Furuta pendulum? It is a pendulum with two degrees of freedom (see wikipedia) where, from a control engineers’ point of view, one is interested in stabilizing the second arm of the pendulum, by applying torque to the first arm. This poses quite an interesting control problem (much the same as in e.g. a segway). First lets look at the dynamimcs of the furuta pendulum:
+<!-- more --></p>
+
+<p>The dynamics of the furuta pendulum can be modeled with two second order differential equations. For simulations we will reduce the order and model the system with 4 first order ODE’s. The following state space vector will be used:
+$$
+ \begin{aligned} x=\begin{bmatrix} \ \frac{d\theta<em>{1}}{dt} &amp; \frac{d\theta</em>1}{dt}&amp; \theta<em>{1}&amp;\theta</em>{2}\end{bmatrix}  \end{aligned}
+$$</p>
+
+<p>With the use of Lagrangian or Newton dynamics one can model the system which yields the following 2. order ODE’s:</p>
+
+<script type="math/tex; mode=display">% &lt;![CDATA[
+
+{ \scriptsize
+\begin{aligned}
+& \frac{d^2\theta_1}{dt^2}= \\
+&  \frac{ (mx_1^2cos(x_4)
+sin(x_4)^3L_2^3+(gmsin(x_4)^3-2mx_1x_2cos(x_4)^2sin(x_4)L_1)L_2^2+((mx_1^2-mx_2^2)cos(x_4)sin(x_4)L_1^2+x_1^2cos(x_4)sin(x_4)J_1)
+L_2+gmsin(x_4)L_1^2+\tau cos(x_4)L_1+gsin(x_4)J_1)}{(msin(x_4)^2L_2^3+((m-mcos(x_4)^2)L_1^2+J_1)L_2)}
+\\
+&\frac{d^2\theta_2}{dt^2}=\\
+& \frac{(mx_1^2cos(x_4) 
+sin(x_4)^3L_2^3+(gmsin(x_4)^3-2mx_1x_2cos(x_4)^2sin(x_4)L_1)L_2^2+((mx_1^2-mx_2^2)cos(x_4)sin(x_4)L_1^2+x_1^2cos(x_4)sin(x_4)J_1)
+L_2+gmsin(x_4)L_1^2+taucos(x_4)L_1+gsin(x_4)J_1)}{(msin(x_4)^2L_2^3+((m-mcos(x_4)^2)L_1^2+J_1)L_2)}
+\end{aligned}
+}
+ %]]&gt;</script>
+
+<p>The following state space equations used in the simulation is therefor
+$$
+\dot{x}= \begin{bmatrix}\ddot{\theta}<em>1 \ \ddot{\theta}</em>2 \ \theta<em>1 \ \theta</em>2 \end{bmatrix} = f(x)
+$$</p>
+
+<p>And one can easily solve the dynamics by numerical integration. I have solved the system using Explicit Runge Kutta 4 which yields a discrete solution that can easily be used in a OpenGl 3d animation. The main idea for capturing the dynamics in the animation is to, in  each call to the display() function (each new frame of the animation), calculate the next iterate of the numerical integrator (RK4 in this case). This can be seen in the code below, where <script type="math/tex"> f_1=\ddot{\theta}_1 </script> and f2, f3,f4 (not shown in the code) each calculates their derrivatives which is used in one multiple input, multiple output function f. Lastly this is used in solve_dyn() to calculate an iterate from the RK4 method.</p>
+
+<p><div class="highlight"><pre><code class="java"><span class="kd">public</span> <span class="kt">double</span> <span class="nf">f1</span><span class="o">(</span><span class="n">Matrix</span> <span class="n">x</span><span class="o">,</span> <span class="kt">double</span> <span class="n">u</span> <span class="o">){</span>
+	<span class="kt">double</span> <span class="n">x1</span><span class="o">,</span><span class="n">x2</span><span class="o">,</span><span class="n">x4</span><span class="o">;</span>
+	<span class="kt">double</span> <span class="n">tau</span><span class="o">;</span>
+	<span class="n">x1</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span><span class="mi">0</span><span class="o">);</span> <span class="n">x2</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span><span class="mi">1</span><span class="o">);</span> <span class="n">x4</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span><span class="mi">3</span><span class="o">);</span>
+	<span class="kt">double</span> <span class="n">sign</span><span class="o">;</span>
+	<span class="k">if</span> <span class="o">(</span><span class="n">x1</span><span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="mi">0</span><span class="o">){</span><span class="n">sign</span><span class="o">=</span><span class="mi">1</span><span class="o">;}</span><span class="k">else</span><span class="o">{</span><span class="n">sign</span><span class="o">=-</span><span class="mi">1</span><span class="o">;}</span>
+	<span class="n">u</span><span class="o">=</span><span class="n">u</span><span class="o">+</span><span class="n">sign</span><span class="o">*</span><span class="mf">5.0</span><span class="o">;</span>
+	<span class="n">tau</span><span class="o">=</span><span class="n">u</span><span class="o">;&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="kt">double</span> <span class="n">f_num</span><span class="o">=(</span><span class="n">arm1</span><span class="o">*</span><span class="n">arm2</span><span class="o">*</span><span class="n">m</span><span class="o">*</span><span class="n">Math</span><span class="o">.</span><span class="na">pow</span><span class="o">(</span><span class="n">x1</span><span class="o">,</span><span class="mi">2</span><span class="o">)*</span><span class="n">Math</span><span class="o">.</span><span class="na">pow</span><span class="o">((</span><span class="n">Math</span><span class="o">.</span><span class="na">cos</span><span class="o">(</span><span class="n">x4</span><span class="o">)),</span><span class="mi">2</span><span class="o">)+(</span><span class="n">arm1</span><span class="o">*</span><span class="n">g</span><span class="o">*</span><span class="n">m</span><span class="o">-</span>
+          <span class="mi">2</span><span class="o">*</span><span class="n">Math</span><span class="o">.</span><span class="na">pow</span><span class="o">(</span><span class="n">arm2</span><span class="o">,</span><span class="mi">2</span><span class="o">)*</span><span class="n">m</span><span class="o">*</span><span class="n">x1</span><span class="o">*</span><span class="n">x2</span><span class="o">)</span>
+ 	<span class="o">*(</span><span class="n">Math</span><span class="o">.</span><span class="na">cos</span><span class="o">(</span><span class="n">x4</span><span class="o">))-</span><span class="n">arm1</span><span class="o">*</span><span class="n">arm2</span><span class="o">*</span><span class="n">m</span><span class="o">*</span><span class="n">Math</span><span class="o">.</span><span class="na">pow</span><span class="o">(</span><span class="n">x2</span><span class="o">,</span><span class="mi">2</span><span class="o">))*(</span><span class="n">Math</span><span class="o">.</span><span class="na">sin</span><span class="o">(</span><span class="n">x4</span><span class="o">))+</span><span class="n">tau</span><span class="o">;</span>
+<span class="kt">double</span> <span class="n">f_denum</span><span class="o">=</span><span class="n">Math</span><span class="o">.</span><span class="na">pow</span><span class="o">(</span><span class="n">arm2</span><span class="o">,</span><span class="mi">2</span><span class="o">)*</span><span class="n">m</span><span class="o">*</span><span class="n">Math</span><span class="o">.</span><span class="na">pow</span><span class="o">((</span><span class="n">Math</span><span class="o">.</span><span class="na">sin</span><span class="o">(</span><span class="n">x4</span><span class="o">)),</span><span class="mi">2</span><span class="o">)-</span><span class="n">Math</span><span class="o">.</span><span class="na">pow</span><span class="o">(</span><span class="n">arm1</span><span class="o">,</span><span class="mi">2</span><span class="o">)*</span><span class="n">m</span><span class="o">*</span><span class="n">Math</span><span class="o">.</span><span class="na">pow</span><span class="o">((</span><span class="n">Math</span><span class="o">.</span><span class="na">cos</span><span class="o">(</span><span class="n">x4</span><span class="o">)),</span><span class="mi">2</span><span class="o">)+</span>                  <span class="n">Math</span><span class="o">.</span><span class="na">pow</span><span class="o">(</span><span class="n">arm1</span><span class="o">,</span><span class="mi">2</span><span class="o">)*</span><span class="n">m</span><span class="o">+</span><span class="n">J1</span><span class="o">;</span>
+<span class="k">if</span><span class="o">(</span><span class="n">f_denum</span><span class="o">==</span><span class="mi">0</span><span class="o">){</span>
+	<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;divide by zero&quot;</span><span class="o">);</span>
+        <span class="k">return</span> <span class="mf">1.0f</span><span class="o">;</span>
+<span class="o">}</span><span class="k">else</span>
+        <span class="k">return</span> <span class="n">f_num</span><span class="o">/</span><span class="n">f_denum</span><span class="o">;</span>
+<span class="o">}</span>
+<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="kd">public</span> <span class="n">Matrix</span> <span class="n">f</span><span class="o">(</span><span class="n">Matrix</span> <span class="n">x</span><span class="o">,</span> <span class="kt">double</span> <span class="n">u</span><span class="o">){</span>
+       <span class="n">Matrix</span> <span class="n">retVal</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Matrix</span><span class="o">(</span><span class="k">new</span> <span class="kt">double</span><span class="o">[]{</span><span class="n">f1</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">u</span><span class="o">)</span> <span class="o">,</span><span class="n">f2</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">u</span><span class="o">),</span><span class="n">f3</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">u</span><span class="o">),</span><span class="n">f4</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">u</span><span class="o">)},</span><span class="mi">1</span><span class="o">);</span>
+       <span class="k">return</span> <span class="n">retVal</span><span class="o">;</span>
+ <span class="o">}&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="kd">public</span> <span class="kt">double</span> <span class="o">[]</span> <span class="n">solve_dyn</span><span class="o">(){</span>
+       <span class="n">k1</span><span class="o">=</span> <span class="n">f</span><span class="o">(</span><span class="n">x</span><span class="o">,</span><span class="n">tau</span><span class="o">).</span><span class="na">times</span><span class="o">(</span><span class="n">h</span><span class="o">);</span>
+       <span class="n">k2</span><span class="o">=</span> <span class="n">f</span><span class="o">(</span> <span class="n">x</span><span class="o">.</span><span class="na">plus</span><span class="o">(</span><span class="n">k1</span><span class="o">.</span><span class="na">times</span><span class="o">(</span><span class="mf">0.5</span><span class="o">)),</span><span class="n">tau</span><span class="o">).</span><span class="na">times</span><span class="o">(</span><span class="n">h</span><span class="o">);</span>
+       <span class="n">k3</span><span class="o">=</span> <span class="n">f</span><span class="o">(</span><span class="n">x</span><span class="o">.</span><span class="na">plus</span><span class="o">(</span><span class="n">k2</span><span class="o">.</span><span class="na">times</span><span class="o">(</span><span class="mf">0.5</span><span class="o">)),</span><span class="n">tau</span><span class="o">).</span><span class="na">times</span><span class="o">(</span><span class="n">h</span><span class="o">);</span>
+       <span class="n">k4</span><span class="o">=</span> <span class="n">f</span><span class="o">(</span> <span class="n">x</span><span class="o">.</span><span class="na">plus</span><span class="o">(</span><span class="n">k3</span><span class="o">),</span><span class="n">tau</span><span class="o">).</span><span class="na">times</span><span class="o">(</span><span class="n">h</span><span class="o">);</span>
+       <span class="n">x_next</span><span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="na">plus</span><span class="o">(</span><span class="n">k1</span><span class="o">.</span><span class="na">times</span><span class="o">((</span><span class="mf">1.0</span><span class="o">/</span><span class="mf">6.0</span><span class="o">))).</span><span class="na">plus</span><span class="o">(</span><span class="n">k2</span><span class="o">.</span><span class="na">times</span><span class="o">((</span><span class="mf">1.0</span><span class="o">/</span><span class="mf">3.0</span><span class="o">))).</span>
+               <span class="n">plus</span><span class="o">(</span><span class="n">k3</span><span class="o">.</span><span class="na">times</span><span class="o">(</span><span class="mf">1.0</span><span class="o">/</span><span class="mf">3.0</span><span class="o">)).</span><span class="na">plus</span><span class="o">(</span><span class="n">k4</span><span class="o">.</span><span class="na">times</span><span class="o">(</span><span class="mf">1.0</span><span class="o">/</span><span class="mf">6.0</span><span class="o">));</span>
+       <span class="n">x</span><span class="o">=</span><span class="n">x_next</span><span class="o">;</span>
+       <span class="k">return</span> <span class="k">new</span> <span class="kt">double</span> <span class="o">[]</span> <span class="o">{</span><span class="n">x</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span><span class="mi">2</span><span class="o">)&lt;</span><span class="n">em</span><span class="o">&gt;</span><span class="n">rad2deg</span><span class="o">,</span> <span class="n">x</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span><span class="mi">3</span><span class="o">)&lt;/</span><span class="n">em</span><span class="o">&gt;</span><span class="n">rad2deg</span><span class="o">};</span>
+ <span class="o">}&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</code></pre></div></p>
+
+<p>The animation:</p>
+
+<p><div class="embed-video-container"><iframe src="http://www.youtube.com/embed/Lmvn_uDE4HE "></iframe></div></p>
+
+<p>The source can now be cloned from git here.</p>
+]]></content>
+  </entry>
+  
+</feed>
