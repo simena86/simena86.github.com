@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: android | SA Cybernetics]]></title>
+  <link href="http://simena86.github.com/blog/categories/android/atom.xml" rel="self"/>
+  <link href="http://simena86.github.com/"/>
+  <updated>2013-02-26T20:55:53-08:00</updated>
+  <id>http://simena86.github.com/</id>
+  <author>
+    <name><![CDATA[Simen Andresen]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Logging accelerometer from Android phone on PC]]></title>
+    <link href="http://simena86.github.com/blog/2013/01/26/logging-accelerometer-from-android-phone-on-pc/"/>
+    <updated>2013-01-26T00:25:00-08:00</updated>
+    <id>http://simena86.github.com/blog/2013/01/26/logging-accelerometer-from-android-phone-on-pc</id>
+    <content type="html"><![CDATA[<p>I am pretty new to Android and decided to play around with the sensors. I always find accelerometers fun to play with, and like to visualize the sensor reading through a real time plot. In the java-script for the android app below, the acceleration in the x axis is read and streamed through a TCP socket to the PC over wlan. A simple python server script reads the data from a socket and writes it to a perl script, logging the data in GnuPlot, and thus setting my personal record for mixing different languages.
+<!-- more--></p>
+
+<p><div class="embed-video-container"><iframe src="http://www.youtube.com/embed/OOufu8sdyKA "></iframe></div></p>
+
+<p><img class="left" src="http://sacybernetics.files.wordpress.com/2012/06/2012-06-03-23-07-43.png" width="300" height="180" title="" ></p>
+
+<p>The Android script:</p>
+
+<p>show source
+The simple python server script below opens a TCP socket and receives the readings from the Android app over WLAN. Note that the python script reads the last entry in the receive buffer, which then makes up a LIFO que, and no timestamp is added to the reading. For a signal analysis one would add a time stamp and a FIFO que should be used instead. For debugging and pure fun, the method I used is still pretty sufficient.</p>
+
+<p>The plotting is excecuted with piping the output from the python script to the perl script in the linux terminal:</p>
+
+<p><div class="highlight"><pre><code class="bash"><span class="nv">$ </span>./server.py | ./driveGnuPlot.pl 1 500 “Accelerometer Reading”
+</code></pre></div></p>
+
+<p>Python server :
+<div class="highlight"><pre><code class="python"><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">h1</span> <span class="nb">id</span><span class="o">=</span><span class="s">&quot;usrbinpython&quot;</span><span class="o">&gt;</span><span class="err">!</span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">python</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="c">##server.py</span>
+<span class="kn">import</span> <span class="nn">socket</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">sys</span> <span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">serv</span><span class="o">=</span><span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">()</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">HOST</span><span class="o">=</span><span class="err">’’</span>
+<span class="c">##let’s set up some constants</span>
+<span class="c">#HOST=”78.91.80.123”</span>
+<span class="n">PORT</span> <span class="o">=</span> <span class="mi">15000</span>   <span class="c">#arbitrary port not currently in use</span>
+<span class="c">#ADDR = (HOST,PORT)    #we need a tuple for the address</span>
+<span class="n">BUFSIZE</span> <span class="o">=</span> <span class="mi">4096</span>    <span class="c">#reasonably sized buffer for data&lt;/p&gt;</span>
+
+<span class="o">&lt;</span><span class="n">h2</span> <span class="nb">id</span><span class="o">=</span><span class="s">&quot;bind-our-socket-to-the-address&quot;</span><span class="o">&gt;</span><span class="n">bind</span> <span class="n">our</span> <span class="n">socket</span> <span class="n">to</span> <span class="n">the</span> <span class="n">address</span><span class="o">&lt;/</span><span class="n">h2</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">try</span><span class="p">:</span>
+	<span class="n">serv</span><span class="o">.</span><span class="n">bind</span><span class="p">((</span><span class="n">HOST</span><span class="p">,</span> <span class="n">PORT</span><span class="p">))</span>  <span class="o">&lt;</span><span class="n">br</span> <span class="o">/&gt;</span>
+	<span class="n">serv</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="o">&lt;</span><span class="n">br</span> <span class="o">/&gt;</span>
+	<span class="n">conn</span><span class="p">,</span><span class="n">addr</span> <span class="o">=</span> <span class="n">serv</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+<span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+	<span class="k">print</span> <span class="err">“</span><span class="n">Keyboard</span> <span class="n">Interrupt</span><span class="err">”</span>
+	<span class="n">serv</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+	<span class="nb">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">try</span><span class="p">:</span>
+	<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">3100</span><span class="p">):</span>
+		<span class="n">data</span><span class="o">=</span><span class="n">conn</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">4096</span><span class="p">)</span>
+		<span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+		<span class="n">chunk</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+		<span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="err">“</span><span class="mi">0</span><span class="p">:</span><span class="o">%</span><span class="n">s</span>\<span class="n">n</span><span class="err">”</span> <span class="o">%</span> <span class="n">chunk</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="c"># writes the last element in the list</span>
+		<span class="n">sleep</span><span class="p">(</span><span class="mf">0.03</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">sleep</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+	<span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+	<span class="k">print</span> <span class="err">“</span><span class="n">bye</span><span class="err">!”</span>
+<span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+	<span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+	<span class="k">print</span> <span class="err">“</span><span class="n">indexError</span><span class="err">”</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</code></pre></div></p>
+
+<p>And lastly the python script pipes data to a Perl script written by Thanassis Tsiodras.</p>
+
+<p><div class="highlight"><pre><code class="perl"><span class="c1">#!/usr/bin/perl -w</span>
+<span class="k">use</span> <span class="n">strict</span><span class="p">;</span>
+<span class="k">use</span> <span class="nn">Time::</span><span class="n">HiRes</span> <span class="sx">qw/sleep/</span><span class="p">;</span><span class="sr">&lt;/p&gt;</span>
+
+<span class="sr">&lt;p&gt;</span><span class="k">sub </span><span class="nf">usage</span> <span class="p">{</span>
+    <span class="k">print</span> <span class="err">“</span><span class="n">Usage:</span> <span class="nv">$0</span> <span class="sr">&lt;options&gt;</span><span class="o">\</span><span class="n">n</span><span class="s">&quot;;</span>
+<span class="s">    print &amp;lt;&amp;lt;OEF;</span>
+<span class="s">where options are (in order):&lt;/options&gt;&lt;/p&gt;</span>
+
+<span class="s">&lt;p&gt;NumberOfStreams                         How many streams to plot (windows)</span>
+<span class="s">  Stream1_WindowSampleSize &lt;stream2...&gt;   This many window samples for each stream</span>
+<span class="s">  Stream1_Title &lt;stream2_title&gt; ...       Title used for each stream</span>
+<span class="s">  (Optional) Stream1_geometry &lt;stream2_geometry&gt;...  X and Y position in pixels from the top left&lt;/stream2_geometry&gt;&lt;/stream2_title&gt;&lt;/stream2...&gt;&lt;/p&gt;</span>
+
+<span class="s">&lt;p&gt;The last parameters (the optionally provided geometries of the gnuplot windows) </span>
+<span class="s">are of the form: </span>
+<span class="s">  WIDTHxHEIGHT+XOFF+YOFF</span>
+<span class="s">OEF</span>
+<span class="s">    exit(1);</span>
+<span class="s">}&lt;/p&gt;</span>
+
+<span class="s">&lt;p&gt;sub Arg {</span>
+<span class="s">    if ($#ARGV &amp;lt; $&lt;em&gt;[0]) {</span>
+<span class="s">	print “Expected parameter missing…\n\n”;</span>
+<span class="s">	usage;</span>
+<span class="s">    }</span>
+<span class="s">    $ARGV[int($&lt;/em&gt;[0])];</span>
+<span class="s">}&lt;/p&gt;</span>
+
+<span class="s">&lt;p&gt;sub main {</span>
+<span class="s">    my $argIdx = 0;</span>
+<span class="s">    my $numberOfStreams = Arg($argIdx++);</span>
+<span class="s">    print “Will display $numberOfStreams Streams (in $numberOfStreams windows)…\n”;</span>
+<span class="s">    my @sampleSizes;</span>
+<span class="s">    for(my $i=0; $i&amp;lt;$numberOfStreams; $i++) {</span>
+<span class="s">		my $samples = Arg($argIdx++);</span>
+<span class="s">		push @sampleSizes, $samples;</span>
+<span class="s">		print “Stream “.($i+1).” will use a window of $samples samples\n”;</span>
+<span class="s">    }</span>
+<span class="s">    my @titles;</span>
+<span class="s">    for(my $i=0; $i&amp;lt;$numberOfStreams; $i++) {</span>
+<span class="s">	my $title = Arg($argIdx++);</span>
+<span class="s">	push @titles, $title;</span>
+<span class="s">	print “Stream “.($i+1).” will use a title of ‘$title’\n”;</span>
+<span class="s">    }</span>
+<span class="s">    my @geometries;</span>
+<span class="s">    if ($#ARGV &amp;gt;= $argIdx) {</span>
+<span class="s">	for(my $i=0; $i&amp;lt;$numberOfStreams; $i++) {</span>
+<span class="s">	    my $geometry = Arg($argIdx++);</span>
+<span class="s">	    push @geometries, $geometry;</span>
+<span class="s">	    print “Stream “.($i+1).” will use a geometry of ‘$geometry’\n”;</span>
+<span class="s">	}</span>
+<span class="s">    }</span>
+<span class="s">    my $terminal = “”;</span>
+<span class="s">    open GNUPLOT_TERM, “echo ‘show terminal;’ | gnuplot 2&amp;gt;&amp;amp;1 |”;</span>
+<span class="s">    while (&lt;gnuplot_term&gt;) {</span>
+<span class="s">	if (m/terminal type is (\w+)/) {</span>
+<span class="s">	    $terminal=$1;</span>
+<span class="s">	}</span>
+<span class="s">    }</span>
+<span class="s">    close GNUPLOT_TERM;&lt;/gnuplot_term&gt;&lt;/p&gt;</span>
+
+<span class="s">&lt;pre&gt;&lt;code&gt;# unfortunately, the wxt terminal type does not support positioning. </span>
+<span class="s"># hardcode it...</span>
+<span class="s">$terminal  = &quot;</span><span class="n">x11</span><span class="s">&quot;;</span>
+
+<span class="s">my @gnuplots;</span>
+<span class="s">my @buffers;</span>
+<span class="s">my @xcounters;</span>
+<span class="s">shift @ARGV; # number of streams</span>
+<span class="s">for(my $i=0; $i&amp;lt;$numberOfStreams; $i++) {</span>
+<span class="s">	shift @ARGV; # sample size</span>
+<span class="s">	shift @ARGV; # title</span>
+<span class="s">	shift @ARGV; # geometry</span>
+<span class="s">	local *PIPE;</span>
+<span class="s">	my $geometry = &quot;&quot;;</span>
+<span class="s">	if (-1 != $#geometries) {</span>
+<span class="s">	    $geometry = &quot;</span> <span class="o">-</span><span class="n">geometry</span> <span class="s">&quot;.$geometries[$i];</span>
+<span class="s">	}</span>
+<span class="s">open PIPE, &quot;</span><span class="o">|</span><span class="n">gnuplot</span> <span class="nv">$geometry</span> <span class="s">&quot; || die &quot;</span><span class="n">Can</span><span class="s">&#39;t initialize gnuplot number &quot;.($i+1).&quot;\n&quot;;</span>
+<span class="s">select((select(PIPE), $| = 1)[0]);</span>
+<span class="s">push @gnuplots, *PIPE;</span>
+<span class="s">print PIPE &quot;set xtics\n&quot;;</span>
+<span class="s">print PIPE &quot;set ytics\n&quot;;</span>
+<span class="s">print PIPE &quot;set style data lines\n&quot;;</span>
+<span class="s">print PIPE &quot;set grid\n&quot;;</span>
+<span class="s">if ($numberOfStreams == 1) {</span>
+<span class="s">    print PIPE &quot;set terminal $terminal title &#39;&quot;.$titles[0].&quot;&#39; noraise\n&quot;;</span>
+<span class="s">} else {</span>
+<span class="s">    print PIPE &quot;set terminal $terminal noraise\n&quot;;</span>
+<span class="s">}</span>
+<span class="s">print PIPE &quot;set autoscale\n&quot;;</span>
+<span class="s">my @data = [];</span>
+<span class="s">push @buffers, @data;</span>
+<span class="s">push @xcounters, 0;</span>
+<span class="s">}</span>
+<span class="s">my $streamIdx = 0;</span>
+<span class="s">select((select(STDOUT), $| = 1)[0]);</span>
+<span class="s">while(&amp;lt;&amp;gt;) {</span>
+<span class="s">	chomp;</span>
+<span class="s">	my @parts = split /:/;</span>
+<span class="s">	$streamIdx = $parts[0];</span>
+<span class="s">	my $buf = $buffers[$streamIdx];</span>
+<span class="s">	my $pip = $gnuplots[$streamIdx];</span>
+<span class="s">	my $xcounter = $xcounters[$streamIdx];</span>
+<span class="s">	my $title = $titles[$streamIdx];</span>
+
+<span class="s"># data buffering (up to stream sample size)</span>
+<span class="s">push @{$buf}, $parts[1];</span>
+<span class="s">#print &quot;stream $streamIdx: &quot;;</span>
+<span class="s">print $pip &quot;set xrange [&quot;.($xcounter-$sampleSizes[$streamIdx]).&quot;:&quot;.($xcounter+1).&quot;]\n&quot;;</span>
+<span class="s">if ($numberOfStreams == 1) {</span>
+<span class="s">    print $pip &quot;plot \&quot;-\&quot;\n&quot;;</span>
+<span class="s">} else {</span>
+<span class="s">    print $pip &quot;plot \&quot;-\&quot; title &#39;</span><span class="nv">$title</span><span class="err">&#39;</span><span class="o">\</span><span class="n">n</span><span class="s">&quot;;</span>
+<span class="s">}</span>
+<span class="s">my $cnt = 0;</span>
+<span class="s">for my $elem (reverse @{$buf}) {</span>
+<span class="s">    #print &quot;</span> <span class="s">&quot;.$elem;</span>
+<span class="s">    print $pip ($xcounter-$cnt).&quot;</span> <span class="s">&quot;.$elem.&quot;</span><span class="o">\</span><span class="n">n</span><span class="s">&quot;;</span>
+<span class="s">    $cnt += 1;</span>
+<span class="s">}</span>
+<span class="s">#print &quot;</span><span class="o">\</span><span class="n">n</span><span class="s">&quot;;</span>
+<span class="s">print $pip &quot;</span><span class="n">e</span><span class="o">\</span><span class="n">n</span><span class="s">&quot;;</span>
+<span class="s">if ($cnt&amp;gt;=$sampleSizes[$streamIdx]) {</span>
+<span class="s">    shift @{$buf};</span>
+<span class="s">}</span>
+<span class="s">$xcounters[$streamIdx]++;</span>
+<span class="s">}</span>
+<span class="s">for(my $i=0; $i&amp;lt;$numberOfStreams; $i++) {</span>
+<span class="s">my $pip = $gnuplots[$i];</span>
+<span class="s">print $pip &quot;</span><span class="nb">exit</span><span class="p">;</span><span class="o">\</span><span class="n">n</span><span class="err">&quot;</span><span class="p">;</span>
+<span class="nb">close</span> <span class="nv">$pip</span><span class="p">;</span>
+<span class="p">}</span> <span class="p">}</span>
+<span class="sr">&lt;/code&gt;&lt;/pre&gt;</span>
+
+<span class="sr">&lt;p&gt;</span><span class="n">main</span><span class="p">;</span>
+<span class="nb">sleep</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span><span class="sr">&lt;/p&gt;</span>
+
+<span class="sr">&lt;p&gt;</span>
+</code></pre></div></p>
+]]></content>
+  </entry>
+  
+</feed>
