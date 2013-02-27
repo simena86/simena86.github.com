@@ -4,7 +4,7 @@
   <title><![CDATA[SA Cybernetics]]></title>
   <link href="http://simena86.github.com/atom.xml" rel="self"/>
   <link href="http://simena86.github.com/"/>
-  <updated>2013-02-26T20:55:53-08:00</updated>
+  <updated>2013-02-26T21:02:38-08:00</updated>
   <id>http://simena86.github.com/</id>
   <author>
     <name><![CDATA[Simen Andresen]]></name>
@@ -12,15 +12,6 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
-  
-  <entry>
-    <title type="html"><![CDATA[asdf]]></title>
-    <link href="http://simena86.github.com/blog/2013/02/26/asdf/"/>
-    <updated>2013-02-26T20:38:00-08:00</updated>
-    <id>http://simena86.github.com/blog/2013/02/26/asdf</id>
-    <content type="html"><![CDATA[
-]]></content>
-  </entry>
   
   <entry>
     <title type="html"><![CDATA[Convert Math equations to Java or C++ syntax]]></title>
