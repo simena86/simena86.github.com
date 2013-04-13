@@ -4,7 +4,7 @@
   <title><![CDATA[]]></title>
   <link href="http://simena86.github.com/atom.xml" rel="self"/>
   <link href="http://simena86.github.com/"/>
-  <updated>2013-04-13T11:54:24-07:00</updated>
+  <updated>2013-04-13T11:55:36-07:00</updated>
   <id>http://simena86.github.com/</id>
   <author>
     <name><![CDATA[Simen Andresen]]></name>
@@ -58,7 +58,7 @@ I uncommented some things here that I found useful, like for instance </p>
 
 <p><a href="http://ctags.sourceforge.net/">Exuberant Ctags</a> is another great plugin that makes a tags database wich is used by vim to autocomplete variables and functions. Together with <a href="http://www.vim.org/scripts/script.php?script_id=1764">code_complete</a> and <a href="http://www.vim.org/scripts/script.php?script_id=1520">omniCppComplete</a> it also offers autocompletion of function parameters and class and struct members much the same way that can be found with IDE’s like eclipse:</p>
 
-<p><img src="http://simena86.github.com/images/vim/autocomplete.png" width="320" title="" /></p>
+<p><img src="http://simena86.github.com/images/vim/autocomplete.png" width="420" height="200" /></p>
 
 <p>If your running a debian systems the easiest way to install ctags is to use</p>
 
