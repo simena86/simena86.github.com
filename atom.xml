@@ -4,7 +4,7 @@
   <title><![CDATA[SA Cybernetics]]></title>
   <link href="http://simena86.github.com/atom.xml" rel="self"/>
   <link href="http://simena86.github.com/"/>
-  <updated>2013-02-26T21:02:38-08:00</updated>
+  <updated>2013-04-12T18:54:06-07:00</updated>
   <id>http://simena86.github.com/</id>
   <author>
     <name><![CDATA[Simen Andresen]]></name>
@@ -12,6 +12,15 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Json in C and Matlab]]></title>
+    <link href="http://simena86.github.com/blog/2013/02/27/json-in-c-and-matlab/"/>
+    <updated>2013-02-27T10:13:00-08:00</updated>
+    <id>http://simena86.github.com/blog/2013/02/27/json-in-c-and-matlab</id>
+    <content type="html"><![CDATA[
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Convert Math equations to Java or C++ syntax]]></title>
