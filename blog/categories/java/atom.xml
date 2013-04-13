@@ -4,7 +4,7 @@
   <title><![CDATA[Category: java | ]]></title>
   <link href="http://simena86.github.com/blog/categories/java/atom.xml" rel="self"/>
   <link href="http://simena86.github.com/"/>
-  <updated>2013-04-12T19:46:58-07:00</updated>
+  <updated>2013-04-13T11:47:00-07:00</updated>
   <id>http://simena86.github.com/</id>
   <author>
     <name><![CDATA[Simen Andresen]]></name>
@@ -30,15 +30,18 @@
     <content type="html"><![CDATA[<p>I wanted to animate a furuta pendulum, and include the real dynamics in the animation. First off, what is a Furuta pendulum? It is a pendulum with two degrees of freedom (see wikipedia) where, from a control engineers’ point of view, one is interested in stabilizing the second arm of the pendulum, by applying torque to the first arm. This poses quite an interesting control problem (much the same as in e.g. a segway). First lets look at the dynamimcs of the furuta pendulum:
 <!-- more --></p>
 
-<p>The dynamics of the furuta pendulum can be modeled with two second order differential equations. For simulations we will reduce the order and model the system with 4 first order ODE’s. The following state space vector will be used:
-$$
- \begin{aligned} x=\begin{bmatrix} \ \frac{d\theta<em>{1}}{dt} &amp; \frac{d\theta</em>1}{dt}&amp; \theta<em>{1}&amp;\theta</em>{2}\end{bmatrix}  \end{aligned}
-$$</p>
+<p>The dynamics of the furuta pendulum can be modeled with two second order differential equations. For simulations we will reduce the order and model the system with 4 first order ODE’s. The following state space vector will be used:</p>
+
+<script type="math/tex; mode=display">% &lt;![CDATA[
+
+ \begin{aligned} x=\begin{bmatrix} \\ \frac{d\theta_{1}}{dt} & \frac{d\theta_1}{dt}& \theta_{1}&\theta_{2}\end{bmatrix}  \end{aligned}
+ %]]&gt;</script>
 
 <p>With the use of Lagrangian or Newton dynamics one can model the system which yields the following 2. order ODE’s:</p>
 
 <script type="math/tex; mode=display">% &lt;![CDATA[
 
+\; \\ \; \\ \;
 { \scriptsize
 \begin{aligned}
 & \frac{d^2\theta_1}{dt^2}= \\
@@ -54,10 +57,11 @@ L_2+gmsin(x_4)L_1^2+taucos(x_4)L_1+gsin(x_4)J_1)}{(msin(x_4)^2L_2^3+((m-mcos(x_4
 }
  %]]&gt;</script>
 
-<p>The following state space equations used in the simulation is therefor
-$$
-\dot{x}= \begin{bmatrix}\ddot{\theta}<em>1 \ \ddot{\theta}</em>2 \ \theta<em>1 \ \theta</em>2 \end{bmatrix} = f(x)
-$$</p>
+<p>The following state space equations used in the simulation is therefor</p>
+
+<script type="math/tex; mode=display">
+\dot{x}= \begin{bmatrix}\ddot{\theta}_1 \\ \ddot{\theta}_2 \\ \theta_1 \\ \theta_2 \end{bmatrix} = f(x)
+</script>
 
 <p>And one can easily solve the dynamics by numerical integration. I have solved the system using Explicit Runge Kutta 4 which yields a discrete solution that can easily be used in a OpenGl 3d animation. The main idea for capturing the dynamics in the animation is to, in  each call to the display() function (each new frame of the animation), calculate the next iterate of the numerical integrator (RK4 in this case). This can be seen in the code below, where <script type="math/tex"> f_1=\ddot{\theta}_1 </script> and f2, f3,f4 (not shown in the code) each calculates their derrivatives which is used in one multiple input, multiple output function f. Lastly this is used in solve_dyn() to calculate an iterate from the RK4 method.</p>
 
@@ -105,7 +109,7 @@ $$</p>
 
 <p><div class="embed-video-container"><iframe src="http://www.youtube.com/embed/Lmvn_uDE4HE "></iframe></div></p>
 
-<p>The source can now be cloned from git here.</p>
+<p>The source can now be cloned from git <a href="https://github.com/simena86/furuta_pendulum" title="gitlink">here</a>.</p>
 ]]></content>
   </entry>
   
