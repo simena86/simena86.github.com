@@ -139,26 +139,40 @@ MathJax.Hub.Config({
 <h2 id="basics">Basics</h2>
 
 <p>First of all one should look into the root configuration file /etc/vim/vimrc.
-I uncommented some things here that I found useful, like for instance </p>
+I uncommented some things here that I found useful, like for instance 
+`</p>
 
-<div class="highlight"><pre><code class="vim"><span class="k">set</span> <span class="nb">showcmd</span>		<span class="c">&quot; Show (partial) command in status line.</span>
-<span class="k">set</span> <span class="nb">showmatch</span>		<span class="c">&quot; Show matching brackets.</span>
-<span class="k">set</span> <span class="nb">ignorecase</span>		<span class="c">&quot; Do case insensitive matching</span>
-<span class="k">set</span> <span class="nb">hidden</span>             <span class="c">&quot; Hide buffers when they are abandoned</span>
-<span class="k">set</span> <span class="nb">mouse</span><span class="p">=</span><span class="k">a</span>		<span class="c">&quot; Enable mouse usage (all modes)</span>
-</code></pre></div>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>/etc/vim/vimrc </span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="vim"><span class="line"><span class="k">set</span> <span class="nb">showcmd</span>		<span class="c">&quot; Show (partial) command in status line.</span>
+</span><span class="line"><span class="k">set</span> <span class="nb">showmatch</span>		<span class="c">&quot; Show matching brackets.</span>
+</span><span class="line"><span class="k">set</span> <span class="nb">ignorecase</span>		<span class="c">&quot; Do case insensitive matching</span>
+</span><span class="line"><span class="k">set</span> <span class="nb">hidden</span>             <span class="c">&quot; Hide buffers when they are abandoned</span>
+</span><span class="line"><span class="k">set</span> <span class="nb">mouse</span><span class="p">=</span><span class="k">a</span>		<span class="c">&quot; Enable mouse usage (all modes)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>For the rest of the changes i updatet .vimrc and the .vim folder in the home directory. In my ~/.vimrc I have some basic commands :</p>
 
-<div class="highlight"><pre><code class="vim"><span class="k">filetype</span> plugin <span class="k">on</span>
-<span class="k">set</span> <span class="nb">nocp</span>
-<span class="k">set</span> <span class="nb">autoindent</span>
-<span class="k">set</span> <span class="nb">cindent</span>
-<span class="k">set</span> <span class="k">ts</span><span class="p">=</span><span class="m">4</span>
-<span class="k">set</span> <span class="k">nu</span>
-<span class="k">set</span> <span class="nb">scrolloff</span><span class="p">=</span><span class="m">2</span>
-<span class="k">set</span> <span class="nb">clipboard</span><span class="p">=</span>unnamedplus
-</code></pre></div>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>~/.vimrc</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+</pre></td><td class="code"><pre><code class="vim"><span class="line"><span class="k">filetype</span> plugin <span class="k">on</span>
+</span><span class="line"><span class="k">set</span> <span class="nb">nocp</span>
+</span><span class="line"><span class="k">set</span> <span class="nb">autoindent</span>
+</span><span class="line"><span class="k">set</span> <span class="nb">cindent</span>
+</span><span class="line"><span class="k">set</span> <span class="k">ts</span><span class="p">=</span><span class="m">4</span>
+</span><span class="line"><span class="k">set</span> <span class="k">nu</span>
+</span><span class="line"><span class="k">set</span> <span class="nb">scrolloff</span><span class="p">=</span><span class="m">2</span>
+</span><span class="line"><span class="k">set</span> <span class="nb">clipboard</span><span class="p">=</span>unnamedplus
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>This changes things like the lenght of the indentation (which I found to be way too long with the default setup), as well as enabling plugins, setting the right clipboard etc.</p>
 
@@ -188,33 +202,45 @@ I uncommented some things here that I found useful, like for instance </p>
 
 <p>When executing this command it will generate a file in the current directory and make tags based on all source code in the current and all subdirectories. The tag file is used by ctags, code_complete and omniCppComplete. To let vim know where to look for tag files on has to specify this in vimrc by </p>
 
-<div class="highlight"><pre><code class="vim"><span class="k">set</span> <span class="k">tags</span><span class="p">=</span><span class="sr">/path/</span><span class="k">to</span>/tagdir1
-<span class="k">set</span> <span class="k">tags</span><span class="p">+=</span><span class="sr">/path/</span><span class="k">to</span>/tagdir2
-</code></pre></div>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>~/.vimrc</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="vim"><span class="line"><span class="k">set</span> <span class="k">tags</span><span class="p">=</span><span class="sr">/path/</span><span class="k">to</span>/tagdir1
+</span><span class="line"><span class="k">set</span> <span class="k">tags</span><span class="p">+=</span><span class="sr">/path/</span><span class="k">to</span>/tagdir2
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>Ctags searches for tag-files which is specified in ~/.vimrc. I’m using the following in my .vimrc file to look for tag files </p>
 
-<div class="highlight"><pre><code class="vim"><span class="k">set</span> <span class="k">tags</span><span class="p">=</span><span class="sr">/usr/</span><span class="nb">include</span>/<span class="k">tags</span>
-<span class="k">set</span> <span class="k">tags</span><span class="p">+=</span>./<span class="k">tags</span>
-</code></pre></div>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>~/.vimrc</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="vim"><span class="line"><span class="k">set</span> <span class="k">tags</span><span class="p">=</span><span class="sr">/usr/</span><span class="nb">include</span>/<span class="k">tags</span>
+</span><span class="line"><span class="k">set</span> <span class="k">tags</span><span class="p">+=</span>./<span class="k">tags</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>Lastly I use git hooks to update tag files in projects. The best way to do this is to first make the directory ~/.git_template where you can define templates for git to use every time you run git init. In the .git_template directory I have a directory for <a href="http://git-scm.com/book/en/Customizing-Git-Git-Hooks">git hooks</a> with two files: _    </p>
+<p>Lastly I use git hooks to update tag files in projects. The best way to do this is to first make the directory ~/.git_template where you can define templates for git to use every time you run git init. In the .git_templates directory I have a directory for <a href="http://git-scm.com/book/en/Customizing-Git-Git-Hooks">git hooks</a> with two files: _    </p>
 
 <p>post-commit:</p>
 
-<div class="highlight"><pre><code class="bash"><span class="c">#!/bin/sh</span>
-.git/hooks/ctags &gt;/dev/null 2&gt;&amp;1 &amp;
-</code></pre></div>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>~/.git_templates/hooks/post-commit</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="bash"><span class="line"><span class="c">#!/bin/sh</span>
+</span><span class="line">.git/hooks/ctags &gt;/dev/null 2&gt;&amp;1 &amp;
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>ctags:</p>
 
-<div class="highlight"><pre><code class="bash"><span class="c">#!/bin/sh</span>
-<span class="nb">set</span> -e
-<span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;/usr/local/bin:$PATH&quot;</span>
-<span class="nb">trap</span> <span class="s2">&quot;rm -f .git/tags.$$&quot;</span> EXIT
-ctags  --c++-kinds<span class="o">=</span>+p --fields<span class="o">=</span>+iaS --extra<span class="o">=</span>+q --tag-relative -Rf.git/tags.<span class="nv">$$</span>  --exclude<span class="o">=</span>.git --languages<span class="o">=</span>-javascript,sql
-mv .git/tags.<span class="nv">$$</span> .git/tags
-</code></pre></div>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>~/.git_templates/hooks/ctags</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="bash"><span class="line"><span class="c">#!/bin/sh</span>
+</span><span class="line"><span class="nb">set</span> -e
+</span><span class="line"><span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;/usr/local/bin:$PATH&quot;</span>
+</span><span class="line"><span class="nb">trap</span> <span class="s2">&quot;rm -f .git/tags.$$&quot;</span> EXIT
+</span><span class="line">ctags  --c++-kinds<span class="o">=</span>+p --fields<span class="o">=</span>+iaS --extra<span class="o">=</span>+q --tag-relative -Rf.git/tags.<span class="nv">$$</span>  --exclude<span class="o">=</span>.git --languages<span class="o">=</span>-javascript,sql
+</span><span class="line">mv .git/tags.<span class="nv">$$</span> .git/tags
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>With these scripts you will generate a new tag file in the local .git directory of the current project every time you make a commit. </p>
 

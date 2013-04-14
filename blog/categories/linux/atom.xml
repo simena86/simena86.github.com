@@ -4,7 +4,7 @@
   <title><![CDATA[Category: linux | ]]></title>
   <link href="http://simena86.github.com/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://simena86.github.com/"/>
-  <updated>2013-04-13T19:35:03-07:00</updated>
+  <updated>2013-04-13T19:56:30-07:00</updated>
   <id>http://simena86.github.com/</id>
   <author>
     <name><![CDATA[Simen Andresen]]></name>
@@ -26,24 +26,28 @@
 
 <p>First of all one should look into the root configuration file /etc/vim/vimrc.
 I uncommented some things here that I found useful, like for instance 
-<div class="highlight"><pre><code class="vim"><span class="k">set</span> <span class="nb">showcmd</span>		“ Show <span class="p">(</span>partial<span class="p">)</span> command <span class="k">in</span> status line.
-<span class="k">set</span> <span class="nb">showmatch</span>		“ Show matching brackets.
-<span class="k">set</span> <span class="nb">ignorecase</span>		“ Do case insensitive matching
-<span class="k">set</span> <span class="nb">hidden</span>             “ Hide <span class="k">buffers</span> when they are abandoned
-<span class="k">set</span> <span class="nb">mouse</span><span class="p">=</span><span class="k">a</span>		“ Enable <span class="nb">mouse</span> usage <span class="p">(</span><span class="k">all</span> modes<span class="p">)</span>
-</code></pre></div></p>
+`</p>
+
+<p><code>vim /etc/vim/vimrc 
+set showcmd		" Show (partial) command in status line.
+set showmatch		" Show matching brackets.
+set ignorecase		" Do case insensitive matching
+set hidden             " Hide buffers when they are abandoned
+set mouse=a		" Enable mouse usage (all modes)
+</code></p>
 
 <p>For the rest of the changes i updatet .vimrc and the .vim folder in the home directory. In my ~/.vimrc I have some basic commands :</p>
 
-<p><div class="highlight"><pre><code class="vim"><span class="k">filetype</span> plugin <span class="k">on</span>
-<span class="k">set</span> <span class="nb">nocp</span>
-<span class="k">set</span> <span class="nb">autoindent</span>
-<span class="k">set</span> <span class="nb">cindent</span>
-<span class="k">set</span> <span class="k">ts</span><span class="p">=</span><span class="m">4</span>
-<span class="k">set</span> <span class="k">nu</span>
-<span class="k">set</span> <span class="nb">scrolloff</span><span class="p">=</span><span class="m">2</span>
-<span class="k">set</span> <span class="nb">clipboard</span><span class="p">=</span>unnamedplus
-</code></pre></div></p>
+<p><code>vim ~/.vimrc
+filetype plugin on
+set nocp
+set autoindent
+set cindent
+set ts=4
+set nu
+set scrolloff=2
+set clipboard=unnamedplus
+</code></p>
 
 <p>This changes things like the lenght of the indentation (which I found to be way too long with the default setup), as well as enabling plugins, setting the right clipboard etc.</p>
 
@@ -72,33 +76,37 @@ I uncommented some things here that I found useful, like for instance
 
 <p>When executing this command it will generate a file in the current directory and make tags based on all source code in the current and all subdirectories. The tag file is used by ctags, code_complete and omniCppComplete. To let vim know where to look for tag files on has to specify this in vimrc by </p>
 
-<p><div class="highlight"><pre><code class="vim"><span class="k">set</span> <span class="k">tags</span><span class="p">=</span><span class="sr">/path/</span><span class="k">to</span>/tagdir1
-<span class="k">set</span> <span class="k">tags</span><span class="p">+=</span><span class="sr">/path/</span><span class="k">to</span>/tagdir2
-</code></pre></div></p>
+<p><code>vim ~/.vimrc
+set tags=/path/to/tagdir1
+set tags+=/path/to/tagdir2
+</code> </p>
 
 <p>Ctags searches for tag-files which is specified in ~/.vimrc. I’m using the following in my .vimrc file to look for tag files </p>
 
-<p><div class="highlight"><pre><code class="vim"><span class="k">set</span> <span class="k">tags</span><span class="p">=</span><span class="sr">/usr/</span><span class="nb">include</span>/<span class="k">tags</span>
-<span class="k">set</span> <span class="k">tags</span><span class="p">+=</span>./<span class="k">tags</span>
-</code></pre></div></p>
+<p><code>vim ~/.vimrc
+set tags=/usr/include/tags
+set tags+=./tags
+</code> </p>
 
-<p>Lastly I use git hooks to update tag files in projects. The best way to do this is to first make the directory ~/.git_template where you can define templates for git to use every time you run git init. In the .git_template directory I have a directory for <a href="http://git-scm.com/book/en/Customizing-Git-Git-Hooks">git hooks</a> with two files: _    </p>
+<p>Lastly I use git hooks to update tag files in projects. The best way to do this is to first make the directory ~/.git_template where you can define templates for git to use every time you run git init. In the .git_templates directory I have a directory for <a href="http://git-scm.com/book/en/Customizing-Git-Git-Hooks">git hooks</a> with two files: _    </p>
 
 <p>post-commit:</p>
 
-<p><div class="highlight"><pre><code class="bash"><span class="c">#!/bin/sh</span>
-.git/hooks/ctags &amp;gt;/dev/null 2&amp;gt;&amp;amp;1 &amp;amp;
-</code></pre></div></p>
+<p><code>bash ~/.git_templates/hooks/post-commit
+#!/bin/sh
+.git/hooks/ctags &gt;/dev/null 2&gt;&amp;1 &amp;
+</code></p>
 
 <p>ctags:</p>
 
-<p><div class="highlight"><pre><code class="bash"><span class="c">#!/bin/sh</span>
-<span class="nb">set</span> -e
-<span class="nv">PATH</span><span class="o">=</span>”/usr/local/bin:<span class="nv">$PATH</span>”
-<span class="nb">trap</span> “rm -f .git/tags.<span class="nv">$$</span>” EXIT
-ctags  –c++-kinds<span class="o">=</span>+p –fields<span class="o">=</span>+iaS –extra<span class="o">=</span>+q –tag-relative -Rf.git/tags.<span class="nv">$$</span>  –exclude<span class="o">=</span>.git –languages<span class="o">=</span>-javascript,sql
-mv .git/tags.<span class="nv">$$</span> .git/tags
-</code></pre></div></p>
+<p><code>bash ~/.git_templates/hooks/ctags
+#!/bin/sh
+set -e
+PATH="/usr/local/bin:$PATH"
+trap "rm -f .git/tags.$$" EXIT
+ctags  --c++-kinds=+p --fields=+iaS --extra=+q --tag-relative -Rf.git/tags.$$  --exclude=.git --languages=-javascript,sql
+mv .git/tags.$$ .git/tags
+</code></p>
 
 <p>With these scripts you will generate a new tag file in the local .git directory of the current project every time you make a commit. </p>
 
