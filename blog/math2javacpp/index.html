@@ -9,7 +9,7 @@
   <meta name="author" content="Simen Andresen">
 
   
-  <meta name="description" content="Math Equations to Java and C/C++ Syntax Jan 29th, 2013 Convert simple mathematical equations to Java or C/C++ syntax Enter mathematical equations: & &hellip;">
+  <meta name="description" content="Math Equations to Java and C/C++ Syntax Jan 29th, 2013 Convert simple mathematical equations to Java or C/C++ syntax Enter mathematical equations: &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -105,15 +105,12 @@ MathJax.Hub.Config({
 <time datetime="2013-01-29T21:44:00-08:00" pubdate data-updated="true">Jan 29<span>th</span>, 2013</time></p>
   </header>
   
-  <head>
-<script type="text/javascript" src="math2java.js"></script>
-</head>
-
-<p><br />Convert simple mathematical equations to Java or C/C++ syntax			
+  <p><br />Convert simple mathematical equations to Java or C/C++ syntax			
 <br />
-Enter mathematical equations: <br />
-&lt;FORM NAME=&#8221;myform&#8221; ACTION=&#8221;&#8221; METHOD=&#8221;GET&#8221;&gt;
-&lt;table STYLE=&#8221;vertical-align:top;&#8221;  &gt;</p>
+Enter mathematical equations: <br /></p>
+
+<form name="myform" method="GET">
+<table style="vertical-align:top;">
 <tr>
 <td><textarea id="f1_in" name="maxima_text" rows="3" cols="55"></textarea>	</td>
 <td id="f1_out" style="vertical-align:top;" />
@@ -134,16 +131,25 @@ Enter mathematical equations: <br />
 <td>	<textarea id="f4_in" name="maxima_text" rows="3" cols="55"></textarea>	</td>
 <td id="f4_out" style="vertical-align:top;" />
 </tr>
-
-<p>&lt;/table&gt;
+</table>
  <input type="radio" name="syntax" value="java" checked="" />Java
- <input type="radio" name="syntax" value="c++" />C/C++<br /></p>
+ <input type="radio" name="syntax" value="c++" />C/C++<br />
+	
+<input type="button" name="button" value="Convert" onclick="convert_to_java()" />
 
-<p><input type="button" name="button" value="Convert" onclick="convert_to_java()" />
-&lt;/FORM&gt;
-<br />
-&lt;div id=&#8221;error&#8221;&gt;&lt;/div&gt;<br />
-&lt;div id=&#8221;status&#8221;&gt;&lt;/div&gt;	</p>
+</form>
+
+<p><br /></p>
+
+<div id="error"></div>
+<p><br /></p>
+
+<div id="status"></div>
+
+<script type="text/javascript" src="math2java.js"> 
+
+</script>
+
 
   
     <footer>
