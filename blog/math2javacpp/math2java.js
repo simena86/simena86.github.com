@@ -9,9 +9,6 @@
 
 function convert_to_java(){
 	convert("f1_in", "f1_out");
-	convert("f2_in", "f2_out");
-	convert("f3_in", "f3_out");
-	convert("f4_in", "f4_out");
 
 }
 
