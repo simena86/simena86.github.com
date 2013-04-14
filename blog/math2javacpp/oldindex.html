@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Math Equations to Java and C/C++ Syntax - </title>
+  <title>JOGL - Animation and Dynamics of Furuta pendulum - SA Cybernetics</title>
   <meta name="author" content="Simen Andresen">
 
   
-  <meta name="description" content="Math Equations to Java and C/C++ Syntax Jan 29th, 2013 Convert simple mathematical equations to Java or C/C++ syntax Enter mathematical equations: & &hellip;">
+  <meta name="description" content="I wanted to animate a furuta pendulum, and include the real dynamics in the animation. First off, what is a Furuta pendulum? It is a pendulum with &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,45 +18,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://simena86.github.com/blog/math2javacpp/">
+  <link rel="canonical" href="http://simena86.github.com/blog/2013/01/24/jogl-animation-and-dynamics-of-furuta-pendulum/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
   <script src="/javascripts/ender.js"></script>
   <script src="/javascripts/octopress.js" type="text/javascript"></script>
-  <link href="/atom.xml" rel="alternate" title="" type="application/atom+xml">
+  <link href="/atom.xml" rel="alternate" title="SA Cybernetics" type="application/atom+xml">
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
 <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="math2java.js"></script>
 
   
 
 </head>
 
-
-
-<!-- mathjax config similar to math.stackexchange -->
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-  jax: ["input/TeX", "output/HTML-CSS"],
-  tex2jax: {
-    inlineMath: [ ['$', '$'] ],
-    displayMath: [ ['$$', '$$']],
-    processEscapes: true,
-    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-  },
-  messageStyle: "none",
-  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
-});
-</script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
-
-
 <body   >
   <header role="banner"><hgroup>
   <h1><a href="/"></a></h1>
-  
-    <h2>an engineering student's playground</h2>
   
 </hgroup>
 
@@ -75,9 +55,7 @@ MathJax.Hub.Config({
   
 <ul class="main-navigation">
   <li><a href="/">Blog</a></li>
-  <li><a href="/blog/archives/">Archives</a></li>
-  <li><a href="/blog/about">About</a></li>
-
+  <li><a href="/blog/archives">Archives</a></li>
   <li><a href="/blog/math2javacpp">Math 2 Java & C/C++</a></li>
 
 </ul>
@@ -85,87 +63,95 @@ MathJax.Hub.Config({
 </nav>
   <div id="main">
     <div id="content">
-      <div>
-<article role="article">
+      <script language="JavaScript">
+	MathJax.Hub.Config({
+    	  tex2jax: {
+        	skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      	}
+    	});
+</script>
+
+<script languge="JavaScript">
+MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    });
+</script>
+
+
+<div>
+<article class="hentry" role="article">
   
-  <header>
-    <h1 class="entry-title">Math Equations to Java and C/C++ Syntax</h1>
-    <p class="meta">
+    
+    
+    
 
 
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-01-29T21:44:00-08:00" pubdate data-updated="true">Jan 29<span>th</span>, 2013</time></p>
-  </header>
-  
-  <script type="text/javascript" src="math2java.js"></script>
-
-<p><br />Convert simple mathematical equations to Java or C/C++ syntax			
-<br />
-Enter mathematical equations: <br />
-&lt;FORM NAME=&#8221;myform&#8221; ACTION=&#8221;&#8221; METHOD=&#8221;GET&#8221;&gt;
-&lt;table STYLE=&#8221;vertical-align:top;&#8221;  &gt;</p>
-<tr>
-<td><textarea id="f1_in" name="maxima_text" rows="3" cols="55"></textarea>	</td>
-<td id="f1_out" style="vertical-align:top;" />
-<br />
-				
-</tr>
-<tr>
-<td>	<textarea id="f2_in" name="maxima_text" rows="3" cols="55"></textarea>	</td>
-<td id="f2_out" style="vertical-align:top;" />
+<div class="entry-content"><p>
 		
-</tr>
-<tr>
-<td>	<textarea id="f3_in" name="maxima_text" rows="3" cols="55"></textarea>	</td>
-<td id="f3_out" style="vertical-align:top;" />
+
+
+		<h2>Java Math Generator</h2>
+		<br />Convert simple mathematical equations to Java or C/C++ syntax			
+		<BR>
+		Enter mathematical equations: <BR>
+		<FORM NAME="myform" ACTION="" METHOD="GET">
+	
+		<table STYLE="vertical-align:top;"  >
+			<tr>
+				<td><TEXTAREA ID="f1_in" NAME="maxima_text" ROWS="3"  COLS="55"></TEXTAREA>	</td>
+				<td id="f1_out"  STYLE="vertical-align:top;"></td>
+				<br>
+						
+			</tr>
+			<tr>
+				<td>	<TEXTAREA ID="f2_in" NAME="maxima_text" ROWS="3"  COLS="55"></TEXTAREA>	</td>
+				<td id="f2_out"  STYLE="vertical-align:top;"></td>
+			
+			</tr>
+			<tr>
+				<td>	<TEXTAREA ID="f3_in" NAME="maxima_text" ROWS="3"  COLS="55"></TEXTAREA>	</td>
+				<td id="f3_out"  STYLE="vertical-align:top;"></td>
 				
-</tr>
-<tr>
-<td>	<textarea id="f4_in" name="maxima_text" rows="3" cols="55"></textarea>	</td>
-<td id="f4_out" style="vertical-align:top;" />
-</tr>
+			</tr>
+			<tr>
+				<td>	<TEXTAREA ID="f4_in" NAME="maxima_text" ROWS="3"  COLS="55"></TEXTAREA>	</td>
+				<td id="f4_out"  STYLE="vertical-align:top;"></td>
+			</tr>
 
-<p>&lt;/table&gt;
- <input type="radio" name="syntax" value="java" checked="" />Java
- <input type="radio" name="syntax" value="c++" />C/C++<br /></p>
-
-<p><input type="button" name="button" value="Convert" onclick="convert_to_java()" />
-&lt;/FORM&gt;
-<br />
-&lt;div id=&#8221;error&#8221;&gt;&lt;/div&gt;<br />
-&lt;div id=&#8221;status&#8221;&gt;&lt;/div&gt;	</p>
-
-  
-    <footer>
-      <p class="meta">
-        
-        
+	</table>
+         <input type="radio" name="syntax" value="java" checked/>Java
+         <input type="radio" name="syntax" value="c++" />C/C++<br />
+	
+		<INPUT TYPE="button"  NAME="button" Value="Convert" onClick="convert_to_java()">
+		</FORM>
+<br>
+	<div id="error"></div><br>
+	<div id="status"></div>	
+	<footer> 
 
 
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-01-29T21:44:00-08:00" pubdate data-updated="true">Jan 29<span>th</span>, 2013</time>
-        
-      </p>
+  <footer>
+    <p class="meta">
       
-        <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://simena86.github.com/blog/math2javacpp/index.html" data-via="" data-counturl="http://simena86.github.com/blog/math2javacpp/index.html" >Tweet</a>
+
+
+
+
+  
+
+
+      
+
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://simena86.github.com/blog/2013/01/24/jogl-animation-and-dynamics-of-furuta-pendulum/" data-via="" data-counturl="http://simena86.github.com/blog/2013/01/24/jogl-animation-and-dynamics-of-furuta-pendulum/" >Tweet</a>
   
   
   
@@ -173,9 +159,14 @@ Enter mathematical equations: <br />
   
 </div>
 
+    
+    <p class="meta">
       
-    </footer>
-  
+      
+        <a class="basic-alignment right" href="/blog/2013/01/26/makefiles-and-autocomplete-with-latex/" title="Next Post: Makefiles and autocomplete with Latex">Makefiles and autocomplete with Latex &raquo;</a>
+      
+    </p>
+  </footer>
 </article>
 
   <section>
@@ -193,15 +184,7 @@ Enter mathematical equations: <br />
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2013/04/12/my-vim-setup/">My Vim Setup</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/01/26/convert-math-equations-to-java-or-c-plus-plus-syntax/">Convert Math equations to Java or C++ syntax</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/01/26/auto-login-wifi-university/">Auto login WiFi – University, hotels etc</a>
+        <a href="/blog/2013/01/26/auto-login-wifi-university/">Auto login WiFi â University</a>
       </li>
     
       <li class="post">
@@ -210,6 +193,10 @@ Enter mathematical equations: <br />
     
       <li class="post">
         <a href="/blog/2013/01/26/makefiles-and-autocomplete-with-latex/">Makefiles and autocomplete with Latex</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/24/jogl-animation-and-dynamics-of-furuta-pendulum/">JOGL - Animation and Dynamics of Furuta pendulum</a>
       </li>
     
   </ul>
@@ -268,8 +255,8 @@ Enter mathematical equations: <br />
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://simena86.github.com/blog/math2javacpp/index.html';
-        var disqus_url = 'http://simena86.github.com/blog/math2javacpp/index.html';
+        var disqus_identifier = 'http://simena86.github.com/blog/2013/01/24/jogl-animation-and-dynamics-of-furuta-pendulum/';
+        var disqus_url = 'http://simena86.github.com/blog/2013/01/24/jogl-animation-and-dynamics-of-furuta-pendulum/';
         var disqus_script = 'embed.js';
       
     (function () {
