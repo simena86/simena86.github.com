@@ -4,7 +4,7 @@
   <title><![CDATA[]]></title>
   <link href="http://simena86.github.com/atom.xml" rel="self"/>
   <link href="http://simena86.github.com/"/>
-  <updated>2013-04-30T16:33:30-07:00</updated>
+  <updated>2013-04-30T16:37:16-07:00</updated>
   <id>http://simena86.github.com/</id>
   <author>
     <name><![CDATA[Simen Andresen]]></name>
@@ -70,6 +70,8 @@ I uncommented some things here that I found useful, like for instance
 <div class="highlight"><pre><code class="vim">execute pathogen#infect<span class="p">()</span>
 </code></pre></div>
 
+<h3 id="cc">C/C++</h3>
+
 <p><a href="http://ctags.sourceforge.net/">Exuberant Ctags</a> is another great plugin that makes a tags database wich is used by vim to autocomplete variables and functions. Together with <a href="http://www.vim.org/scripts/script.php?script_id=1764">code_complete</a> and <a href="http://www.vim.org/scripts/script.php?script_id=1520">omniCppComplete</a> it also offers autocompletion of function parameters and class and struct members much the same way that can be found with IDE’s like eclipse:</p>
 
 <p><img src="http://simena86.github.com/images/vim/autocomplete.png" width="420" height="200" /></p>
@@ -130,7 +132,7 @@ I uncommented some things here that I found useful, like for instance
 
 <p>With these scripts you will generate a new tag file in the local .git directory of the current project every time you make a commit. </p>
 
-<h2 id="python">Python</h2>
+<h3 id="python">Python</h3>
 
 <p>For python source code I use the wonderful jedi-vim. Which is a really great and advanced plugin, providing the same functionality ctags and omniCppComplete provides for C/C++. </p>
 
