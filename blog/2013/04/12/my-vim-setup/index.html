@@ -244,6 +244,37 @@ I uncommented some things here that I found useful, like for instance
 
 <p>With these scripts you will generate a new tag file in the local .git directory of the current project every time you make a commit. </p>
 
+<h2 id="python">Python</h2>
+
+<p>For python source code I use the wonderful jedi-vim. Which is a really great and advanced plugin, providing the same functionality ctags and omniCppComplete provides for C/C++. </p>
+
+<p>Install it with the following</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="bash"><span class="line"><span class="nb">cd</span> ~/.vim/bundle/;
+</span><span class="line">git clone git://github.com/davidhalter/jedi-vim.git;
+</span><span class="line"><span class="nb">cd </span>jedi-vim;
+</span><span class="line">git submodule update --init
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>I also found installing supertab useful</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="bash"><span class="line"><span class="nb">cd</span> ~/.vim/bundle/; <span class="se">\</span>
+</span><span class="line">git clone git://github.com/ervandew/supertab.git
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>To configure jedi-vim and supertab, put the following in your .vimrc file
+&#8220;` bash ~/.vimrc
+let g:SuperTabDefaultCompletionType = “context”
+let g:jedi#popup_on_dot = 0  # disables the autocomplete to popup whenever you press .
+syntax on
+filetype plugin indent on</p>
+
 </div>
 
 
