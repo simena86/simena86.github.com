@@ -4,7 +4,7 @@
   <title><![CDATA[]]></title>
   <link href="http://simena86.github.com/atom.xml" rel="self"/>
   <link href="http://simena86.github.com/"/>
-  <updated>2013-04-30T16:31:50-07:00</updated>
+  <updated>2013-04-30T16:33:30-07:00</updated>
   <id>http://simena86.github.com/</id>
   <author>
     <name><![CDATA[Simen Andresen]]></name>
@@ -150,16 +150,21 @@ I uncommented some things here that I found useful, like for instance
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
-</pre></td><td class="code"><pre><code class="bash"><span class="line"><span class="nb">cd</span> ~/.vim/bundle/; <span class="se">\</span>
+</pre></td><td class="code"><pre><code class="bash"><span class="line"><span class="nb">cd</span> ~/.vim/bundle/;
 </span><span class="line">git clone git://github.com/ervandew/supertab.git
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>To configure jedi-vim and supertab, put the following in your .vimrc file
-&#8220;` bash ~/.vimrc
-let g:SuperTabDefaultCompletionType = “context”
-let g:jedi#popup_on_dot = 0  # disables the autocomplete to popup whenever you press .
-syntax on
-filetype plugin indent on</p>
+<p>To configure jedi-vim and supertab, put the following in your .vimrc file</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>~/.vimrc</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="bash"><span class="line"><span class="nb">let </span>g:SuperTabDefaultCompletionType <span class="o">=</span> <span class="s2">&quot;context&quot;</span>
+</span><span class="line"><span class="nb">let </span>g:jedi#popup_on_dot <span class="o">=</span> 0  <span class="c"># disables the autocomplete to popup whenever you press .</span>
+</span><span class="line">syntax on
+</span><span class="line">filetype plugin indent on
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 ]]></content>
   </entry>

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: linux | ]]></title>
   <link href="http://simena86.github.com/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://simena86.github.com/"/>
-  <updated>2013-04-30T16:31:50-07:00</updated>
+  <updated>2013-04-30T16:33:30-07:00</updated>
   <id>http://simena86.github.com/</id>
   <author>
     <name><![CDATA[Simen Andresen]]></name>
@@ -126,16 +126,18 @@ git submodule update --init
 <p>I also found installing supertab useful</p>
 
 <p><code>bash
-cd ~/.vim/bundle/; \
+cd ~/.vim/bundle/; 
 git clone git://github.com/ervandew/supertab.git
 </code></p>
 
-<p>To configure jedi-vim and supertab, put the following in your .vimrc file
-``` bash ~/.vimrc
-let g:SuperTabDefaultCompletionType = “context”
+<p>To configure jedi-vim and supertab, put the following in your .vimrc file</p>
+
+<p><code>bash ~/.vimrc
+let g:SuperTabDefaultCompletionType = "context"
 let g:jedi#popup_on_dot = 0  # disables the autocomplete to popup whenever you press .
 syntax on
-filetype plugin indent on</p>
+filetype plugin indent on
+</code></p>
 
 ]]></content>
   </entry>
