@@ -4,7 +4,7 @@
   <title><![CDATA[Category: jogl | ]]></title>
   <link href="http://simena86.github.com/blog/categories/jogl/atom.xml" rel="self"/>
   <link href="http://simena86.github.com/"/>
-  <updated>2013-05-26T14:12:31-07:00</updated>
+  <updated>2013-07-03T22:06:23+02:00</updated>
   <id>http://simena86.github.com/</id>
   <author>
     <name><![CDATA[Simen Andresen]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[JOGL - Animation and Dynamics of Furuta pendulum]]></title>
     <link href="http://simena86.github.com/blog/2013/01/24/jogl-animation-and-dynamics-of-furuta-pendulum/"/>
-    <updated>2013-01-24T20:44:00-08:00</updated>
+    <updated>2013-01-24T20:44:00+01:00</updated>
     <id>http://simena86.github.com/blog/2013/01/24/jogl-animation-and-dynamics-of-furuta-pendulum</id>
     <content type="html"><![CDATA[<p>I wanted to animate a furuta pendulum, and include the real dynamics in the animation. First off, what is a Furuta pendulum? It is a pendulum with two degrees of freedom (see wikipedia) where, from a control engineers’ point of view, one is interested in stabilizing the second arm of the pendulum, by applying torque to the first arm. This poses quite an interesting control problem (much the same as in e.g. a segway). First lets look at the dynamimcs of the furuta pendulum:
 <!-- more --></p>

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: latex | ]]></title>
   <link href="http://simena86.github.com/blog/categories/latex/atom.xml" rel="self"/>
   <link href="http://simena86.github.com/"/>
-  <updated>2013-05-26T14:12:31-07:00</updated>
+  <updated>2013-07-03T22:06:23+02:00</updated>
   <id>http://simena86.github.com/</id>
   <author>
     <name><![CDATA[Simen Andresen]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Makefiles and autocomplete with Latex]]></title>
     <link href="http://simena86.github.com/blog/2013/01/26/makefiles-and-autocomplete-with-latex/"/>
-    <updated>2013-01-26T00:14:00-08:00</updated>
+    <updated>2013-01-26T00:14:00+01:00</updated>
     <id>http://simena86.github.com/blog/2013/01/26/makefiles-and-autocomplete-with-latex</id>
     <content type="html"><![CDATA[<p>I am using Latex a lot and have done some customization in order to speed up the process of writing academic reports. I am using the TeXworks editor. TeXworks is a clean and simple editor, and with the help of a make file and some autotyping it is very efficient.</p>
 

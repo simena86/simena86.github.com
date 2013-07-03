@@ -4,7 +4,7 @@
   <title><![CDATA[]]></title>
   <link href="http://simena86.github.com/atom.xml" rel="self"/>
   <link href="http://simena86.github.com/"/>
-  <updated>2013-05-26T14:12:31-07:00</updated>
+  <updated>2013-07-03T22:06:23+02:00</updated>
   <id>http://simena86.github.com/</id>
   <author>
     <name><![CDATA[Simen Andresen]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Logging Accelerometer from Android to PC]]></title>
     <link href="http://simena86.github.com/blog/2013/04/30/logging-accelerometer-from-android-to-pc/"/>
-    <updated>2013-04-30T22:09:00-07:00</updated>
+    <updated>2013-04-30T22:09:00+02:00</updated>
     <id>http://simena86.github.com/blog/2013/04/30/logging-accelerometer-from-android-to-pc</id>
     <content type="html"><![CDATA[<p>I am pretty new to Android and decided to play around with the sensors. I always find accelerometers fun to play with, and like to visualize the sensor reading through a real time plot. In the java-script for the android app below, the acceleration in the x axis is read and streamed through a TCP socket to the PC over wlan. A simple python server script reads the data from a socket and writes it to a perl script, logging the data in GnuPlot, and thus setting my personal record for mixing different languages.</p>
 
@@ -406,7 +406,7 @@ The plotting is excecuted with piping the output from the python script to the p
   <entry>
     <title type="html"><![CDATA[My Vim Setup]]></title>
     <link href="http://simena86.github.com/blog/2013/04/12/my-vim-setup/"/>
-    <updated>2013-04-12T20:03:00-07:00</updated>
+    <updated>2013-04-12T20:03:00+02:00</updated>
     <id>http://simena86.github.com/blog/2013/04/12/my-vim-setup</id>
     <content type="html"><![CDATA[<p>Vim is a very popular text editor for Unix-like systems, written by Bram Moolenaar. I have been using Vim for a couple of years now and have found some nice features that make it more efficient for my use.  </p>
 
@@ -564,7 +564,7 @@ I uncommented some things here that I found useful, like for instance
   <entry>
     <title type="html"><![CDATA[Convert Math equations to Java or C++ syntax]]></title>
     <link href="http://simena86.github.com/blog/2013/01/26/convert-math-equations-to-java-or-c-plus-plus-syntax/"/>
-    <updated>2013-01-26T09:28:00-08:00</updated>
+    <updated>2013-01-26T09:28:00+01:00</updated>
     <id>http://simena86.github.com/blog/2013/01/26/convert-math-equations-to-java-or-c-plus-plus-syntax</id>
     <content type="html"><![CDATA[<p>When writing programs that uses alot of math equations, e.g. in simulations, animations etc I found it tiresome to have to convert equations I got from symbolic math software like Maxima and Maple into c++ or java syntax. I therefor wrote a simple JavaScript that does this automatically, and can be found <a href="http://simena86.github.com/blog/math2javacpp/">here</a>. The source is available at <a href="https://github.com/simena86/math2javacpp" title="Math2javacpp">github</a> .</p>
 ]]></content>
@@ -573,7 +573,7 @@ I uncommented some things here that I found useful, like for instance
   <entry>
     <title type="html"><![CDATA[Auto login WiFi – University, hotels etc]]></title>
     <link href="http://simena86.github.com/blog/2013/01/26/auto-login-wifi-university/"/>
-    <updated>2013-01-26T01:23:00-08:00</updated>
+    <updated>2013-01-26T01:23:00+01:00</updated>
     <id>http://simena86.github.com/blog/2013/01/26/auto-login-wifi-university</id>
     <content type="html"><![CDATA[<p>When using the University WiFi I found it annoying that I always had to login through a browser using my university username and password. Using the simple scripts below, this bothersome procedure can be done automatically each time the computer discovers a network.
 <!-- more -->
@@ -634,7 +634,7 @@ I am using Wicd Network Manager, which has a nice feature where one can include 
   <entry>
     <title type="html"><![CDATA[Makefiles and autocomplete with Latex]]></title>
     <link href="http://simena86.github.com/blog/2013/01/26/makefiles-and-autocomplete-with-latex/"/>
-    <updated>2013-01-26T00:14:00-08:00</updated>
+    <updated>2013-01-26T00:14:00+01:00</updated>
     <id>http://simena86.github.com/blog/2013/01/26/makefiles-and-autocomplete-with-latex</id>
     <content type="html"><![CDATA[<p>I am using Latex a lot and have done some customization in order to speed up the process of writing academic reports. I am using the TeXworks editor. TeXworks is a clean and simple editor, and with the help of a make file and some autotyping it is very efficient.</p>
 
@@ -695,7 +695,7 @@ figure:<span class="o">=</span><span class="se">\b</span>egin<span class="o">{</
   <entry>
     <title type="html"><![CDATA[JOGL - Animation and Dynamics of Furuta pendulum]]></title>
     <link href="http://simena86.github.com/blog/2013/01/24/jogl-animation-and-dynamics-of-furuta-pendulum/"/>
-    <updated>2013-01-24T20:44:00-08:00</updated>
+    <updated>2013-01-24T20:44:00+01:00</updated>
     <id>http://simena86.github.com/blog/2013/01/24/jogl-animation-and-dynamics-of-furuta-pendulum</id>
     <content type="html"><![CDATA[<p>I wanted to animate a furuta pendulum, and include the real dynamics in the animation. First off, what is a Furuta pendulum? It is a pendulum with two degrees of freedom (see wikipedia) where, from a control engineers’ point of view, one is interested in stabilizing the second arm of the pendulum, by applying torque to the first arm. This poses quite an interesting control problem (much the same as in e.g. a segway). First lets look at the dynamimcs of the furuta pendulum:
 <!-- more --></p>
