@@ -4,7 +4,7 @@
   <title><![CDATA[]]></title>
   <link href="http://simena86.github.com/atom.xml" rel="self"/>
   <link href="http://simena86.github.com/"/>
-  <updated>2013-07-03T22:13:47+02:00</updated>
+  <updated>2013-07-03T22:19:37+02:00</updated>
   <id>http://simena86.github.com/</id>
   <author>
     <name><![CDATA[Simen Andresen]]></name>
@@ -18,7 +18,8 @@
     <link href="http://simena86.github.com/blog/2013/07/03/getting-started-with-raspberry-pi/"/>
     <updated>2013-07-03T22:07:00+02:00</updated>
     <id>http://simena86.github.com/blog/2013/07/03/getting-started-with-raspberry-pi</id>
-    <content type="html"><![CDATA[<p>This page is mostly for my own reference on how I get the RasPi booted and installed with the different OS’s</p>
+    <content type="html"><![CDATA[<p>This page is mostly for my own reference on how I get the RasPi booted and installed with the different OS’s
+<!-- more --></p>
 
 <h2 id="raspbian">Raspbian</h2>
 
