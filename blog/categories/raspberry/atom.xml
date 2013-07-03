@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Raspberry | ]]></title>
+  <link href="http://simena86.github.com/blog/categories/raspberry/atom.xml" rel="self"/>
+  <link href="http://simena86.github.com/"/>
+  <updated>2013-07-03T22:13:47+02:00</updated>
+  <id>http://simena86.github.com/</id>
+  <author>
+    <name><![CDATA[Simen Andresen]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Getting started with raspberry Pi]]></title>
+    <link href="http://simena86.github.com/blog/2013/07/03/getting-started-with-raspberry-pi/"/>
+    <updated>2013-07-03T22:07:00+02:00</updated>
+    <id>http://simena86.github.com/blog/2013/07/03/getting-started-with-raspberry-pi</id>
+    <content type="html"><![CDATA[<p>This page is mostly for my own reference on how I get the RasPi booted and installed with the different OS’s</p>
+
+<h2 id="raspbian">Raspbian</h2>
+
+<p>For installing raspbian I’ve found great help in the following pages:</p>
+
+<ul>
+  <li><a href="http://www.vascop.com/install-raspbian-and-configure-wi-fi-without-a-monitor-or-keyboard.html">Install without keyboard and mouse by Vasco Pinho </a></li>
+  <li>[Install Raspbian Wheezy Linux to Raspberry Pi using Linux by Christos Manios ] (http://cmanios.wordpress.com/2013/03/10/install-raspbian-wheezy-linux-to-raspberry-pi-using-linux/ )</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>
