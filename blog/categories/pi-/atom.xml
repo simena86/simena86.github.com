@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Pi, | ]]></title>
   <link href="http://simena86.github.com/blog/categories/pi-/atom.xml" rel="self"/>
   <link href="http://simena86.github.com/"/>
-  <updated>2013-07-03T22:20:27+02:00</updated>
+  <updated>2013-07-03T22:39:50+02:00</updated>
   <id>http://simena86.github.com/</id>
   <author>
     <name><![CDATA[Simen Andresen]]></name>
@@ -29,6 +29,10 @@
   <li><a href="http://www.vascop.com/install-raspbian-and-configure-wi-fi-without-a-monitor-or-keyboard.html">Install without keyboard and mouse by Vasco Pinho </a></li>
   <li><a href="http://cmanios.wordpress.com/2013/03/10/install-raspbian-wheezy-linux-to-raspberry-pi-using-linux/">Install Raspbian Wheezy Linux to Raspberry Pi using Linux by Christos Manios</a></li>
 </ul>
+
+<h2 id="other-tips-and-tricks">Other tips and tricks</h2>
+
+<p>I followed <a href="http://blog.oscarliang.net/setup-raspberry-pi-for-remote-access/">this guide</a> for setting up the pi for using a laptop as both remote monitor and keyboard!</p>
 
 ]]></content>
   </entry>
