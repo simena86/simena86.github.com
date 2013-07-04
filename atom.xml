@@ -4,7 +4,7 @@
   <title><![CDATA[]]></title>
   <link href="http://simena86.github.com/atom.xml" rel="self"/>
   <link href="http://simena86.github.com/"/>
-  <updated>2013-07-03T22:39:50+02:00</updated>
+  <updated>2013-07-04T22:24:52+02:00</updated>
   <id>http://simena86.github.com/</id>
   <author>
     <name><![CDATA[Simen Andresen]]></name>
@@ -29,6 +29,9 @@
   <li><a href="http://www.vascop.com/install-raspbian-and-configure-wi-fi-without-a-monitor-or-keyboard.html">Install without keyboard and mouse by Vasco Pinho </a></li>
   <li><a href="http://cmanios.wordpress.com/2013/03/10/install-raspbian-wheezy-linux-to-raspberry-pi-using-linux/">Install Raspbian Wheezy Linux to Raspberry Pi using Linux by Christos Manios</a></li>
 </ul>
+
+<p>And after some trouble with the wifi I found great help in this post:
+* <a href="http://pingbin.com/2012/12/setup-wifi-raspberry-pi/">PINGBIN</a></p>
 
 <h2 id="other-tips-and-tricks">Other tips and tricks</h2>
 
