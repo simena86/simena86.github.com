@@ -138,6 +138,8 @@ MathJax.Hub.Config({
 
 <p><img src="http://sacybernetics.files.wordpress.com/2012/06/2012-06-03-23-07-43.png" width="300" height="180" /></p>
 
+<div class="embed-video-container"><iframe src="http://www.youtube.com/embed/OOufu8sdyKA "></iframe></div>
+
 <p>The simple python server script below opens a TCP socket and receives the readings from the Android app over WLAN. Note that the python script reads the last entry in the receive buffer, which then makes up a LIFO que, and no timestamp is added to the reading. For a signal analysis one would add a time stamp and a FIFO que should be used instead. For debugging and pure fun, the method I used is still pretty sufficient.
 `
 The plotting is excecuted with piping the output from the python script to the perl script in the linux terminal:</p>
