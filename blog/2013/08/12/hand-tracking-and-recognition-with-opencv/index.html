@@ -5,13 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Blog Archive - </title>
+  <title>Hand Tracking And Recognition with OpenCV - </title>
   <meta name="author" content="Simen Andresen">
 
   
-  <meta name="description" content="Blog Archive 2013 Hand Tracking And Recognition with OpenCV
-Aug 12 2013 posted in C++, Computer Vision, OpenCV Getting started with raspberry Pi
-Jul &hellip;">
+  <meta name="description" content="Computer Vision is in many ways the ultimate sensor, and has endless potential applications to robotics. Me and 2 classmates (Vegar Østhus and Martin &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -20,7 +18,7 @@ Jul &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://simena86.github.com/blog/archives/">
+  <link rel="canonical" href="http://simena86.github.com/blog/2013/08/12/hand-tracking-and-recognition-with-opencv/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -87,127 +85,159 @@ MathJax.Hub.Config({
 </nav>
   <div id="main">
     <div id="content">
-      <div>
-<article role="article">
+      <script language="JavaScript">
+	MathJax.Hub.Config({
+    	  tex2jax: {
+        	skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      	}
+    	});
+</script>
+
+<script languge="JavaScript">
+MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    });
+</script>
+
+
+<div>
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">Blog Archive</h1>
+    
+      <h1 class="entry-title">Hand Tracking and Recognition With OpenCV</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-12T21:52:00+02:00" pubdate data-updated="true">Aug 12<span>th</span>, 2013</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives">
 
 
+<div class="entry-content"><p>Computer Vision is in many ways the ultimate sensor, and has endless potential applications to robotics. Me and 2 classmates (Vegar Østhus and Martin Stokkeland) did a project in Computer Vision at UCSB and wrote a program to recognize and track finger movements.</p>
 
-  
-  <h2>2013</h2>
+<!-- more -->
 
-<article>
-  
-<h1><a href="/blog/2013/08/12/hand-tracking-and-recognition-with-opencv/">Hand Tracking And Recognition with OpenCV</a></h1>
-<time datetime="2013-08-12T21:52:00+02:00" pubdate=""><span class="month">Aug</span> <span class="day">12</span> <span class="year">2013</span></time>
+<p>Below is a flowchart representation of the program</p>
 
-<footer>
-  <span class="categories">posted in <a class="category" href="/blog/categories/c-/">C++</a>, <a class="category" href="/blog/categories/computer-vision/">Computer Vision</a>, <a class="category" href="/blog/categories/opencv/">OpenCV</a></span>
-</footer>
+<p><img src="/images/handRecognition/gesture_flowchart.png" width="420" height="200" title="" /></p>
 
+<p>The hand tracking is based on color recognitin. The program is therefor initialized by sampling color from the hand:</p>
 
-</article>
+<p><img src="/images/handRecognition/waitforpalm.png" title="" /></p>
 
+<p>The hand is then extracted from the background by using a threshold using the sampled color profile.
+Each color in the profile produces a binary image which in turn are all summed together. A nonlinear median filter is then applied to get a smooth and noise free binary representation of the hand. </p>
 
+<p><img src="/images/handRecognition/binary.png" title="" /></p>
 
-<article>
-  
-<h1><a href="/blog/2013/07/03/getting-started-with-raspberry-pi/">Getting started with raspberry Pi</a></h1>
-<time datetime="2013-07-03T22:07:00+02:00" pubdate=""><span class="month">Jul</span> <span class="day">03</span> <span class="year">2013</span></time>
+<p>When the binary representation is generated the hand is processed in the following way:</p>
 
-<footer>
-  <span class="categories">posted in <a class="category" href="/blog/categories/linux/">Linux</a>, <a class="category" href="/blog/categories/pi-/">Pi,</a>, <a class="category" href="/blog/categories/raspberry/">Raspberry</a></span>
-</footer>
+<p><img src="/images/handRecognition/contour.png" title="" /></p>
 
+<p>The properties determining whether  a convexity defect is to be dismissed is the angle between the lines going 	from the defect to the neighbouring convex polygon vertices</p>
 
-</article>
+<p><img src="/images/handRecognition/handangle.png" title="" /></p>
 
+<p>The defect is dismissed if:</p>
 
+<script type="math/tex; mode=display">% <![CDATA[
 
-<article>
-  
-<h1><a href="/blog/2013/04/30/logging-accelerometer-from-android-to-pc/">Logging Accelerometer from Android to PC</a></h1>
-<time datetime="2013-04-30T22:09:00+02:00" pubdate=""><span class="month">Apr</span> <span class="day">30</span> <span class="year">2013</span></time>
+\begin{aligned}
+length < 0.4l_{bb} \\
+angle > 80^o
+\end{aligned}
+ %]]></script>
 
+<p>The analyzis results in data that can be of further use in gesture recognition:</p>
 
-</article>
+<ul>
+  <li>Fingertip positions </li>
+  <li>Number of fingers </li>
+  <li>Number of hands  </li>
+  <li>Area of hands </li>
+</ul>
 
+<p><img src="/images/handRecognition/final_result.png" title="" /></p>
 
-
-<article>
-  
-<h1><a href="/blog/2013/04/12/my-vim-setup/">My Vim Setup</a></h1>
-<time datetime="2013-04-12T20:03:00+02:00" pubdate=""><span class="month">Apr</span> <span class="day">12</span> <span class="year">2013</span></time>
-
-<footer>
-  <span class="categories">posted in <a class="category" href="/blog/categories/linux/">linux</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2013/01/26/convert-math-equations-to-java-or-c-plus-plus-syntax/">Convert Math equations to Java or C++ syntax</a></h1>
-<time datetime="2013-01-26T09:28:00+01:00" pubdate=""><span class="month">Jan</span> <span class="day">26</span> <span class="year">2013</span></time>
-
-<footer>
-  <span class="categories">posted in <a class="category" href="/blog/categories/java/">java</a>, <a class="category" href="/blog/categories/math/">math</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2013/01/26/auto-login-wifi-university/">Auto login WiFi – University, hotels etc</a></h1>
-<time datetime="2013-01-26T01:23:00+01:00" pubdate=""><span class="month">Jan</span> <span class="day">26</span> <span class="year">2013</span></time>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2013/01/26/makefiles-and-autocomplete-with-latex/">Makefiles and autocomplete with Latex</a></h1>
-<time datetime="2013-01-26T00:14:00+01:00" pubdate=""><span class="month">Jan</span> <span class="day">26</span> <span class="year">2013</span></time>
-
-<footer>
-  <span class="categories">posted in <a class="category" href="/blog/categories/latex/">latex</a>, <a class="category" href="/blog/categories/linux/">linux</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2013/01/24/jogl-animation-and-dynamics-of-furuta-pendulum/">JOGL - Animation and Dynamics of Furuta pendulum</a></h1>
-<time datetime="2013-01-24T20:44:00+01:00" pubdate=""><span class="month">Jan</span> <span class="day">24</span> <span class="year">2013</span></time>
-
-<footer>
-  <span class="categories">posted in <a class="category" href="/blog/categories/java/">java</a>, <a class="category" href="/blog/categories/jogl/">jogl</a>, <a class="category" href="/blog/categories/linux/">linux</a></span>
-</footer>
-
-
-</article>
-
+<div class="embed-video-container"><iframe src="http://www.youtube.com/embed/o3LSOq6OC4I "></iframe></div>
 </div>
 
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">Simen Andresen</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-12T21:52:00+02:00" pubdate data-updated="true">Aug 12<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/c-/'>C++</a>, <a class='category' href='/blog/categories/computer-vision/'>Computer Vision</a>, <a class='category' href='/blog/categories/opencv/'>OpenCV</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://simena86.github.com/blog/2013/08/12/hand-tracking-and-recognition-with-opencv/" data-via="" data-counturl="http://simena86.github.com/blog/2013/08/12/hand-tracking-and-recognition-with-opencv/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/07/03/getting-started-with-raspberry-pi/" title="Previous Post: Getting started with raspberry Pi">&laquo; Getting started with raspberry Pi</a>
+      
+      
+    </p>
+  </footer>
 </article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
 </div>
 
@@ -292,7 +322,10 @@ MathJax.Hub.Config({
       var disqus_shortname = 'sa-cybernetics';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://simena86.github.com/blog/2013/08/12/hand-tracking-and-recognition-with-opencv/';
+        var disqus_url = 'http://simena86.github.com/blog/2013/08/12/hand-tracking-and-recognition-with-opencv/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

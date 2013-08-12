@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: C++ | ]]></title>
+  <link href="http://simena86.github.com/blog/categories/c-/atom.xml" rel="self"/>
+  <link href="http://simena86.github.com/"/>
+  <updated>2013-08-12T22:49:34+02:00</updated>
+  <id>http://simena86.github.com/</id>
+  <author>
+    <name><![CDATA[Simen Andresen]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Hand Tracking And Recognition with OpenCV]]></title>
+    <link href="http://simena86.github.com/blog/2013/08/12/hand-tracking-and-recognition-with-opencv/"/>
+    <updated>2013-08-12T21:52:00+02:00</updated>
+    <id>http://simena86.github.com/blog/2013/08/12/hand-tracking-and-recognition-with-opencv</id>
+    <content type="html"><![CDATA[<p>Computer Vision is in many ways the ultimate sensor, and has endless potential applications to robotics. Me and 2 classmates (Vegar Østhus and Martin Stokkeland) did a project in Computer Vision at UCSB and wrote a program to recognize and track finger movements.</p>
+
+<!-- more -->
+
+<p>Below is a flowchart representation of the program</p>
+
+<p><img src="/images/handRecognition/gesture_flowchart.png" width="420" height="200" title="" ></p>
+
+<p>The hand tracking is based on color recognitin. The program is therefor initialized by sampling color from the hand:</p>
+
+<p><img src="/images/handRecognition/waitforpalm.png" title="" ></p>
+
+<p>The hand is then extracted from the background by using a threshold using the sampled color profile.
+Each color in the profile produces a binary image which in turn are all summed together. A nonlinear median filter is then applied to get a smooth and noise free binary representation of the hand. </p>
+
+<p><img src="/images/handRecognition/binary.png" title="" ></p>
+
+<p>When the binary representation is generated the hand is processed in the following way:</p>
+
+<p><img src="/images/handRecognition/contour.png" title="" ></p>
+
+<p>The properties determining whether  a convexity defect is to be dismissed is the angle between the lines going 	from the defect to the neighbouring convex polygon vertices</p>
+
+<p><img src="/images/handRecognition/handangle.png" title="" ></p>
+
+<p>The defect is dismissed if:</p>
+
+<script type="math/tex; mode=display">% &lt;![CDATA[
+
+\begin{aligned}
+length < 0.4l_{bb} \\
+angle > 80^o
+\end{aligned}
+ %]]&gt;</script>
+
+<p>The analyzis results in data that can be of further use in gesture recognition:</p>
+
+<ul>
+  <li>Fingertip positions </li>
+  <li>Number of fingers </li>
+  <li>Number of hands  </li>
+  <li>Area of hands </li>
+</ul>
+
+<p><img src="/images/handRecognition/final_result.png" title="" ></p>
+
+<p><div class="embed-video-container"><iframe src="http://www.youtube.com/embed/o3LSOq6OC4I "></iframe></div></p>
+]]></content>
+  </entry>
+  
+</feed>
