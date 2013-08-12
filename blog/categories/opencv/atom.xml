@@ -4,7 +4,7 @@
   <title><![CDATA[Category: OpenCV | ]]></title>
   <link href="http://simena86.github.com/blog/categories/opencv/atom.xml" rel="self"/>
   <link href="http://simena86.github.com/"/>
-  <updated>2013-08-12T22:49:34+02:00</updated>
+  <updated>2013-08-12T23:13:25+02:00</updated>
   <id>http://simena86.github.com/</id>
   <author>
     <name><![CDATA[Simen Andresen]]></name>
@@ -61,6 +61,8 @@ angle > 80^o
   <li>Number of hands  </li>
   <li>Area of hands </li>
 </ul>
+
+<p>The source code can be found <a href="https://github.com/simena86/handDetectionCV">here</a></p>
 
 <p><img src="/images/handRecognition/final_result.png" title="" ></p>
 
