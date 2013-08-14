@@ -4,7 +4,7 @@
    <title>Google Chart Example</title>
    <script src="https://www.google.com/jsapi"></script>
    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
-   <script src="./powermeter/jquery.csv-0.71.js"></script>
+   <script src="jquery.csv-0.71.js"></script>
    <script>
    		// load the visualization library from Google and set a listener
 		google.load("visualization", "1", {packages:["corechart"]});
@@ -12,7 +12,7 @@
 
 		function drawChart() {
 			// grab the CSV
-			$.get("./powermeter/kzn1993.csv", function(csvString) {
+			$.get("kzn1993.csv", function(csvString) {
 			// transform the CSV string into a 2-dimensional array
 			var arrayData = $.csv.toArrays(csvString, {onParseValue: $.csv.hooks.castToScalar});
 			// this new DataTable object holds all the data
