@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://simena86.github.com/blog/math2javacpp/">
+  <link rel="canonical" href="http://simena86.github.com/blog/math2javacpp/backupindex">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -105,30 +105,29 @@ MathJax.Hub.Config({
 <time datetime="2013-01-29T21:44:00+01:00" pubdate data-updated="true">Jan 29<span>th</span>, 2013</time></p>
   </header>
   
-  <p><br />Convert simple mathematical equations to Java or C/C++ syntax			
-<br />
-Enter mathematical equations: <br /></p>
+  <br />Convert simple mathematical equations to Java or C/C++ syntax			
+<BR>
+Enter mathematical equations: <BR>
 
-<form name="myform" method="GET">
-<table style="vertical-align:top;">
+<FORM NAME="myform" METHOD="GET">
+<table STYLE="vertical-align:top;"  >
 <tr>
-<td><textarea id="f1_in" name="maxima_text" rows="8" cols="55"></textarea>	</td>
-<td id="f1_out" style="vertical-align:top;" />
-<br />
+<td><TEXTAREA ID="f1_in" NAME="maxima_text" ROWS="8"  COLS="55"></TEXTAREA>	</td>
+<td id="f1_out"  STYLE="vertical-align:top;"></td>
+<br>
 				
 </tr>
 </table>
- <input type="radio" name="syntax" value="java" checked="" />Java
+ <input type="radio" name="syntax" value="java" checked/>Java
  <input type="radio" name="syntax" value="c++" />C/C++<br />
 	
-<input type="button" name="button" value="Convert" onclick="convert_to_java()" />
+<INPUT TYPE="button"  NAME="button" Value="Convert" onClick="convert_to_java()">
 
-</form>
+</FORM>
 
-<p><br /></p>
+<br>
 
-<div id="error"></div>
-<p><br /></p>
+<div id="error"></div><br>
 
 <div id="status"></div>
 
@@ -136,47 +135,7 @@ Enter mathematical equations: <br /></p>
 
 </script>
 
-<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
-<script type="text/javascript">
-
-// Load the Visualization API and the piechart package.
-google.load('visualization', '1.0', {'packages':['corechart']});
-
-// Set a callback to run when the Google Visualization API is loaded.
-      google.setOnLoadCallback(drawChart);
-
-      // Callback that creates and populates a data table,
-      // instantiates the pie chart, passes in the data and
-      // draws it.
-      function drawChart() {
-
-        // Create the data table.
-        var data = new google.visualization.DataTable();
-        data.addColumn('string', 'Topping');
-        data.addColumn('number', 'Slices');
-        data.addRows([
-          ['Mushrooms', 3],
-          ['Onions', 1],
-          ['Olives', 1],
-          ['Zucchini', 1],
-          ['Pepperoni', 2]
-        ]);
-
-        // Set chart options
-        var options = {'title':'How Much Pizza I Ate Last Night',
-                       'width':400,
-                       'height':300};
-
-        // Instantiate and draw our chart, passing in some options.
-        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-        chart.draw(data, options);
-      }
-    </script>
-
-<pre><code>&lt;!--Div that will hold the pie chart--&gt;
-&lt;div id="chart_div"&gt;&lt;/div&gt;
-</code></pre>
 
   
     <footer>
@@ -200,7 +159,7 @@ google.load('visualization', '1.0', {'packages':['corechart']});
       
         <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://simena86.github.com/blog/math2javacpp/index.html" data-via="" data-counturl="http://simena86.github.com/blog/math2javacpp/index.html" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://simena86.github.com/blog/math2javacpp/backupindex" data-via="" data-counturl="http://simena86.github.com/blog/math2javacpp/backupindex" >Tweet</a>
   
   
   
@@ -303,8 +262,8 @@ google.load('visualization', '1.0', {'packages':['corechart']});
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://simena86.github.com/blog/math2javacpp/index.html';
-        var disqus_url = 'http://simena86.github.com/blog/math2javacpp/index.html';
+        var disqus_identifier = 'http://simena86.github.com/blog/math2javacpp/backupindex';
+        var disqus_url = 'http://simena86.github.com/blog/math2javacpp/backupindex';
         var disqus_script = 'embed.js';
       
     (function () {
