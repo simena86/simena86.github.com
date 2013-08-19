@@ -2,8 +2,8 @@
 // To give it a try, uncomment some of the lines below, make changes, rebuild your blog, and see how it works.
 
 $header-font-size: 1em;
-//$header-padding-top: 1.5em;
-//$header-padding-bottom: 1.5em;
+$header-padding-top: 1.5em;
+$header-padding-bottom: 1.5em;
 
 $max-width: 1150px;
 //$indented-lists: true;
@@ -19,3 +19,56 @@ $sidebar-width-medium: 140px;
 //$sidebar-pad-medium: 15px;
 $sidebar-pad-wide: 20px;
 $sidebar-width-wide: 250px;
+
+
+body > header h1 {
+      padding-left:2.5em;
+      text-align:right;
+      @media only screen and (min-width: 432px) {
+              text-align:left;
+      }
+      @media only screen and (min-width: 768px) {
+              padding-left:1em;
+      }
+      @media only screen and (min-width: 992px) {
+              padding-left:1em;
+      }
+}
+
+body > header h2 {
+      padding-left:2.62em;
+      text-align:right;
+      @media only screen and (min-width: 432px) {
+              text-align:left;
+              padding-left:3.9em;
+      }
+      @media only screen and (min-width: 768px) {
+              padding-left:2em;
+      }
+      @media only screen and (min-width: 992px) {
+              padding-left:2.9em;
+      }
+}
+
+body > header h1:before {
+      content:"";
+      position:absolute;
+      left:0em;
+      right:0;
+      top:1.5em;
+      height:310px;
+      width:710px;
+      overflow:hidden;
+      text-align:right;
+      background-image:url('/images/header.png');
+      background-repeat:no-repeat;
+      @media only screen and (min-width: 432px) {
+              top:.07em;
+      }
+      @media only screen and (min-width: 768px) {
+              left:.75em;
+      }
+      @media only screen and (min-width: 768px) {
+			  bottom:.0.2;
+      }
+}

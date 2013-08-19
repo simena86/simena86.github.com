@@ -9,16 +9,19 @@ categories: [linux, java, jogl]
 
 
 I wanted to animate a furuta pendulum, and include the real dynamics in the animation. First off, what is a Furuta pendulum? It is a pendulum with two degrees of freedom (see wikipedia) where, from a control engineers' point of view, one is interested in stabilizing the second arm of the pendulum, by applying torque to the first arm. This poses quite an interesting control problem (much the same as in e.g. a segway). First lets look at the dynamimcs of the furuta pendulum:
-<!-- more -->
+<!-- more --> 
 
 The dynamics of the furuta pendulum can be modeled with two second order differential equations. For simulations we will reduce the order and model the system with 4 first order ODE's. The following state space vector will be used:
+
 $$
  \begin{aligned} x=\begin{bmatrix} \\ \frac{d\theta_{1}}{dt} & \frac{d\theta_1}{dt}& \theta_{1}&\theta_{2}\end{bmatrix}  \end{aligned}
 $$
 
 With the use of Lagrangian or Newton dynamics one can model the system which yields the following 2. order ODE's:
 
+
 $$
+\; \\ \; \\ \;
 { \scriptsize
 \begin{aligned}
 & \frac{d^2\theta_1}{dt^2}= \\
@@ -35,6 +38,7 @@ L_2+gmsin(x_4)L_1^2+taucos(x_4)L_1+gsin(x_4)J_1)}{(msin(x_4)^2L_2^3+((m-mcos(x_4
 $$
 
 The following state space equations used in the simulation is therefor
+
 $$
 \dot{x}= \begin{bmatrix}\ddot{\theta}_1 \\ \ddot{\theta}_2 \\ \theta_1 \\ \theta_2 \end{bmatrix} = f(x)
 $$
@@ -88,4 +92,4 @@ The animation:
 
 
 
-The source can now be cloned from git here.
+The source can now be cloned from git [here](   https://github.com/simena86/furuta_pendulum "gitlink").

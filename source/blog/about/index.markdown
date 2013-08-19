@@ -13,7 +13,7 @@ My name is Simen Andresen. I am a student at the Norwegian University of Technol
 Other interest I have is kite surfing and music. I play guitar in the band Sixty Pieces of Gum. Make sure to visit our webpage at [urort.no](http://www.nrk.no/urort/Artist/sixtypiecesofgum1/default.aspx "SixtyPieces"){:target="_blank"}
 
 For future employees (e.g. Nasa) [here's](http://www.linkedin.com/pub/simen-andresen/50/2b7/b19 "linkedin"){:target="_blank"} my  linkedin adress
-and here's some relevant things I've done
+, [here's my CV](http://simena86.github.com/source/downloads/resume_july_2013.pdf)  and here's some relevant things I've done
 
 [-Summer intern Kongsberg Aerospace and Defence](http://www.oa.no/nyheter/article6169803.ece "localhawk"){:target="_blank"}
 
