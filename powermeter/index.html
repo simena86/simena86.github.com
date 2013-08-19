@@ -5,13 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>til-salgs - SOLD - </title>
+  <title>PowerMeter - </title>
   <meta name="author" content="Simen Andresen">
 
   
-  <meta name="description" content="Til-salgs - SOLD Apr 13th, 2013 SOLGT!
-Denne siden er ikke lenger gyldig iom. at alle tingene er solgt.
-Vi er 4 gutter som har bodd sammen og ønsker &hellip;">
+  <meta name="description" content="PowerMeter Apr 13th, 2013 Google Chart Example // load the visualization library from Google and set a listener //	google.load("visualization", "1 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -20,7 +18,7 @@ Vi er 4 gutter som har bodd sammen og ønsker &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://simena86.github.com/til-salgs/">
+  <link rel="canonical" href="http://simena86.github.com/powermeter/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -55,7 +53,8 @@ MathJax.Hub.Config({
 
 
 <body   class="collapse-sidebar sidebar-footer" >
-  <header role="banner"><font color="white"> Breakpoint Yard Sale </font>
+  <header role="banner"><font color="white"> RasPi PowerMeter </font>
+
 </header>
   <div id="main">
     <div id="content">
@@ -63,7 +62,7 @@ MathJax.Hub.Config({
 <article role="article">
   
   <header>
-    <h1 class="entry-title">Til-salgs - SOLD</h1>
+    <h1 class="entry-title">PowerMeter</h1>
     <p class="meta">
 
 
@@ -79,119 +78,91 @@ MathJax.Hub.Config({
 <time datetime="2013-04-13T12:02:00+02:00" pubdate data-updated="true">Apr 13<span>th</span>, 2013</time></p>
   </header>
   
-  <p>SOLGT!
-Denne siden er ikke lenger gyldig iom. at alle tingene er solgt.
-Vi er 4 gutter som har bodd sammen og ønsker å selge det vi har spart opp av møbler o.l. i en pakke. Vi ordner da oppbevaring i Santa Barbara frem til høsten. Så og si alle leiligheter i Isla Vista kommer uten møbler. Vår erfaring er at man bruker mye tid og penger på å skaffe de mest nødvendige tingene man trenger for å flytte inn i en leilighet. Vi ønsker derfor å selge dette til nye studenter for å gjøre det enklere når man kommer hit, samtidig som vi får igjen litt for det uten å måtte selge alt enkeltvis. </p>
+  <head>
+   <title>Google Chart Example</title>
+   <script src="https://www.google.com/jsapi"></script>
+   <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+   <script src="jquery.csv-0.71.js"></script>
+   <script>
+   		// load the visualization library from Google and set a listener
+		//	google.load("visualization", "1", {packages: ['annotatedtimeline']});
+		google.load("visualization", "1", {packages:["corechart"]});
+		google.setOnLoadCallback(drawPriceChart);
+		google.setOnLoadCallback(drawPowerChart);
 
-<p>Det aller meste har blitt kjøpt nytt, og er i god stand. </p>
+		function drawPriceChart() {
+			// grab the CSV
+			$.get("data.csv", function(csvString) {
+			// transform the CSV string into a 2-dimensional array
+			var arrayData = $.csv.toArrays(csvString, {onParseValue: $.csv.hooks.castToScalar});
+			var data = new google.visualization.DataTable(arrayData);
+			data.addColumn('datetime','Time');
+			data.addColumn('number','Price [øre/kWh]')
+			var temp = 1
+			for(var i = 0; i < arrayData.length; i++) {
+				temp++
+			    var row = arrayData[i];
+				data.addRow([new Date(row[0],row[1],row[2],row[3],row[4]),row[5]]);
+			}
 
-<ul>
-  <li>Seng x3 Kjøpt ny.	</li>
-  <li>Stol x4 Kjøpt ny. </li>
-  <li>Surfe Rack Kjøpt ny. </li>
-  <li>Bord nr 1. Kjøpt ny. </li>
-  <li>Tv kjøpt ny. </li>
-  <li>Stuebord. Kjøpt ny. </li>
-  <li>Bord nr 2. Kjøpt ny. </li>
-  <li>Sofa kjøpt brukt. </li>
-  <li>Stålampe kjøpt ny. </li>
-  <li>Sovesofa. Kjøpt ny. </li>
-  <li>Forsterker og høyttalere. Meget bra lyd! Kjøpt ny. </li>
-  <li>Diverse koke-ting, inkluderer også diverse stekespader, øser, osv. Kjøpt nytt.</li>
-  <li>Støvsuger. Kjøpt ny. </li>
-  <li>Diverse Kjøkken-greier. Inkluderer også bestikk</li>
-</ul>
+			console.log(temp)
+			// this view can select a subset of the data at a time
+			var view = new google.visualization.DataView(data);
+			view.setColumns([0, 1]); 
+			//var chart = new google.visualization.AnnotatedTimeLine( document.getElementById('chart'));
+			//chart.draw(data,{displayAnnotations: true}  );
+			var options = {
+				title: "Power usage",
+				hAxis: {title: data.getColumnLabel(0), minValue: data.getColumnRange(0).min, maxValue: data.getColumnRange(0).max},
+				vAxis: {title: data.getColumnLabel(1), minValue: data.getColumnRange(1).min, maxValue: data.getColumnRange(1).max},
+				legend: 'none'
+			};
+			var chart = new google.visualization.AreaChart(document.getElementById('priceChart'));
+			chart.draw(view, options);
+			});
+		}
 
-<!--
-* Seng x3 Kjøpt ny.	Pris per stk: 700,-
-* Stol x4 Kjøpt ny. Pris per stk: 20,-
-* Surfe Rack Kjøpt ny. Pris		: 100,-
-* Bord nr 1. Kjøpt ny. Pris		: 500,-
-* Tv kjøpt ny. Pris 			: 700,-
-* Stuebord. Kjøpt ny. Pris  	: 200,-
-* Bord nr 2. Kjøpt ny. Pris 	: 200,-
-* Sofa kjøpt brukt. Pris		: 300,-
-* Stålampe kjøpt ny. Pris 		: 100,-
-* Sovesofa. Kjøpt ny. Pris		: 700,-
-* Forsterker og høyttalere. Meget bra lyd! Kjøpt ny. Pris: 1000,-
-* Diverse koke-ting, inkluderer også diverse stekespader, øser, osv. Kjøpt nytt. Pris : 400 ,-
-* Støvsuger. Kjøpt ny. Pris  	: 300,-
-* Diverse Kjøkken-greier. Inkluderer også bestikk 		: 250,-
--->
+		function drawPowerChart() {
+			// grab the CSV
+			$.get("data.csv", function(csvString) {
+			// transform the CSV string into a 2-dimensional array
+			var arrayData = $.csv.toArrays(csvString, {onParseValue: $.csv.hooks.castToScalar});
+			var data = new google.visualization.DataTable(arrayData);
+			data.addColumn('datetime','Time');
+			data.addColumn('number','Power [W]')
+			var temp = 1
+			for(var i = 0; i < arrayData.length; i++) {
+				temp++
+			    var row = arrayData[i];
+				data.addRow([new Date(row[0],row[1],row[2],row[3],row[4]),row[5]]);
+			}
 
-<p>I tillegg til det som er tatt bilde av under har vi også følgende</p>
+			console.log(temp)
+			// this view can select a subset of the data at a time
+			var view = new google.visualization.DataView(data);
+			view.setColumns([0, 1]); 
+			//var chart = new google.visualization.AnnotatedTimeLine( document.getElementById('chart'));
+			//chart.draw(data,{displayAnnotations: true}  );
+			var options = {
+				title: "Power Prices, Trondheim",
+				hAxis: {title: data.getColumnLabel(0), minValue: data.getColumnRange(0).min, maxValue: data.getColumnRange(0).max},
+				vAxis: {title: data.getColumnLabel(1), minValue: data.getColumnRange(1).min, maxValue: data.getColumnRange(1).max},
+				legend: 'none'
+			};
+			var chart = new google.visualization.AreaChart(document.getElementById('powerChart'));
+			chart.draw(view, options);
+			});
+		}
 
-<ul>
-  <li>Diverse lamper til nattbord og vegg</li>
-  <li>Skittentøyskurver, søppelbøtter.</li>
-  <li>Skohylle.</li>
-  <li>Diverse kjøkkengreier. </li>
-</ul>
-
-<p>Hvis du er interessert, ta kontakt på epost: simena86@gmail.com</p>
-
-<p>Seng x3 ramme + fjærmadrass. </p>
-
-<p><img src="/til-salgs/images/im_0.png" width="800" height="533" /></p>
-
-<p>Stol x2 , veldig fin å sitte på</p>
-
-<p><img src="/til-salgs/images/im_1.png" width="800" height="533" /></p>
-
-<p>Rack til å feste surfebrett oppå bilen, passer alle biler.</p>
-
-<p><img src="/til-salgs/images/im_2.png" width="800" height="533" /></p>
-
-<p>2x Bord nr 1, sammenleggbart. Lampe følger med. I tillegg til bordet på bildet har vi et bord av samme slag bare noe mindre.</p>
-
-<p><img src="/til-salgs/images/im_3.png" width="800" height="533" /></p>
-
-<p>Tv, 39”.</p>
-
-<p><img src="/til-salgs/images/im_4.png" width="800" height="533" /></p>
-
-<p>Stuebord</p>
-
-<p><img src="/til-salgs/images/im_5.png" width="800" height="533" /></p>
-
-<p>Stol x2</p>
-
-<p><img src="/til-salgs/images/im_6.png" width="800" height="533" /></p>
-
-<p>Bord nr 2, sammenleggbart</p>
-
-<p><img src="/til-salgs/images/im_7.png" width="800" height="533" /></p>
-
-<p>Sofa</p>
-
-<p><img src="/til-salgs/images/im_8.png" width="800" height="533" /></p>
-
-<p>Stålampe</p>
-
-<p><img src="/til-salgs/images/im_9.png" width="400" height="266" /></p>
-
-<p>Sovesofa</p>
-
-<p><img src="/til-salgs/images/im_10.png" width="800" height="533" /></p>
-
-<p>Forsterker m/ Klipsch høyttalere og tv-bord</p>
-
-<p><img src="/til-salgs/images/im_11.png" width="800" height="533" /></p>
-
-<p><img src="/til-salgs/images/im_12.png" width="800" height="533" /></p>
-
-<p>Diverse koke-ting. Inkluderer også diverse steikespader, øser, underlag, flere kjeler, kaffepresse, plastikkboller osv.</p>
-
-<p><img src="/til-salgs/images/im_13.png" width="800" height="533" /></p>
-
-<p>Støvsuger</p>
-
-<p><img src="/til-salgs/images/im_14.png" width="800" height="533" /></p>
-
-<p>Diverse kjøkken-greier. Inkluderer også bestikk.</p>
-
-<p><img src="/til-salgs/images/im_15.png" width="800" height="533" /></p>
-
+   </script>
+</head>
+<body>
+	Site under construction
+	<br /> 
+<div id="powerChart" style="width: 1200px; height: 240px;"></div>
+<div id="priceChart" style="width: 1200px; height: 240px;"></div>
+   
+</body>
 
   
     <footer>
@@ -215,7 +186,7 @@ Vi er 4 gutter som har bodd sammen og ønsker å selge det vi har spart opp av m
       
         <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://simena86.github.com/til-salgs/index.html" data-via="" data-counturl="http://simena86.github.com/til-salgs/index.html" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://simena86.github.com/powermeter/index.html" data-via="" data-counturl="http://simena86.github.com/powermeter/index.html" >Tweet</a>
   
   
   
@@ -318,8 +289,8 @@ Vi er 4 gutter som har bodd sammen og ønsker å selge det vi har spart opp av m
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://simena86.github.com/til-salgs/index.html';
-        var disqus_url = 'http://simena86.github.com/til-salgs/index.html';
+        var disqus_identifier = 'http://simena86.github.com/powermeter/index.html';
+        var disqus_url = 'http://simena86.github.com/powermeter/index.html';
         var disqus_script = 'embed.js';
       
     (function () {
