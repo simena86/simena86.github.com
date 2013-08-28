@@ -48,9 +48,9 @@ footer: true
 					'ui': {
 						'chartType': 'LineChart',
 						'chartOptions': {
-							'chartArea': {
-								'width': '90%'
-							},
+						//	'chartArea': {
+						//		'width': '90%'
+						//	},
 							'hAxis': {
 								'baselineColor': 'none'
 							}
@@ -61,7 +61,7 @@ footer: true
 							'columns': [0, 1]
 						},
 						// 1 day in milliseconds = 24 * 60 * 60 * 1000 = 86,400,000
-						'minRangeSize': 86400
+						'minRangeSize': 8640
 					}
 				},
 				// Initial range: 2012-02-09 to 2012-03-20.
@@ -80,31 +80,9 @@ footer: true
 					// Use the same chart area width as the control for axis alignment.
 					colors:['green'],
 					title:"Power Consumption",
-					'chartArea': {
-						'height': '80%',
-						'width': '90%'
-					},
-					'hAxis': {
-						'slantedText': false
-					},
-					'vAxis': {
-						'viewWindow': {
-							'min': 0,
-							'max': 200
-						}
-					},
-					'legend': {
-						'position': 'none'
-					}
+					'legend': {	'position': 'none'	}
 				},
-				// Convert the first column from 'date' to 'string'.
-				'view': {
-					'columns': [{
-							'calc': function (dataTable, rowIndex) {
-								return dataTable.getFormattedValue(rowIndex, 0);
-							},
-							'type': 'string'
-						},	1]	}
+				view:{'columns':[0,1] }
 			});
 	
 			var arrayData=null
@@ -131,7 +109,6 @@ footer: true
 			return powerControl;
 		}
 		
-			
 
 		// price data
 		function drawPrice() {
@@ -179,31 +156,10 @@ footer: true
 					// Use the same chart area width as the control for axis alignment.
 					colors:['orange'],
 					title:"Power Prices Trondheim",
-					'chartArea': {
-						'height': '80%',
-						'width': '90%'
-					},
-					'hAxis': {
-						'slantedText': false
-					},
-					'vAxis': {
-						'viewWindow': {
-							'min': 0,
-							'max': 100
-						}
-					},
-					'legend': {
-						'position': 'none'
-					}
-				},
-				// Convert the first column from 'date' to 'string'.
-				'view': {
-					'columns': [{
-							'calc': function (dataTable, rowIndex) {
-								return dataTable.getFormattedValue(rowIndex, 0);
-							},
-							'type': 'string'
-						},	1]	}
+					//'chartArea': { 	'height': '80%','width': '90%'},
+					'legend': {	'position': 'none'	},
+					view:{'columns':[0,1] }
+				}
 			});
 	
 			var arrayData=null
@@ -235,7 +191,12 @@ footer: true
 		function drawTemp() {
 			var dashboard = new google.visualization.Dashboard(
 				document.getElementById('dashboard'));
-
+			var d=new Date();
+			var year=d.getFullYear();
+			var day=d.getDate();
+			var month=d.getMonth()+1;
+			var hour=d.getHours();
+			var min=d.getMinutes();
 			var tempControl = new google.visualization.ControlWrapper({
 				'controlType': 'ChartRangeFilter',
 				'containerId': 'tempControl',
@@ -245,9 +206,9 @@ footer: true
 					'ui': {
 						'chartType': 'LineChart',
 						'chartOptions': {
-							'chartArea': {
-								'width': '90%'
-							},
+						//	'chartArea': {
+						//		'width': '90%'
+						//	},
 							'hAxis': {
 								'baselineColor': 'none'
 							}
@@ -265,7 +226,7 @@ footer: true
 				'state': {
 					'range': {
 						'start': new Date(2013, 8, 22,0),
-						'end': new Date(2013, 8, 22,23)
+						'end': new Date(year,month,day,hour,min)
 					}
 				}
 			});
@@ -276,31 +237,14 @@ footer: true
 				'options': {
 					// Use the same chart area width as the control for axis alignment.
 					title: "Temperature Measurement, Trondheim",
-					'chartArea': {
-						'height': '80%',
-						'width': '90%'
-					},
-					'hAxis': {
-						'slantedText': false
-					},
-					'vAxis': {
-						'viewWindow': {
-							'min': 0,
-							'max': 32
-						}
-					},
-					'legend': {
-						'position': 'none'
-					}
+					'legend': {	'position': 'none'	}
+					//'chartArea': {
+					//	'height': '80%',
+					//	'width': '90%'
+					//},
 				},
 				// Convert the first column from 'date' to 'string'.
-				'view': {
-					'columns': [{
-							'calc': function (dataTable, rowIndex) {
-								return dataTable.getFormattedValue(rowIndex, 0);
-							},
-							'type': 'string'
-						},	1]	}
+				view: {'columns':[0,1]}	
 			});
 	
 			var arrayData=null
@@ -338,7 +282,7 @@ footer: true
     	      ['Power',powerNow ],
         ]);
         var options = {
-          width: 500, height: 130,
+          width: 500, height: 99,
           minorTicks: 5
         };
         var chart = new google.visualization.Gauge(document.getElementById('gagueChart'));
@@ -351,20 +295,20 @@ footer: true
 <body>
 	Site under construction
 	<br> </br>
-<div id='gagueChart' align='center' ></div>
+<div id='gagueChart' align='center'  ></div>
 <div align="center">Power usage now</div>
 
 <div id="dashboard">
-<div id="powerChart" ></div>
+<div id="powerChart" style='height: 110px;' ></div>
 <div id="powerControl" style="display:none"></div>
 <br></br>
-<div id="priceChart" ></div>
+<div id="priceChart" style='height: 110px;'></div>
 <div id="priceControl" style="display:none"></div>
 
 <br></br>
-<div id="tempChart" ></div>
+<div id="tempChart" style='height: 110px;' ></div>
 <br></br>
-<div id="tempControl" style='height: 50px;'></div>
+<div id="tempControl" style='height: 40px;'></div>
 
 </div>
 
