@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: linux | ]]></title>
+  <link href="http://simena86.github.com/blog/categories/linux/atom.xml" rel="self"/>
+  <link href="http://simena86.github.com/"/>
+  <updated>2013-08-20T16:34:54+02:00</updated>
+  <id>http://simena86.github.com/</id>
+  <author>
+    <name><![CDATA[Simen Andresen]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[My Vim Setup]]></title>
+    <link href="http://simena86.github.com/blog/2013/04/12/my-vim-setup/"/>
+    <updated>2013-04-12T20:03:00+02:00</updated>
+    <id>http://simena86.github.com/blog/2013/04/12/my-vim-setup</id>
+    <content type="html"><![CDATA[<p>Vim is a very popular text editor for Unix-like systems, written by Bram Moolenaar. I have been using Vim for a couple of years now and have found some nice features that make it more efficient for my use.  </p>
+
+<!-- more -->
+
+<h2 id="basics">Basics</h2>
+
+<p>First of all one should look into the root configuration file /etc/vim/vimrc.
+I uncommented some things here that I found useful, like for instance 
+`</p>
+
+<p><code>vim /etc/vim/vimrc 
+set showcmd		" Show (partial) command in status line.
+set showmatch		" Show matching brackets.
+set ignorecase		" Do case insensitive matching
+set hidden             " Hide buffers when they are abandoned
+set mouse=a		" Enable mouse usage (all modes)
+</code></p>
+
+<p>For the rest of the changes i updatet .vimrc and the .vim folder in the home directory. In my ~/.vimrc I have some basic commands :</p>
+
+<p><code>vim ~/.vimrc
+filetype plugin on
+set nocp
+set autoindent
+set cindent
+set ts=4
+set nu
+set scrolloff=2
+set clipboard=unnamedplus
+</code></p>
+
+<p>This changes things like the lenght of the indentation (which I found to be way too long with the default setup), as well as enabling plugins, setting the right clipboard etc.</p>
+
+<h2 id="plugins">Plugins</h2>
+
+<p>This is where it gets interesting. There is alot of plugins out there and I’ve found some really nice ones. 
+<a href="http://www.vim.org/scripts/script.php?script_id=2332" title="Pathogen">Pathogen</a> is used to make dealing with plugins very easy. To make this work follow the instructions from the plugin page and remember to add the following to ~/.vimrc :
+<div class="highlight"><pre><code class="vim">execute pathogen#infect<span class="p">()</span>
+</code></pre></div></p>
+
+<h3 id="cc">C/C++</h3>
+
+<p><a href="http://ctags.sourceforge.net/">Exuberant Ctags</a> is another great plugin that makes a tags database wich is used by vim to autocomplete variables and functions. Together with <a href="http://www.vim.org/scripts/script.php?script_id=1764">code_complete</a> and <a href="http://www.vim.org/scripts/script.php?script_id=1520">omniCppComplete</a> it also offers autocompletion of function parameters and class and struct members much the same way that can be found with IDE’s like eclipse:</p>
+
+<p><img src="/images/vim/autocomplete.png" width="420" height="200"></p>
+
+<p>If your running a debian systems the easiest way to install ctags is to use</p>
+
+<p><div class="highlight"><pre><code class="vim">sudo apt<span class="p">-</span><span class="k">get</span> install exuberant<span class="p">-</span>ctags
+</code></pre></div></p>
+
+<p>Code_complete can just be downloaded <a href="http://www.vim.org/scripts/script.php?script_id=1764">here</a> and placed in the ~/.vim/plugin/ directory.</p>
+
+<p>To use these plugins tag-files is made by generating tags based on source code files. Im using the following command to do this:</p>
+
+<p><div class="highlight"><pre><code class="vim">ctags <span class="p">-</span>R * –<span class="k">c</span><span class="p">++-</span>kinds<span class="p">=+</span><span class="k">p</span> –fields<span class="p">=+</span>iaS –extra<span class="p">=+</span><span class="k">q</span><span class="p">&lt;</span><span class="k">br</span> /<span class="p">&gt;</span>
+</code></pre></div></p>
+
+<p>When executing this command it will generate a file in the current directory and make tags based on all source code in the current and all subdirectories. The tag file is used by ctags, code_complete and omniCppComplete. To let vim know where to look for tag files on has to specify this in vimrc by </p>
+
+<p><code>vim ~/.vimrc
+set tags=/path/to/tagdir1
+set tags+=/path/to/tagdir2
+</code> </p>
+
+<p>Ctags searches for tag-files which is specified in ~/.vimrc. I’m using the following in my .vimrc file to look for tag files </p>
+
+<p><code>vim ~/.vimrc
+set tags=/usr/include/tags
+set tags+=./tags
+</code> </p>
+
+<p>Lastly I use git hooks to update tag files in projects. The best way to do this is to first make the directory ~/.git_template where you can define templates for git to use every time you run git init. In the .git_templates directory I have a directory for <a href="http://git-scm.com/book/en/Customizing-Git-Git-Hooks">git hooks</a> with two files: _    </p>
+
+<p>post-commit:</p>
+
+<p><code>bash ~/.git_templates/hooks/post-commit
+#!/bin/sh
+.git/hooks/ctags &gt;/dev/null 2&gt;&amp;1 &amp;
+</code></p>
+
+<p>ctags:</p>
+
+<p><code>bash ~/.git_templates/hooks/ctags
+#!/bin/sh
+set -e
+PATH="/usr/local/bin:$PATH"
+trap "rm -f .git/tags.$$" EXIT
+ctags  --c++-kinds=+p --fields=+iaS --extra=+q --tag-relative -Rf.git/tags.$$  --exclude=.git --languages=-javascript,sql
+mv .git/tags.$$ .git/tags
+</code></p>
+
+<p>With these scripts you will generate a new tag file in the local .git directory of the current project every time you make a commit. </p>
+
+<h3 id="python">Python</h3>
+
+<p>For python source code I use the wonderful jedi-vim. Which is a really great and advanced plugin, providing the same functionality ctags and omniCppComplete provides for C/C++. </p>
+
+<p>Install it with the following</p>
+
+<p><code>bash
+cd ~/.vim/bundle/; 
+git clone git://github.com/davidhalter/jedi-vim.git; 
+cd jedi-vim;
+git submodule update --init
+</code></p>
+
+<p>I also found installing supertab useful</p>
+
+<p><code>bash
+cd ~/.vim/bundle/; 
+git clone git://github.com/ervandew/supertab.git
+</code></p>
+
+<p>To configure jedi-vim and supertab, put the following in your .vimrc file</p>
+
+<p><code>bash ~/.vimrc
+let g:SuperTabDefaultCompletionType = "context"
+let g:jedi#popup_on_dot = 0  # disables the autocomplete to popup whenever you press .
+syntax on
+filetype plugin indent on
+</code></p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Makefiles and autocomplete with Latex]]></title>
+    <link href="http://simena86.github.com/blog/2013/01/26/makefiles-and-autocomplete-with-latex/"/>
+    <updated>2013-01-26T00:14:00+01:00</updated>
+    <id>http://simena86.github.com/blog/2013/01/26/makefiles-and-autocomplete-with-latex</id>
+    <content type="html"><![CDATA[<p>I am using Latex a lot and have done some customization in order to speed up the process of writing academic reports. I am using the TeXworks editor. TeXworks is a clean and simple editor, and with the help of a make file and some autotyping it is very efficient.</p>
+
+<!-- more -->
+
+<p>Custom typesetting
+In order to use Texworks efficient i have done some modification to the typesetting process. Instead of using pdflatex which doesn’t allow vector graphics (at least not with the default settings), I am using the power of a make-file. I have written a linux bash script that is run from texworks:</p>
+
+<p>Edit&gt;Preferences&gt;Typesetting&gt;+ to add a Processing tool, and add the script below with the following arguments</p>
+
+<p>$basename</p>
+
+<p>-shell-escape</p>
+
+<p>-enable-write18</p>
+
+<p>The script I use is</p>
+
+<p><div class="highlight"><pre><code class="bash"><span class="c">#!/bin/sh</span>
+<span class="c">##</span>
+<span class="nv">main_file</span><span class="o">=</span><span class="k">$(</span>ls * | grep ‘.tex’ | xargs grep “begin<span class="o">{</span>document<span class="o">}</span>” -sl<span class="k">)</span>
+<span class="nv">main_file</span><span class="o">=</span><span class="k">${</span><span class="nv">main_file</span><span class="p">%”.tex”</span><span class="k">}</span>&lt;/p&gt;
+
+&lt;h1 <span class="nv">id</span><span class="o">=</span><span class="s2">&quot;compile-two-times-to-get-the-reference-alright&quot;</span>&gt;compile two <span class="nb">times </span>to get the reference alright&lt;/h1&gt;
+&lt;p&gt;latex -synctex<span class="o">=</span>1 “<span class="nv">$main_file</span>.tex”
+latex -synctex<span class="o">=</span>1 “<span class="nv">$main_file</span>.tex”
+dvips “<span class="nv">$main_file</span>.dvi” &amp;amp;&amp;amp; ps2pdf “<span class="nv">$main_file</span>.ps”&lt;/p&gt;
+
+&lt;h1 <span class="nv">id</span><span class="o">=</span><span class="s2">&quot;searching-for-mainfiles-that-dosnt-end-with-tex-and-moving-them-to-build&quot;</span>&gt;searching <span class="k">for </span>main_files that dosnt end with .tex and moving them to build&lt;/h1&gt;
+&lt;p&gt;ls * | grep “<span class="nv">$main_file</span>” | 
+<span class="k">while </span><span class="nb">read </span>line ; <span class="k">do </span>
+<span class="k">	</span><span class="nb">echo</span> <span class="nv">$line</span>
+	<span class="k">if </span><span class="nb">echo</span> <span class="nv">$line</span> | grep -Eq ‘tex<span class="nv">$|</span>pdf<span class="nv">$|</span>gz<span class="nv">$’</span> 
+	<span class="k">then</span>
+<span class="k">		</span><span class="nb">echo</span> “not moving tex file”
+	<span class="k">else</span>
+<span class="k">		</span>mv <span class="nv">$line</span> ./build
+	<span class="k">fi</span>
+<span class="k">done</span>&lt;/p&gt;
+
+&lt;p&gt;texworks <span class="nv">$main_file</span>.pdf&lt;/p&gt;
+
+&lt;p&gt;
+</code></pre></div></p>
+
+<p>Put the script somewhere in your PATH and it is automatically run from Texworks every time you typeset the document. What the script does is find the main file for the latex document and typeset that. This allows you to typeset the whole document from a .tex-file included in the main document. One should note that there should be only one main tex file (the file with \begin{document}) in the directory. </p>
+
+<p>Auto complete
+For speeding up the process of writing latex code, auto completion comes in handy. On my computer auto completion is added in ~/.Texworks/completion/tw-basic.txt. Some of the entries in my tx-basic.txt</p>
+
+<p><div class="highlight"><pre><code class="bash">align:<span class="o">=</span><span class="se">\b</span>egin<span class="o">{</span>align<span class="o">}</span><span class="c">#RET#\label{eq:}#RET# #INS# #RET# \end{align}&lt;/p&gt;</span>
+
+&lt;p&gt;figure:<span class="o">=</span><span class="se">\b</span>egin<span class="o">{</span>figure<span class="o">}[</span>h!<span class="o">]</span> <span class="c">#RET# \center #RET# \includegraphics[scale=]{./figures/#INS#}#RET# \caption{ \label{fig:}}#RET# \end{figure}#RET#</span>
+</code></pre></div></p>
+
+<p>With this in your tw-basic.txt you can just type “figure” in the Texworks editor, press tab and it is completed to the align environment with the cursor ready in place for writing your favourite differential equation, matrix or 1+1=3.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[JOGL - Animation and Dynamics of Furuta pendulum]]></title>
+    <link href="http://simena86.github.com/blog/2013/01/24/jogl-animation-and-dynamics-of-furuta-pendulum/"/>
+    <updated>2013-01-24T20:44:00+01:00</updated>
+    <id>http://simena86.github.com/blog/2013/01/24/jogl-animation-and-dynamics-of-furuta-pendulum</id>
+    <content type="html"><![CDATA[<p>I wanted to animate a furuta pendulum, and include the real dynamics in the animation. First off, what is a Furuta pendulum? It is a pendulum with two degrees of freedom (see wikipedia) where, from a control engineers’ point of view, one is interested in stabilizing the second arm of the pendulum, by applying torque to the first arm. This poses quite an interesting control problem (much the same as in e.g. a segway). First lets look at the dynamimcs of the furuta pendulum:
+<!-- more --> </p>
+
+<p>The dynamics of the furuta pendulum can be modeled with two second order differential equations. For simulations we will reduce the order and model the system with 4 first order ODE’s. The following state space vector will be used:</p>
+
+<script type="math/tex; mode=display">% &lt;![CDATA[
+
+ \begin{aligned} x=\begin{bmatrix} \\ \frac{d\theta_{1}}{dt} & \frac{d\theta_1}{dt}& \theta_{1}&\theta_{2}\end{bmatrix}  \end{aligned}
+ %]]&gt;</script>
+
+<p>With the use of Lagrangian or Newton dynamics one can model the system which yields the following 2. order ODE’s:</p>
+
+<script type="math/tex; mode=display">% &lt;![CDATA[
+
+\; \\ \; \\ \;
+{ \scriptsize
+\begin{aligned}
+& \frac{d^2\theta_1}{dt^2}= \\
+&  \frac{ (mx_1^2cos(x_4)
+sin(x_4)^3L_2^3+(gmsin(x_4)^3-2mx_1x_2cos(x_4)^2sin(x_4)L_1)L_2^2+((mx_1^2-mx_2^2)cos(x_4)sin(x_4)L_1^2+x_1^2cos(x_4)sin(x_4)J_1)
+L_2+gmsin(x_4)L_1^2+\tau cos(x_4)L_1+gsin(x_4)J_1)}{(msin(x_4)^2L_2^3+((m-mcos(x_4)^2)L_1^2+J_1)L_2)}
+\\
+&\frac{d^2\theta_2}{dt^2}=\\
+& \frac{(mx_1^2cos(x_4) 
+sin(x_4)^3L_2^3+(gmsin(x_4)^3-2mx_1x_2cos(x_4)^2sin(x_4)L_1)L_2^2+((mx_1^2-mx_2^2)cos(x_4)sin(x_4)L_1^2+x_1^2cos(x_4)sin(x_4)J_1)
+L_2+gmsin(x_4)L_1^2+taucos(x_4)L_1+gsin(x_4)J_1)}{(msin(x_4)^2L_2^3+((m-mcos(x_4)^2)L_1^2+J_1)L_2)}
+\end{aligned}
+}
+ %]]&gt;</script>
+
+<p>The following state space equations used in the simulation is therefor</p>
+
+<script type="math/tex; mode=display">
+\dot{x}= \begin{bmatrix}\ddot{\theta}_1 \\ \ddot{\theta}_2 \\ \theta_1 \\ \theta_2 \end{bmatrix} = f(x)
+</script>
+
+<p>And one can easily solve the dynamics by numerical integration. I have solved the system using Explicit Runge Kutta 4 which yields a discrete solution that can easily be used in a OpenGl 3d animation. The main idea for capturing the dynamics in the animation is to, in  each call to the display() function (each new frame of the animation), calculate the next iterate of the numerical integrator (RK4 in this case). This can be seen in the code below, where <script type="math/tex"> f_1=\ddot{\theta}_1 </script> and f2, f3,f4 (not shown in the code) each calculates their derrivatives which is used in one multiple input, multiple output function f. Lastly this is used in solve_dyn() to calculate an iterate from the RK4 method.</p>
+
+<p><div class="highlight"><pre><code class="java"><span class="kd">public</span> <span class="kt">double</span> <span class="nf">f1</span><span class="o">(</span><span class="n">Matrix</span> <span class="n">x</span><span class="o">,</span> <span class="kt">double</span> <span class="n">u</span> <span class="o">){</span>
+	<span class="kt">double</span> <span class="n">x1</span><span class="o">,</span><span class="n">x2</span><span class="o">,</span><span class="n">x4</span><span class="o">;</span>
+	<span class="kt">double</span> <span class="n">tau</span><span class="o">;</span>
+	<span class="n">x1</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span><span class="mi">0</span><span class="o">);</span> <span class="n">x2</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span><span class="mi">1</span><span class="o">);</span> <span class="n">x4</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span><span class="mi">3</span><span class="o">);</span>
+	<span class="kt">double</span> <span class="n">sign</span><span class="o">;</span>
+	<span class="k">if</span> <span class="o">(</span><span class="n">x1</span><span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="mi">0</span><span class="o">){</span><span class="n">sign</span><span class="o">=</span><span class="mi">1</span><span class="o">;}</span><span class="k">else</span><span class="o">{</span><span class="n">sign</span><span class="o">=-</span><span class="mi">1</span><span class="o">;}</span>
+	<span class="n">u</span><span class="o">=</span><span class="n">u</span><span class="o">+</span><span class="n">sign</span><span class="o">*</span><span class="mf">5.0</span><span class="o">;</span>
+	<span class="n">tau</span><span class="o">=</span><span class="n">u</span><span class="o">;&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="kt">double</span> <span class="n">f_num</span><span class="o">=(</span><span class="n">arm1</span><span class="o">*</span><span class="n">arm2</span><span class="o">*</span><span class="n">m</span><span class="o">*</span><span class="n">Math</span><span class="o">.</span><span class="na">pow</span><span class="o">(</span><span class="n">x1</span><span class="o">,</span><span class="mi">2</span><span class="o">)*</span><span class="n">Math</span><span class="o">.</span><span class="na">pow</span><span class="o">((</span><span class="n">Math</span><span class="o">.</span><span class="na">cos</span><span class="o">(</span><span class="n">x4</span><span class="o">)),</span><span class="mi">2</span><span class="o">)+(</span><span class="n">arm1</span><span class="o">*</span><span class="n">g</span><span class="o">*</span><span class="n">m</span><span class="o">-</span>
+          <span class="mi">2</span><span class="o">*</span><span class="n">Math</span><span class="o">.</span><span class="na">pow</span><span class="o">(</span><span class="n">arm2</span><span class="o">,</span><span class="mi">2</span><span class="o">)*</span><span class="n">m</span><span class="o">*</span><span class="n">x1</span><span class="o">*</span><span class="n">x2</span><span class="o">)</span>
+ 	<span class="o">*(</span><span class="n">Math</span><span class="o">.</span><span class="na">cos</span><span class="o">(</span><span class="n">x4</span><span class="o">))-</span><span class="n">arm1</span><span class="o">*</span><span class="n">arm2</span><span class="o">*</span><span class="n">m</span><span class="o">*</span><span class="n">Math</span><span class="o">.</span><span class="na">pow</span><span class="o">(</span><span class="n">x2</span><span class="o">,</span><span class="mi">2</span><span class="o">))*(</span><span class="n">Math</span><span class="o">.</span><span class="na">sin</span><span class="o">(</span><span class="n">x4</span><span class="o">))+</span><span class="n">tau</span><span class="o">;</span>
+<span class="kt">double</span> <span class="n">f_denum</span><span class="o">=</span><span class="n">Math</span><span class="o">.</span><span class="na">pow</span><span class="o">(</span><span class="n">arm2</span><span class="o">,</span><span class="mi">2</span><span class="o">)*</span><span class="n">m</span><span class="o">*</span><span class="n">Math</span><span class="o">.</span><span class="na">pow</span><span class="o">((</span><span class="n">Math</span><span class="o">.</span><span class="na">sin</span><span class="o">(</span><span class="n">x4</span><span class="o">)),</span><span class="mi">2</span><span class="o">)-</span><span class="n">Math</span><span class="o">.</span><span class="na">pow</span><span class="o">(</span><span class="n">arm1</span><span class="o">,</span><span class="mi">2</span><span class="o">)*</span><span class="n">m</span><span class="o">*</span><span class="n">Math</span><span class="o">.</span><span class="na">pow</span><span class="o">((</span><span class="n">Math</span><span class="o">.</span><span class="na">cos</span><span class="o">(</span><span class="n">x4</span><span class="o">)),</span><span class="mi">2</span><span class="o">)+</span>                  <span class="n">Math</span><span class="o">.</span><span class="na">pow</span><span class="o">(</span><span class="n">arm1</span><span class="o">,</span><span class="mi">2</span><span class="o">)*</span><span class="n">m</span><span class="o">+</span><span class="n">J1</span><span class="o">;</span>
+<span class="k">if</span><span class="o">(</span><span class="n">f_denum</span><span class="o">==</span><span class="mi">0</span><span class="o">){</span>
+	<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;divide by zero&quot;</span><span class="o">);</span>
+        <span class="k">return</span> <span class="mf">1.0f</span><span class="o">;</span>
+<span class="o">}</span><span class="k">else</span>
+        <span class="k">return</span> <span class="n">f_num</span><span class="o">/</span><span class="n">f_denum</span><span class="o">;</span>
+<span class="o">}</span>
+<span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="kd">public</span> <span class="n">Matrix</span> <span class="n">f</span><span class="o">(</span><span class="n">Matrix</span> <span class="n">x</span><span class="o">,</span> <span class="kt">double</span> <span class="n">u</span><span class="o">){</span>
+       <span class="n">Matrix</span> <span class="n">retVal</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Matrix</span><span class="o">(</span><span class="k">new</span> <span class="kt">double</span><span class="o">[]{</span><span class="n">f1</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">u</span><span class="o">)</span> <span class="o">,</span><span class="n">f2</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">u</span><span class="o">),</span><span class="n">f3</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">u</span><span class="o">),</span><span class="n">f4</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">u</span><span class="o">)},</span><span class="mi">1</span><span class="o">);</span>
+       <span class="k">return</span> <span class="n">retVal</span><span class="o">;</span>
+ <span class="o">}&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="kd">public</span> <span class="kt">double</span> <span class="o">[]</span> <span class="n">solve_dyn</span><span class="o">(){</span>
+       <span class="n">k1</span><span class="o">=</span> <span class="n">f</span><span class="o">(</span><span class="n">x</span><span class="o">,</span><span class="n">tau</span><span class="o">).</span><span class="na">times</span><span class="o">(</span><span class="n">h</span><span class="o">);</span>
+       <span class="n">k2</span><span class="o">=</span> <span class="n">f</span><span class="o">(</span> <span class="n">x</span><span class="o">.</span><span class="na">plus</span><span class="o">(</span><span class="n">k1</span><span class="o">.</span><span class="na">times</span><span class="o">(</span><span class="mf">0.5</span><span class="o">)),</span><span class="n">tau</span><span class="o">).</span><span class="na">times</span><span class="o">(</span><span class="n">h</span><span class="o">);</span>
+       <span class="n">k3</span><span class="o">=</span> <span class="n">f</span><span class="o">(</span><span class="n">x</span><span class="o">.</span><span class="na">plus</span><span class="o">(</span><span class="n">k2</span><span class="o">.</span><span class="na">times</span><span class="o">(</span><span class="mf">0.5</span><span class="o">)),</span><span class="n">tau</span><span class="o">).</span><span class="na">times</span><span class="o">(</span><span class="n">h</span><span class="o">);</span>
+       <span class="n">k4</span><span class="o">=</span> <span class="n">f</span><span class="o">(</span> <span class="n">x</span><span class="o">.</span><span class="na">plus</span><span class="o">(</span><span class="n">k3</span><span class="o">),</span><span class="n">tau</span><span class="o">).</span><span class="na">times</span><span class="o">(</span><span class="n">h</span><span class="o">);</span>
+       <span class="n">x_next</span><span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="na">plus</span><span class="o">(</span><span class="n">k1</span><span class="o">.</span><span class="na">times</span><span class="o">((</span><span class="mf">1.0</span><span class="o">/</span><span class="mf">6.0</span><span class="o">))).</span><span class="na">plus</span><span class="o">(</span><span class="n">k2</span><span class="o">.</span><span class="na">times</span><span class="o">((</span><span class="mf">1.0</span><span class="o">/</span><span class="mf">3.0</span><span class="o">))).</span>
+               <span class="n">plus</span><span class="o">(</span><span class="n">k3</span><span class="o">.</span><span class="na">times</span><span class="o">(</span><span class="mf">1.0</span><span class="o">/</span><span class="mf">3.0</span><span class="o">)).</span><span class="na">plus</span><span class="o">(</span><span class="n">k4</span><span class="o">.</span><span class="na">times</span><span class="o">(</span><span class="mf">1.0</span><span class="o">/</span><span class="mf">6.0</span><span class="o">));</span>
+       <span class="n">x</span><span class="o">=</span><span class="n">x_next</span><span class="o">;</span>
+       <span class="k">return</span> <span class="k">new</span> <span class="kt">double</span> <span class="o">[]</span> <span class="o">{</span><span class="n">x</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span><span class="mi">2</span><span class="o">)&lt;</span><span class="n">em</span><span class="o">&gt;</span><span class="n">rad2deg</span><span class="o">,</span> <span class="n">x</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span><span class="mi">3</span><span class="o">)&lt;/</span><span class="n">em</span><span class="o">&gt;</span><span class="n">rad2deg</span><span class="o">};</span>
+ <span class="o">}&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+
+<span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</code></pre></div></p>
+
+<p>The animation:</p>
+
+<p><div class="embed-video-container"><iframe src="http://www.youtube.com/embed/Lmvn_uDE4HE "></iframe></div></p>
+
+<p>The source can now be cloned from git <a href="https://github.com/simena86/furuta_pendulum" title="gitlink">here</a>.</p>
+]]></content>
+  </entry>
+  
+</feed>
