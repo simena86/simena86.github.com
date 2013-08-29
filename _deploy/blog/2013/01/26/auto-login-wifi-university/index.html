@@ -1,0 +1,370 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Auto login WiFi – University, hotels etc - </title>
+  <meta name="author" content="Simen Andresen">
+
+  
+  <meta name="description" content="When using the University WiFi I found it annoying that I always had to login through a browser using my university username and password. Using the &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://simena86.github.com/blog/2013/01/26/auto-login-wifi-university/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/"></a></h1>
+  
+    <h2>engineering and stuff</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:simena86.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives/">Archives</a></li>
+  <li><a href="/blog/about">About</a></li>
+
+  <li><a href="/blog/math2javacpp">Math 2 Java & C/C++</a></li>
+  <li><a href="/powermeter/">PowerMeter</a></li>
+
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <script language="JavaScript">
+	MathJax.Hub.Config({
+    	  tex2jax: {
+        	skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      	}
+    	});
+</script>
+
+<script languge="JavaScript">
+MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    });
+</script>
+
+
+<div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Auto Login WiFi – University, Hotels Etc</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-26T01:23:00+01:00" pubdate data-updated="true">Jan 26<span>th</span>, 2013</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>When using the University WiFi I found it annoying that I always had to login through a browser using my university username and password. Using the simple scripts below, this bothersome procedure can be done automatically each time the computer discovers a network.
+<!-- more -->
+I am using Wicd Network Manager, which has a nice feature where one can include scripts that you want to run when the computer connects and disconnects to a network ( see wicd documentation). Using this feature I made a short script to run different tasks when the computer discovered different Wifi’s. I have a file called perform_on_post_connect.sh in the directory /etc/wicd/scripts/postconnect on my linux machine with the following code:</p>
+
+<div class="highlight"><pre><code class="bash"><span class="c">#!/bin/bash</span>
+
+<span class="nv">essid</span><span class="o">=</span><span class="nv">$2</span>
+<span class="nv">connection_type</span><span class="o">=</span><span class="nv">$1</span>
+
+<span class="k">if</span> 	<span class="o">[</span> <span class="s2">&quot;${essid}&quot;</span> <span class="o">==</span> <span class="s2">&quot;Foo network&quot;</span> <span class="o">]</span>; <span class="k">then</span>
+	<span class="c"># do something when logging into &#39;Foo network&#39;</span>
+	./myscripts/foo_autologin.py
+<span class="k">elif</span> <span class="o">[</span> <span class="s2">&quot;${essid}&quot;</span> <span class="o">==</span> <span class="s2">&quot;Bar network&quot;</span> <span class="o">]</span>; <span class="k">then</span>
+	<span class="c"># do something else when connecting to &#39;Bar network&#39;</span>
+<span class="k">fi</span>
+</code></pre></div>
+
+<p>I then use a python script called foo_autologin.py that performs the nessecary login procedure. If I am not mistaken, with Wicd one has to have this in a directory with only root access. The source for foo_autologin.py:</p>
+
+<div class="highlight"><pre><code class="python"><span class="c">#!/usr/bin/python</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="c">#</span>
+<span class="c"># AUTO LOGIN TO Foo NETWORK</span>
+<span class="c">#</span>
+
+<span class="k">print</span> <span class="s">&quot;This is an automatic login to Foo network&quot;</span>
+<span class="n">URL</span><span class="o">=</span><span class="s">&#39;&lt;login url&gt;&#39;</span> 
+<span class="n">EMAIL</span> <span class="o">=</span> <span class="s">&#39;&lt;your email&gt;&#39;</span>
+<span class="n">PASSWORD</span> <span class="o">=</span> <span class="s">&#39;&lt;your password&gt;&#39;</span>
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+   <span class="c"># Start a session so we can have persistant cookies</span>
+   <span class="n">session</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">session</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;verbose&#39;</span><span class="p">:</span> <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">})</span>
+   <span class="c"># use headers that is posted in the HTML POSt method</span>
+   <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;Connection&#39;</span><span class="p">:</span><span class="s">&#39;keep-alive&#39;</span><span class="p">}</span>
+   <span class="c"># use data originally in your html-login</span>
+   <span class="n">login_data</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">&#39;username&#39;</span><span class="p">:</span> <span class="n">EMAIL</span><span class="p">,</span>
+        <span class="s">&#39;password&#39;</span><span class="p">:</span> <span class="n">PASSWORD</span><span class="p">,</span>
+        <span class="s">&#39;buttonClicked&#39;</span><span class="p">:</span><span class="s">&#39;4&#39;</span><span class="p">,</span>
+		<span class="s">&#39;err_flag&#39;</span><span class="p">:</span><span class="s">&#39;0&#39;</span><span class="p">,</span>		
+    <span class="p">}</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">URL</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">login_data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mf">10.00</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</code></pre></div>
+
+<p>When using the code above one has to use the headers and data used in the post method. The way I got the data from a login to the university was through using a Firefox Extension called Live HTTP Headers, as I found that chrome would not show HTTP traffic for HTTPS sites.</p>
+
+<p>After monitoring a login using Live HTTP headers one can fill in the headers and data. Im sure there is a way of automating this task So feel free to share.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Simen Andresen</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-26T01:23:00+01:00" pubdate data-updated="true">Jan 26<span>th</span>, 2013</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://simena86.github.com/blog/2013/01/26/auto-login-wifi-university/" data-via="" data-counturl="http://simena86.github.com/blog/2013/01/26/auto-login-wifi-university/" >Tweet</a>
+  
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/01/26/makefiles-and-autocomplete-with-latex/" title="Previous Post: Makefiles and autocomplete with Latex">&laquo; Makefiles and autocomplete with Latex</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2013/01/26/convert-math-equations-to-java-or-c-plus-plus-syntax/" title="Next Post: Convert Math equations to Java or C++ syntax">Convert Math equations to Java or C++ syntax &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/08/12/hand-tracking-and-recognition-with-opencv/">Hand Tracking And Recognition with OpenCV</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/07/03/getting-started-with-raspberry-pi/">Getting started with raspberry Pi</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/04/30/logging-accelerometer-from-android-to-pc/">Logging Accelerometer from Android to PC</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/04/12/my-vim-setup/">My Vim Setup</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/26/convert-math-equations-to-java-or-c-plus-plus-syntax/">Convert Math equations to Java or C++ syntax</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/simena86">@simena86</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'simena86',
+            count: 4,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Simen Andresen -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'sa-cybernetics';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://simena86.github.com/blog/2013/01/26/auto-login-wifi-university/';
+        var disqus_url = 'http://simena86.github.com/blog/2013/01/26/auto-login-wifi-university/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
