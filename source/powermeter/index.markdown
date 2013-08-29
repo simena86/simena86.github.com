@@ -21,11 +21,18 @@ footer: true
 		google.load('visualization', '1', {packages:['gauge']});
 		google.setOnLoadCallback(drawGagueChart);
 		google.setOnLoadCallback(drawVisualization);
+	
+		// direction of the graphs
+		var direction=1;
 
 		function drawVisualization(){
 			powerControl=drawPower();
 			priceControl=drawPrice();
 			tempControl=drawTemp();
+			powerControl.setState(tempControl.getState());
+			powerControl.draw();
+			priceControl.setState(tempControl.getState());
+			priceControl.draw();
 
 			google.visualization.events.addListener(tempControl, 'statechange', function() {
 					powerControl.setState(tempControl.getState());
@@ -48,15 +55,11 @@ footer: true
 					'ui': {
 						'chartType': 'LineChart',
 						'chartOptions': {
-						//	'chartArea': {
-						//		'width': '90%'
-						//	},
 							'hAxis': {
-								'baselineColor': 'none'
+								'baselineColor': 'none',
+								'direction': direction 
 							}
 						},
-						// Display a single series that shows the closing value of the stock.
-						// Thus, this view has two columns: the date (axis) and the stock value (line series).
 						'chartView': {
 							'columns': [0, 1]
 						},
@@ -65,12 +68,6 @@ footer: true
 					}
 				},
 				// Initial range: 2012-02-09 to 2012-03-20.
-				'state': {
-					'range': {
-						'start': new Date(2013, 8, 22,0),
-						'end': new Date(2013, 8, 22,23)
-					}
-				}
 			});
 
 			var powerChart = new google.visualization.ChartWrapper({
@@ -80,9 +77,12 @@ footer: true
 					// Use the same chart area width as the control for axis alignment.
 					colors:['green'],
 					title:"Power Consumption",
-					'legend': {	'position': 'none'	}
+					'legend': {	'position': 'none'	},
+					'hAxis':{
+							'direction': direction 
+					}
 				},
-				view:{'columns':[0,1] }
+				view:{'columns':[0,1,2] }
 			});
 	
 			var arrayData=null
@@ -96,19 +96,44 @@ footer: true
 
 			var power_data = new google.visualization.DataTable();
 			power_data.addColumn('datetime','Time');
-			power_data.addColumn('number','Power [W]')
-			var temp = 1
+			power_data.addColumn('number','Power [W]');
+			power_data.addColumn({type:'string', role:'annotation'}	);
+			var temp = 1;
+			var nowIsSet=false;
+			var now=new Date();
 			for(var i = 0; i < arrayData.length; i++) {
 				temp++
 				var row = arrayData[i];
-				power_data.addRow([new Date(row[0],row[1],row[2],row[3],row[4]),row[6]]);
+				var aDate=new Date(row[0],row[1]-1,row[2],row[3],row[4]);
+				if (isNowDate(aDate,now,true)==true && nowIsSet==false){
+					power_data.addRow([aDate,row[6],'Now']);
+					nowIsSet=true;
+				}else{
+					power_data.addRow([aDate,row[6],null]);
+				}
 			}
 
-			dashboard.bind(powerControl,powerChart)
-			dashboard.draw(power_data)
+			dashboard.bind(powerControl,powerChart);
+			dashboard.draw(power_data);
 			return powerControl;
 		}
 		
+		function isNowDate(aDate,d,useMinutePrec){
+			var year=d.getFullYear();
+			var day=d.getDate();
+			var month=d.getMonth();
+			var hour=d.getHours();
+			var min=d.getMinutes();
+			if((year==aDate.getFullYear() ) && (month==aDate.getMonth()) && (day==aDate.getDate()) && (hour==aDate.getHours())){
+				if(useMinutePrec==true && (aDate.getMinutes() < (min-10) || (aDate.getMinutes())>(min+10)   ) ){
+					return false;
+				}else{
+					return true;
+				}
+			}else{
+				return false;	
+			}
+		}
 
 		// price data
 		function drawPrice() {
@@ -128,7 +153,9 @@ footer: true
 								'width': '90%'
 							},
 							'hAxis': {
-								'baselineColor': 'none'
+								'baselineColor': 'none',
+								'direction': direction
+
 							}
 						},
 						// Display a single series that shows the closing value of the stock.
@@ -140,25 +167,19 @@ footer: true
 						'minRangeSize': 86400
 					}
 				},
-				// Initial range: 2012-02-09 to 2012-03-20.
-				'state': {
-					'range': {
-						'start': new Date(2013, 8, 22,0),
-						'end': new Date(2013, 8, 22,23)
-					}
-				}
 			});
 
 			var priceChart = new google.visualization.ChartWrapper({
 				'chartType': 'AreaChart',
 				'containerId': 'priceChart',
 				'options': {
+					'hAxis':{'direction':direction},
 					// Use the same chart area width as the control for axis alignment.
 					colors:['orange'],
 					title:"Power Prices Trondheim",
 					//'chartArea': { 	'height': '80%','width': '90%'},
 					'legend': {	'position': 'none'	},
-					view:{'columns':[0,1] }
+					view:{'columns':[0,1,2] }
 				}
 			});
 	
@@ -174,11 +195,18 @@ footer: true
 			var price_data = new google.visualization.DataTable();
 			price_data.addColumn('datetime','Time');
 			price_data.addColumn('number','Price [øre/KWh]')
+			price_data.addColumn({type:'string', role:'annotation'}	);
 			var temp = 1
+			var now=new Date();
 			for(var i = 0; i < arrayData.length; i++) {
 				temp++
 				var row = arrayData[i];
-				price_data.addRow([new Date(row[0],row[1],row[2],row[3],row[4]),row[6]]);
+				var aDate=new Date(row[0],row[1]-1,row[2],row[3],row[4]);
+				if (isNowDate(aDate,now,false)==true){
+					price_data.addRow([aDate,row[6],'Now']);
+				}else{
+					price_data.addRow([aDate,row[6],null]);
+				}
 			}
 
 			dashboard.bind(priceControl,priceChart)
@@ -194,9 +222,12 @@ footer: true
 			var d=new Date();
 			var year=d.getFullYear();
 			var day=d.getDate();
-			var month=d.getMonth()+1;
+			var month=d.getMonth();
 			var hour=d.getHours();
 			var min=d.getMinutes();
+			var endDate=new Date(year,day,month,hour,min);
+			var startDay=day-1;
+			var startDate=new Date(year,startDay,month,hour,min);
 			var tempControl = new google.visualization.ControlWrapper({
 				'controlType': 'ChartRangeFilter',
 				'containerId': 'tempControl',
@@ -210,7 +241,8 @@ footer: true
 						//		'width': '90%'
 						//	},
 							'hAxis': {
-								'baselineColor': 'none'
+								'baselineColor': 'none',
+								'direction' : direction
 							}
 						},
 						// Display a single series that shows the closing value of the stock.
@@ -225,8 +257,8 @@ footer: true
 				// Initial range: 2012-02-09 to 2012-03-20.
 				'state': {
 					'range': {
-						'start': new Date(2013, 8, 22,0),
-						'end': new Date(year,month,day,hour,min)
+				//		'start': new Date(2013,8,29,0,0,0) ,
+						'end': new Date()
 					}
 				}
 			});
@@ -235,6 +267,7 @@ footer: true
 				'chartType': 'AreaChart',
 				'containerId': 'tempChart',
 				'options': {
+					'hAxis':{'direction': direction},
 					// Use the same chart area width as the control for axis alignment.
 					title: "Temperature Measurement, Trondheim",
 					'legend': {	'position': 'none'	}
@@ -244,7 +277,7 @@ footer: true
 					//},
 				},
 				// Convert the first column from 'date' to 'string'.
-				view: {'columns':[0,1]}	
+				view: {'columns':[0,1,2]}	
 			});
 	
 			var arrayData=null
@@ -259,12 +292,21 @@ footer: true
 			var temp_data = new google.visualization.DataTable();
 			temp_data.addColumn('datetime','Time');
 			temp_data.addColumn('number','Temperature [C]')
+
+			temp_data.addColumn({type:'string', role:'annotation'}	);
 			var temp = 1
+			var now=new Date();
 			for(var i = 0; i < arrayData.length; i++) {
 				temp++
 				var row = arrayData[i];
-				temp_data.addRow([new Date(row[0],row[1],row[2],row[3],row[4]),row[6]]);
+				var aDate=new Date(row[0],row[1]-1,row[2],row[3],row[4]);
+				if (isNowDate(aDate,now,false)==true){
+					temp_data.addRow([aDate,row[6],'Now']);
+				}else{
+					temp_data.addRow([aDate,row[6],null]);
+				}
 			}
+
 
 			dashboard.bind(tempControl,tempChart)
 			dashboard.draw(temp_data)
