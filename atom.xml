@@ -1,0 +1,1157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[]]></title>
+  <link href="http://simena86.github.com/atom.xml" rel="self"/>
+  <link href="http://simena86.github.com/"/>
+  <updated>2013-08-29T17:47:07+02:00</updated>
+  <id>http://simena86.github.com/</id>
+  <author>
+    <name><![CDATA[Simen Andresen]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Hand Tracking And Recognition with OpenCV]]></title>
+    <link href="http://simena86.github.com/blog/2013/08/12/hand-tracking-and-recognition-with-opencv/"/>
+    <updated>2013-08-12T21:52:00+02:00</updated>
+    <id>http://simena86.github.com/blog/2013/08/12/hand-tracking-and-recognition-with-opencv</id>
+    <content type="html"><![CDATA[<p>Computer Vision is in many ways the ultimate sensor, and has endless potential applications to robotics. Me and 2 classmates (Vegar Østhus and Martin Stokkeland) did a project in Computer Vision at UCSB and wrote a program to recognize and track finger movements.</p>
+
+<!-- more -->
+
+<p>Below is a flowchart representation of the program</p>
+
+<p><img src="http://simena86.github.com/images/handRecognition/gesture_flowchart.png" width="420" height="200" title="" /></p>
+
+<p>The hand tracking is based on color recognitin. The program is therefor initialized by sampling color from the hand:</p>
+
+<p><img src="http://simena86.github.com/images/handRecognition/waitforpalm.png" title="" /></p>
+
+<p>The hand is then extracted from the background by using a threshold using the sampled color profile.
+Each color in the profile produces a binary image which in turn are all summed together. A nonlinear median filter is then applied to get a smooth and noise free binary representation of the hand. </p>
+
+<p><img src="http://simena86.github.com/images/handRecognition/binary.png" title="" /></p>
+
+<p>When the binary representation is generated the hand is processed in the following way:</p>
+
+<p><img src="http://simena86.github.com/images/handRecognition/contour.png" title="" /></p>
+
+<p>The properties determining whether  a convexity defect is to be dismissed is the angle between the lines going 	from the defect to the neighbouring convex polygon vertices</p>
+
+<p><img src="http://simena86.github.com/images/handRecognition/handangle.png" title="" /></p>
+
+<p>The defect is dismissed if:</p>
+
+<script type="math/tex; mode=display">% &lt;![CDATA[
+
+\begin{aligned}
+length < 0.4l_{bb} \\
+angle > 80^o
+\end{aligned}
+ %]]&gt;</script>
+
+<p>The analyzis results in data that can be of further use in gesture recognition:</p>
+
+<ul>
+  <li>Fingertip positions </li>
+  <li>Number of fingers </li>
+  <li>Number of hands  </li>
+  <li>Area of hands </li>
+</ul>
+
+<p>The source code can be found <a href="https://github.com/simena86/handDetectionCV">here</a></p>
+
+<p><img src="http://simena86.github.com/images/handRecognition/final_result.png" title="" /></p>
+
+<div class="embed-video-container"><iframe src="http://www.youtube.com/embed/o3LSOq6OC4I "></iframe></div>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Getting started with raspberry Pi]]></title>
+    <link href="http://simena86.github.com/blog/2013/07/03/getting-started-with-raspberry-pi/"/>
+    <updated>2013-07-03T22:07:00+02:00</updated>
+    <id>http://simena86.github.com/blog/2013/07/03/getting-started-with-raspberry-pi</id>
+    <content type="html"><![CDATA[<p>This page is mostly for my own reference on how I get the RasPi booted and installed with the different OS’s
+<!-- more --></p>
+
+<h2 id="raspbian">Raspbian</h2>
+
+<p>For installing raspbian I’ve found great help in the following pages:</p>
+
+<ul>
+  <li><a href="http://www.vascop.com/install-raspbian-and-configure-wi-fi-without-a-monitor-or-keyboard.html">Install without keyboard and mouse by Vasco Pinho </a></li>
+  <li><a href="http://cmanios.wordpress.com/2013/03/10/install-raspbian-wheezy-linux-to-raspberry-pi-using-linux/">Install Raspbian Wheezy Linux to Raspberry Pi using Linux by Christos Manios</a></li>
+</ul>
+
+<p>And after some trouble with the wifi I found great help in this post:
+* <a href="http://pingbin.com/2012/12/setup-wifi-raspberry-pi/">PINGBIN</a></p>
+
+<h2 id="other-tips-and-tricks">Other tips and tricks</h2>
+
+<p>I followed <a href="http://mitchtech.net/vnc-setup-on-raspberry-pi-from-ubuntu/">this guide</a> for setting up the pi for using a laptop as both remote monitor and keyboard!</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Logging Accelerometer from Android to PC]]></title>
+    <link href="http://simena86.github.com/blog/2013/04/30/logging-accelerometer-from-android-to-pc/"/>
+    <updated>2013-04-30T22:09:00+02:00</updated>
+    <id>http://simena86.github.com/blog/2013/04/30/logging-accelerometer-from-android-to-pc</id>
+    <content type="html"><![CDATA[<p>I am pretty new to Android and decided to play around with the sensors. I always find accelerometers fun to play with, and like to visualize the sensor reading through a real time plot. In the java-script for the android app below, the acceleration in the x axis is read and streamed through a TCP socket to the PC over wlan. A simple python server script reads the data from a socket and writes it to a perl script, logging the data in GnuPlot, and thus setting my personal record for mixing different languages.</p>
+
+<!-- more-->
+
+<p><img src="http://sacybernetics.files.wordpress.com/2012/06/2012-06-03-23-07-43.png" width="300" height="180" /></p>
+
+<div class="embed-video-container"><iframe src="http://www.youtube.com/embed/OOufu8sdyKA "></iframe></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>accel2wifi.java</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+<span class="line-number">32</span>
+<span class="line-number">33</span>
+<span class="line-number">34</span>
+<span class="line-number">35</span>
+<span class="line-number">36</span>
+<span class="line-number">37</span>
+<span class="line-number">38</span>
+<span class="line-number">39</span>
+<span class="line-number">40</span>
+<span class="line-number">41</span>
+<span class="line-number">42</span>
+<span class="line-number">43</span>
+<span class="line-number">44</span>
+<span class="line-number">45</span>
+<span class="line-number">46</span>
+<span class="line-number">47</span>
+<span class="line-number">48</span>
+<span class="line-number">49</span>
+<span class="line-number">50</span>
+<span class="line-number">51</span>
+<span class="line-number">52</span>
+<span class="line-number">53</span>
+<span class="line-number">54</span>
+<span class="line-number">55</span>
+<span class="line-number">56</span>
+<span class="line-number">57</span>
+<span class="line-number">58</span>
+<span class="line-number">59</span>
+<span class="line-number">60</span>
+<span class="line-number">61</span>
+<span class="line-number">62</span>
+<span class="line-number">63</span>
+<span class="line-number">64</span>
+<span class="line-number">65</span>
+<span class="line-number">66</span>
+<span class="line-number">67</span>
+<span class="line-number">68</span>
+<span class="line-number">69</span>
+<span class="line-number">70</span>
+<span class="line-number">71</span>
+<span class="line-number">72</span>
+<span class="line-number">73</span>
+<span class="line-number">74</span>
+<span class="line-number">75</span>
+<span class="line-number">76</span>
+<span class="line-number">77</span>
+<span class="line-number">78</span>
+<span class="line-number">79</span>
+<span class="line-number">80</span>
+<span class="line-number">81</span>
+<span class="line-number">82</span>
+<span class="line-number">83</span>
+<span class="line-number">84</span>
+<span class="line-number">85</span>
+<span class="line-number">86</span>
+<span class="line-number">87</span>
+<span class="line-number">88</span>
+<span class="line-number">89</span>
+<span class="line-number">90</span>
+<span class="line-number">91</span>
+<span class="line-number">92</span>
+<span class="line-number">93</span>
+<span class="line-number">94</span>
+<span class="line-number">95</span>
+<span class="line-number">96</span>
+<span class="line-number">97</span>
+<span class="line-number">98</span>
+<span class="line-number">99</span>
+<span class="line-number">100</span>
+<span class="line-number">101</span>
+<span class="line-number">102</span>
+<span class="line-number">103</span>
+<span class="line-number">104</span>
+<span class="line-number">105</span>
+<span class="line-number">106</span>
+<span class="line-number">107</span>
+<span class="line-number">108</span>
+<span class="line-number">109</span>
+<span class="line-number">110</span>
+<span class="line-number">111</span>
+<span class="line-number">112</span>
+<span class="line-number">113</span>
+<span class="line-number">114</span>
+<span class="line-number">115</span>
+<span class="line-number">116</span>
+<span class="line-number">117</span>
+<span class="line-number">118</span>
+<span class="line-number">119</span>
+<span class="line-number">120</span>
+<span class="line-number">121</span>
+<span class="line-number">122</span>
+<span class="line-number">123</span>
+<span class="line-number">124</span>
+<span class="line-number">125</span>
+<span class="line-number">126</span>
+<span class="line-number">127</span>
+<span class="line-number">128</span>
+<span class="line-number">129</span>
+<span class="line-number">130</span>
+<span class="line-number">131</span>
+<span class="line-number">132</span>
+<span class="line-number">133</span>
+<span class="line-number">134</span>
+<span class="line-number">135</span>
+<span class="line-number">136</span>
+<span class="line-number">137</span>
+<span class="line-number">138</span>
+<span class="line-number">139</span>
+<span class="line-number">140</span>
+<span class="line-number">141</span>
+<span class="line-number">142</span>
+<span class="line-number">143</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="kn">package</span> <span class="n">noe</span><span class="o">.</span><span class="na">rart</span><span class="o">;</span>
+</span><span class="line">
+</span><span class="line"><span class="kn">import</span> <span class="nn">java.io.BufferedWriter</span><span class="o">;</span>
+</span><span class="line"><span class="kn">import</span> <span class="nn">java.io.OutputStreamWriter</span><span class="o">;</span>
+</span><span class="line"><span class="kn">import</span> <span class="nn">java.io.PrintWriter</span><span class="o">;</span>
+</span><span class="line"><span class="kn">import</span> <span class="nn">java.net.InetAddress</span><span class="o">;</span>
+</span><span class="line"><span class="kn">import</span> <span class="nn">java.net.Socket</span><span class="o">;</span>
+</span><span class="line">
+</span><span class="line"><span class="kn">import</span> <span class="nn">android.app.Activity</span><span class="o">;</span>
+</span><span class="line"><span class="kn">import</span> <span class="nn">android.content.Context</span><span class="o">;</span>
+</span><span class="line"><span class="kn">import</span> <span class="nn">android.hardware.Sensor</span><span class="o">;</span>
+</span><span class="line"><span class="kn">import</span> <span class="nn">android.hardware.SensorEvent</span><span class="o">;</span>
+</span><span class="line"><span class="kn">import</span> <span class="nn">android.hardware.SensorEventListener</span><span class="o">;</span>
+</span><span class="line"><span class="kn">import</span> <span class="nn">android.hardware.SensorManager</span><span class="o">;</span>
+</span><span class="line"><span class="kn">import</span> <span class="nn">android.os.Bundle</span><span class="o">;</span>
+</span><span class="line"><span class="kn">import</span> <span class="nn">android.view.View</span><span class="o">;</span>
+</span><span class="line"><span class="kn">import</span> <span class="nn">android.widget.Button</span><span class="o">;</span>
+</span><span class="line"><span class="kn">import</span> <span class="nn">android.widget.EditText</span><span class="o">;</span>
+</span><span class="line"><span class="kn">import</span> <span class="nn">android.widget.TextView</span><span class="o">;</span>
+</span><span class="line">
+</span><span class="line"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Socket_test2Activity</span> <span class="kd">extends</span> <span class="n">Activity</span> <span class="o">{</span>
+</span><span class="line">
+</span><span class="line">    <span class="kd">public</span> <span class="kt">int</span> <span class="n">PORT</span> <span class="o">=</span> <span class="mi">15000</span><span class="o">;</span>
+</span><span class="line">    <span class="kd">private</span> <span class="n">Button</span> <span class="n">connectPhones</span><span class="o">;</span>
+</span><span class="line">    <span class="kd">private</span> <span class="n">String</span> <span class="n">serverIpAddress</span> <span class="o">=</span> <span class="s">&quot;10.0.0.5&quot;</span><span class="o">;</span>
+</span><span class="line">    <span class="kd">private</span> <span class="kt">boolean</span> <span class="n">connected</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+</span><span class="line">    <span class="n">TextView</span> <span class="n">text</span><span class="o">;</span>
+</span><span class="line">    <span class="n">EditText</span> <span class="n">port</span><span class="o">;</span>
+</span><span class="line">    <span class="n">EditText</span> <span class="n">ipAdr</span><span class="o">;</span>
+</span><span class="line">    <span class="kd">private</span> <span class="kt">float</span> <span class="n">x</span><span class="o">,</span><span class="n">y</span><span class="o">,</span><span class="n">z</span><span class="o">;</span>
+</span><span class="line">    <span class="kd">private</span> <span class="n">SensorManager</span> <span class="n">sensorManager</span><span class="o">;</span>
+</span><span class="line">    <span class="kd">private</span> <span class="n">Sensor</span> <span class="n">sensor</span><span class="o">;</span>
+</span><span class="line">    <span class="kt">boolean</span> <span class="n">acc_disp</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+</span><span class="line">    <span class="kt">boolean</span> <span class="n">isStreaming</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+</span><span class="line">    <span class="n">PrintWriter</span> <span class="n">out</span><span class="o">;</span>
+</span><span class="line">
+</span><span class="line">    <span class="nd">@Override</span>
+</span><span class="line">    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">onCreate</span><span class="o">(</span><span class="n">Bundle</span> <span class="n">savedInstanceState</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">        <span class="kd">super</span><span class="o">.</span><span class="na">onCreate</span><span class="o">(</span><span class="n">savedInstanceState</span><span class="o">);</span>
+</span><span class="line">        <span class="n">setContentView</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">layout</span><span class="o">.</span><span class="na">main</span><span class="o">);</span>
+</span><span class="line">        <span class="n">connectPhones</span> <span class="o">=</span> <span class="o">(</span><span class="n">Button</span><span class="o">)</span><span class="n">findViewById</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">id</span><span class="o">.</span><span class="na">send</span><span class="o">);</span>
+</span><span class="line">        <span class="n">connectPhones</span><span class="o">.</span><span class="na">setOnClickListener</span><span class="o">(</span><span class="n">connectListener</span><span class="o">);</span>
+</span><span class="line">        <span class="n">text</span><span class="o">=(</span><span class="n">TextView</span><span class="o">)</span><span class="n">findViewById</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">id</span><span class="o">.</span><span class="na">textin</span><span class="o">);</span>
+</span><span class="line">        <span class="n">port</span><span class="o">=(</span><span class="n">EditText</span><span class="o">)</span><span class="n">findViewById</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">id</span><span class="o">.</span><span class="na">port</span><span class="o">);</span>
+</span><span class="line">        <span class="n">ipAdr</span><span class="o">=(</span><span class="n">EditText</span><span class="o">)</span><span class="n">findViewById</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">id</span><span class="o">.</span><span class="na">ipadr</span><span class="o">);</span>
+</span><span class="line">        <span class="n">text</span><span class="o">.</span><span class="na">setText</span><span class="o">(</span><span class="s">&quot;Press send to stream acceleration measurement&quot;</span><span class="o">);</span>
+</span><span class="line">        <span class="n">sensorManager</span> <span class="o">=</span> <span class="o">(</span><span class="n">SensorManager</span><span class="o">)</span> <span class="n">getSystemService</span><span class="o">(</span><span class="n">Context</span><span class="o">.</span><span class="na">SENSOR_SERVICE</span><span class="o">);</span>
+</span><span class="line">        <span class="n">sensor</span> <span class="o">=</span> <span class="n">sensorManager</span><span class="o">.</span><span class="na">getSensorList</span><span class="o">(</span><span class="n">Sensor</span><span class="o">.</span><span class="na">TYPE_ACCELEROMETER</span><span class="o">).</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+</span><span class="line">        <span class="n">port</span><span class="o">.</span><span class="na">setText</span><span class="o">(</span><span class="s">&quot;15000&quot;</span><span class="o">);</span>
+</span><span class="line">        <span class="n">ipAdr</span><span class="o">.</span><span class="na">setText</span><span class="o">(</span><span class="n">serverIpAddress</span><span class="o">);</span>
+</span><span class="line">        <span class="n">acc_disp</span> <span class="o">=</span><span class="kc">false</span><span class="o">;</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="kd">private</span> <span class="n">Button</span><span class="o">.</span><span class="na">OnClickListener</span> <span class="n">connectListener</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Button</span><span class="o">.</span><span class="na">OnClickListener</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">        <span class="nd">@Override</span>
+</span><span class="line">        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onClick</span><span class="o">(</span><span class="n">View</span> <span class="n">v</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">            <span class="k">if</span> <span class="o">(!</span><span class="n">connected</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">                <span class="k">if</span> <span class="o">(!</span><span class="n">serverIpAddress</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="s">&quot;&quot;</span><span class="o">))</span> <span class="o">{</span>
+</span><span class="line">                    <span class="n">connectPhones</span><span class="o">.</span><span class="na">setText</span><span class="o">(</span><span class="s">&quot;Stop Streaming&quot;</span><span class="o">);</span>
+</span><span class="line">                    <span class="n">Thread</span> <span class="n">cThread</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Thread</span><span class="o">(</span><span class="k">new</span> <span class="n">ClientThread</span><span class="o">());</span>
+</span><span class="line">                    <span class="n">cThread</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+</span><span class="line">                <span class="o">}</span>
+</span><span class="line">            <span class="o">}</span>
+</span><span class="line">            <span class="k">else</span><span class="o">{</span>
+</span><span class="line">                <span class="n">connectPhones</span><span class="o">.</span><span class="na">setText</span><span class="o">(</span><span class="s">&quot;Start Streaming&quot;</span><span class="o">);</span>
+</span><span class="line">                <span class="n">connected</span><span class="o">=</span><span class="kc">false</span><span class="o">;</span>
+</span><span class="line">                <span class="n">acc_disp</span><span class="o">=</span><span class="kc">false</span><span class="o">;</span>
+</span><span class="line">            <span class="o">}</span>
+</span><span class="line">        <span class="o">}</span>
+</span><span class="line">    <span class="o">};</span>
+</span><span class="line">
+</span><span class="line">    <span class="kd">public</span> <span class="kd">class</span> <span class="nc">ClientThread</span> <span class="kd">implements</span> <span class="n">Runnable</span> <span class="o">{</span>
+</span><span class="line">        <span class="n">Socket</span> <span class="n">socket</span><span class="o">;</span>
+</span><span class="line">        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">            <span class="k">try</span> <span class="o">{</span>
+</span><span class="line">                <span class="n">acc_disp</span><span class="o">=</span><span class="kc">true</span><span class="o">;</span>
+</span><span class="line">                <span class="n">PORT</span> <span class="o">=</span> <span class="n">Integer</span><span class="o">.</span><span class="na">parseInt</span><span class="o">(</span><span class="n">port</span><span class="o">.</span><span class="na">getText</span><span class="o">().</span><span class="na">toString</span><span class="o">());</span>
+</span><span class="line">                <span class="n">serverIpAddress</span><span class="o">=</span><span class="n">ipAdr</span><span class="o">.</span><span class="na">getText</span><span class="o">().</span><span class="na">toString</span><span class="o">();</span>
+</span><span class="line">                <span class="n">InetAddress</span> <span class="n">serverAddr</span> <span class="o">=</span> <span class="n">InetAddress</span><span class="o">.</span><span class="na">getByName</span><span class="o">(</span><span class="n">serverIpAddress</span><span class="o">);</span>
+</span><span class="line">                <span class="c1">//InetAddress serverAddr = InetAddress.getByName(&quot;TURBOBEAVER&quot;);</span>
+</span><span class="line">                <span class="n">socket</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Socket</span><span class="o">(</span><span class="n">serverAddr</span><span class="o">,</span> <span class="n">PORT</span><span class="o">);</span>
+</span><span class="line">                <span class="n">connected</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+</span><span class="line">                <span class="n">out</span> <span class="o">=</span> <span class="k">new</span> <span class="n">PrintWriter</span><span class="o">(</span><span class="k">new</span> <span class="n">BufferedWriter</span><span class="o">(</span><span class="k">new</span> <span class="n">OutputStreamWriter</span><span class="o">(</span><span class="n">socket</span><span class="o">.</span><span class="na">getOutputStream</span><span class="o">())),</span> <span class="kc">true</span><span class="o">);</span>
+</span><span class="line">                <span class="k">while</span> <span class="o">(</span><span class="n">connected</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">                    <span class="n">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&quot;%10.2f\n&quot;</span><span class="o">,</span> <span class="n">x</span><span class="o">);</span>
+</span><span class="line">                    <span class="n">out</span><span class="o">.</span><span class="na">flush</span><span class="o">();</span>
+</span><span class="line">                    <span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">2</span><span class="o">);</span>
+</span><span class="line">                <span class="o">}</span>
+</span><span class="line">            <span class="o">}</span>
+</span><span class="line">            <span class="k">catch</span> <span class="o">(</span><span class="n">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">
+</span><span class="line">            <span class="o">}</span>
+</span><span class="line">            <span class="k">finally</span><span class="o">{</span>
+</span><span class="line">                <span class="k">try</span><span class="o">{</span>
+</span><span class="line">                    <span class="n">acc_disp</span><span class="o">=</span><span class="kc">false</span><span class="o">;</span>
+</span><span class="line">                    <span class="n">connected</span><span class="o">=</span><span class="kc">false</span><span class="o">;</span>
+</span><span class="line">                    <span class="n">connectPhones</span><span class="o">.</span><span class="na">setText</span><span class="o">(</span><span class="s">&quot;Start Streaming&quot;</span><span class="o">);</span>
+</span><span class="line">                    <span class="c1">//out.close();</span>
+</span><span class="line">                    <span class="n">socket</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+</span><span class="line">                <span class="o">}</span><span class="k">catch</span><span class="o">(</span><span class="n">Exception</span> <span class="n">a</span><span class="o">){</span>
+</span><span class="line">                <span class="o">}</span>
+</span><span class="line">            <span class="o">}</span>
+</span><span class="line">        <span class="o">}</span>
+</span><span class="line">    <span class="o">};</span>
+</span><span class="line">
+</span><span class="line">   <span class="kd">private</span> <span class="kt">void</span> <span class="nf">init_perif</span><span class="o">(){</span>
+</span><span class="line">        <span class="c1">// smthing      </span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="nd">@Override</span>
+</span><span class="line">    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">onResume</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">        <span class="kd">super</span><span class="o">.</span><span class="na">onResume</span><span class="o">();</span>
+</span><span class="line">        <span class="n">sensorManager</span><span class="o">.</span><span class="na">registerListener</span><span class="o">(</span><span class="n">accelerationListener</span><span class="o">,</span> <span class="n">sensor</span><span class="o">,</span>
+</span><span class="line">        <span class="n">SensorManager</span><span class="o">.</span><span class="na">SENSOR_DELAY_FASTEST</span><span class="o">);</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="nd">@Override</span>
+</span><span class="line">    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">onStop</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">        <span class="n">sensorManager</span><span class="o">.</span><span class="na">unregisterListener</span><span class="o">(</span><span class="n">accelerationListener</span><span class="o">);</span>
+</span><span class="line">        <span class="kd">super</span><span class="o">.</span><span class="na">onStop</span><span class="o">();</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="kd">private</span> <span class="n">SensorEventListener</span> <span class="n">accelerationListener</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SensorEventListener</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">
+</span><span class="line">        <span class="nd">@Override</span>
+</span><span class="line">        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onAccuracyChanged</span><span class="o">(</span><span class="n">Sensor</span> <span class="n">sensor</span><span class="o">,</span> <span class="kt">int</span> <span class="n">acc</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">        <span class="o">}</span>
+</span><span class="line">        <span class="nd">@Override</span>
+</span><span class="line">        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onSensorChanged</span><span class="o">(</span><span class="n">SensorEvent</span> <span class="n">event</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">            <span class="n">x</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="na">values</span><span class="o">[</span><span class="mi">0</span><span class="o">];</span>
+</span><span class="line">            <span class="n">y</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="na">values</span><span class="o">[</span><span class="mi">1</span><span class="o">];</span>
+</span><span class="line">            <span class="n">z</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="na">values</span><span class="o">[</span><span class="mi">2</span><span class="o">];</span>
+</span><span class="line">            <span class="n">refreshDisplay</span><span class="o">();</span>
+</span><span class="line">        <span class="o">}</span>
+</span><span class="line">    <span class="o">};</span>
+</span><span class="line">
+</span><span class="line">    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">refreshDisplay</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">        <span class="k">if</span><span class="o">(</span><span class="n">acc_disp</span> <span class="o">==</span> <span class="kc">true</span><span class="o">){</span>
+</span><span class="line">            <span class="n">String</span> <span class="n">output</span> <span class="o">=</span> <span class="n">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">&quot;X:%3.2f m/s^2  |  Y:%3.2f m/s^2  |   Z:%3.2f m/s^2&quot;</span><span class="o">,</span> <span class="n">x</span><span class="o">,</span> <span class="n">y</span><span class="o">,</span> <span class="n">z</span><span class="o">);</span>
+</span><span class="line">            <span class="n">text</span><span class="o">.</span><span class="na">setText</span><span class="o">(</span><span class="n">output</span><span class="o">);</span>
+</span><span class="line">        <span class="o">}</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>The simple python server script below opens a TCP socket and receives the readings from the Android app over WLAN. Note that the python script reads the last entry in the receive buffer, which then makes up a LIFO que, and no timestamp is added to the reading. For a signal analysis one would add a time stamp and a FIFO que should be used instead. For debugging and pure fun, the method I used is still pretty sufficient.
+`
+The plotting is excecuted with piping the output from the python script to the perl script in the linux terminal:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="bash"><span class="line"><span class="nv">$ </span>./server.py | ./driveGnuPlot.pl 1 500 <span class="s2">&quot;Accelerometer Reading&quot;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Python server :</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>server.py</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+<span class="line-number">32</span>
+<span class="line-number">33</span>
+<span class="line-number">34</span>
+<span class="line-number">35</span>
+<span class="line-number">36</span>
+<span class="line-number">37</span>
+<span class="line-number">38</span>
+<span class="line-number">39</span>
+<span class="line-number">40</span>
+<span class="line-number">41</span>
+</pre></td><td class="code"><pre><code class="python"><span class="line"><span class="c">#!/usr/bin/python</span>
+</span><span class="line"><span class="kn">import</span> <span class="nn">socket</span>
+</span><span class="line"><span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span class="line"><span class="kn">import</span> <span class="nn">sys</span>
+</span><span class="line">
+</span><span class="line"><span class="n">serv</span><span class="o">=</span><span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">()</span>
+</span><span class="line">
+</span><span class="line"><span class="n">HOST</span><span class="o">=</span><span class="s">&#39;&#39;</span>
+</span><span class="line"><span class="c">#let&#39;s set up some constants</span>
+</span><span class="line"><span class="c">#HOST=&quot;78.91.80.123&quot;</span>
+</span><span class="line"><span class="n">PORT</span> <span class="o">=</span> <span class="mi">15000</span>   <span class="c">#arbitrary port not currently in use</span>
+</span><span class="line"><span class="c">#ADDR = (HOST,PORT)    #we need a tuple for the address</span>
+</span><span class="line"><span class="n">BUFSIZE</span> <span class="o">=</span> <span class="mi">4096</span>    <span class="c">#reasonably sized buffer for data</span>
+</span><span class="line">
+</span><span class="line">
+</span><span class="line"><span class="c">#bind our socket to the address</span>
+</span><span class="line"><span class="k">try</span><span class="p">:</span>
+</span><span class="line">	<span class="n">serv</span><span class="o">.</span><span class="n">bind</span><span class="p">((</span><span class="n">HOST</span><span class="p">,</span> <span class="n">PORT</span><span class="p">))</span>
+</span><span class="line">	<span class="n">serv</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</span><span class="line">	<span class="n">conn</span><span class="p">,</span><span class="n">addr</span> <span class="o">=</span> <span class="n">serv</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+</span><span class="line"><span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+</span><span class="line">	<span class="k">print</span> <span class="s">&quot;Keyboard Interrupt&quot;</span>
+</span><span class="line">	<span class="n">serv</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span><span class="line">	<span class="nb">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span><span class="line"><span class="k">try</span><span class="p">:</span>
+</span><span class="line">	<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">3100</span><span class="p">):</span>
+</span><span class="line">		<span class="n">data</span><span class="o">=</span><span class="n">conn</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">4096</span><span class="p">)</span>
+</span><span class="line">		<span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+</span><span class="line">		<span class="n">chunk</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+</span><span class="line">		<span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;0:</span><span class="si">%s</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">chunk</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="c"># writes the last element in the list</span>
+</span><span class="line">		<span class="n">sleep</span><span class="p">(</span><span class="mf">0.03</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line">	<span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span><span class="line">	<span class="n">sleep</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line"><span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+</span><span class="line">	<span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span><span class="line">	<span class="k">print</span> <span class="s">&quot;bye!&quot;</span>
+</span><span class="line"><span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+</span><span class="line">	<span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span><span class="line">	<span class="k">print</span> <span class="s">&quot;indexError&quot;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>And lastly the python script pipes data to a Perl script written by Thanassis Tsiodras.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+<span class="line-number">32</span>
+<span class="line-number">33</span>
+<span class="line-number">34</span>
+<span class="line-number">35</span>
+<span class="line-number">36</span>
+<span class="line-number">37</span>
+<span class="line-number">38</span>
+<span class="line-number">39</span>
+<span class="line-number">40</span>
+<span class="line-number">41</span>
+<span class="line-number">42</span>
+<span class="line-number">43</span>
+<span class="line-number">44</span>
+<span class="line-number">45</span>
+<span class="line-number">46</span>
+<span class="line-number">47</span>
+<span class="line-number">48</span>
+<span class="line-number">49</span>
+<span class="line-number">50</span>
+<span class="line-number">51</span>
+<span class="line-number">52</span>
+<span class="line-number">53</span>
+<span class="line-number">54</span>
+<span class="line-number">55</span>
+<span class="line-number">56</span>
+<span class="line-number">57</span>
+<span class="line-number">58</span>
+<span class="line-number">59</span>
+<span class="line-number">60</span>
+<span class="line-number">61</span>
+<span class="line-number">62</span>
+<span class="line-number">63</span>
+<span class="line-number">64</span>
+<span class="line-number">65</span>
+<span class="line-number">66</span>
+<span class="line-number">67</span>
+<span class="line-number">68</span>
+<span class="line-number">69</span>
+<span class="line-number">70</span>
+<span class="line-number">71</span>
+<span class="line-number">72</span>
+<span class="line-number">73</span>
+<span class="line-number">74</span>
+<span class="line-number">75</span>
+<span class="line-number">76</span>
+<span class="line-number">77</span>
+<span class="line-number">78</span>
+<span class="line-number">79</span>
+<span class="line-number">80</span>
+<span class="line-number">81</span>
+<span class="line-number">82</span>
+<span class="line-number">83</span>
+<span class="line-number">84</span>
+<span class="line-number">85</span>
+<span class="line-number">86</span>
+<span class="line-number">87</span>
+<span class="line-number">88</span>
+<span class="line-number">89</span>
+<span class="line-number">90</span>
+<span class="line-number">91</span>
+<span class="line-number">92</span>
+<span class="line-number">93</span>
+<span class="line-number">94</span>
+<span class="line-number">95</span>
+<span class="line-number">96</span>
+<span class="line-number">97</span>
+<span class="line-number">98</span>
+<span class="line-number">99</span>
+<span class="line-number">100</span>
+<span class="line-number">101</span>
+<span class="line-number">102</span>
+<span class="line-number">103</span>
+<span class="line-number">104</span>
+<span class="line-number">105</span>
+<span class="line-number">106</span>
+<span class="line-number">107</span>
+<span class="line-number">108</span>
+<span class="line-number">109</span>
+<span class="line-number">110</span>
+<span class="line-number">111</span>
+<span class="line-number">112</span>
+<span class="line-number">113</span>
+<span class="line-number">114</span>
+<span class="line-number">115</span>
+<span class="line-number">116</span>
+<span class="line-number">117</span>
+<span class="line-number">118</span>
+<span class="line-number">119</span>
+<span class="line-number">120</span>
+<span class="line-number">121</span>
+<span class="line-number">122</span>
+<span class="line-number">123</span>
+<span class="line-number">124</span>
+<span class="line-number">125</span>
+<span class="line-number">126</span>
+<span class="line-number">127</span>
+<span class="line-number">128</span>
+<span class="line-number">129</span>
+<span class="line-number">130</span>
+<span class="line-number">131</span>
+<span class="line-number">132</span>
+<span class="line-number">133</span>
+<span class="line-number">134</span>
+<span class="line-number">135</span>
+<span class="line-number">136</span>
+<span class="line-number">137</span>
+<span class="line-number">138</span>
+<span class="line-number">139</span>
+</pre></td><td class="code"><pre><code class="perl"><span class="line"><span class="c1">#!/usr/bin/perl -w</span>
+</span><span class="line"><span class="k">use</span> <span class="n">strict</span><span class="p">;</span>
+</span><span class="line"><span class="k">use</span> <span class="nn">Time::</span><span class="n">HiRes</span> <span class="sx">qw/sleep/</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line">
+</span><span class="line"><span class="k">sub </span><span class="nf">usage</span> <span class="p">{</span>
+</span><span class="line">    <span class="k">print</span> <span class="s">&quot;Usage: $0 &lt;options&gt;\n&quot;</span><span class="p">;</span>
+</span><span class="line">    <span class="k">print</span> <span class="s">&lt;&lt;OEF;</span>
+</span><span class="line"><span class="s">where options are (in order):</span>
+</span><span class="line">
+</span><span class="line"><span class="s">  NumberOfStreams                         How many streams to plot (windows)</span>
+</span><span class="line"><span class="s">  Stream1_WindowSampleSize &lt;Stream2...&gt;   This many window samples for each stream</span>
+</span><span class="line"><span class="s">  Stream1_Title &lt;Stream2_Title&gt; ...       Title used for each stream</span>
+</span><span class="line"><span class="s">  (Optional) Stream1_geometry &lt;Stream2_geometry&gt;...  X and Y position in pixels from the top left</span>
+</span><span class="line">
+</span><span class="line"><span class="s">The last parameters (the optionally provided geometries of the gnuplot windows) </span>
+</span><span class="line"><span class="s">are of the form: </span>
+</span><span class="line"><span class="s">  WIDTHxHEIGHT+XOFF+YOFF</span>
+</span><span class="line"><span class="s">OEF</span>
+</span><span class="line">    <span class="nb">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line">
+</span><span class="line"><span class="k">sub </span><span class="nf">Arg</span> <span class="p">{</span>
+</span><span class="line">    <span class="k">if</span> <span class="p">(</span><span class="nv">$#ARGV</span> <span class="o">&lt;</span> <span class="nv">$_</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="p">{</span>
+</span><span class="line">	<span class="k">print</span> <span class="s">&quot;Expected parameter missing...\n\n&quot;</span><span class="p">;</span>
+</span><span class="line">	<span class="n">usage</span><span class="p">;</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">    <span class="nv">$ARGV</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="nv">$_</span><span class="p">[</span><span class="mi">0</span><span class="p">])];</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line">
+</span><span class="line"><span class="k">sub </span><span class="nf">main</span> <span class="p">{</span>
+</span><span class="line">    <span class="k">my</span> <span class="nv">$argIdx</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line">    <span class="k">my</span> <span class="nv">$numberOfStreams</span> <span class="o">=</span> <span class="n">Arg</span><span class="p">(</span><span class="nv">$argIdx</span><span class="o">++</span><span class="p">);</span>
+</span><span class="line">    <span class="k">print</span> <span class="s">&quot;Will display $numberOfStreams Streams (in $numberOfStreams windows)...\n&quot;</span><span class="p">;</span>
+</span><span class="line">    <span class="k">my</span> <span class="nv">@sampleSizes</span><span class="p">;</span>
+</span><span class="line">    <span class="k">for</span><span class="p">(</span><span class="k">my</span> <span class="nv">$i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nv">$i</span><span class="o">&lt;</span><span class="nv">$numberOfStreams</span><span class="p">;</span> <span class="nv">$i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">		<span class="k">my</span> <span class="nv">$samples</span> <span class="o">=</span> <span class="n">Arg</span><span class="p">(</span><span class="nv">$argIdx</span><span class="o">++</span><span class="p">);</span>
+</span><span class="line">		<span class="nb">push</span> <span class="nv">@sampleSizes</span><span class="p">,</span> <span class="nv">$samples</span><span class="p">;</span>
+</span><span class="line">		<span class="k">print</span> <span class="s">&quot;Stream &quot;</span><span class="o">.</span><span class="p">(</span><span class="nv">$i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="s">&quot; will use a window of $samples samples\n&quot;</span><span class="p">;</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">    <span class="k">my</span> <span class="nv">@titles</span><span class="p">;</span>
+</span><span class="line">    <span class="k">for</span><span class="p">(</span><span class="k">my</span> <span class="nv">$i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nv">$i</span><span class="o">&lt;</span><span class="nv">$numberOfStreams</span><span class="p">;</span> <span class="nv">$i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">	<span class="k">my</span> <span class="nv">$title</span> <span class="o">=</span> <span class="n">Arg</span><span class="p">(</span><span class="nv">$argIdx</span><span class="o">++</span><span class="p">);</span>
+</span><span class="line">	<span class="nb">push</span> <span class="nv">@titles</span><span class="p">,</span> <span class="nv">$title</span><span class="p">;</span>
+</span><span class="line">	<span class="k">print</span> <span class="s">&quot;Stream &quot;</span><span class="o">.</span><span class="p">(</span><span class="nv">$i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="s">&quot; will use a title of &#39;$title&#39;\n&quot;</span><span class="p">;</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">    <span class="k">my</span> <span class="nv">@geometries</span><span class="p">;</span>
+</span><span class="line">    <span class="k">if</span> <span class="p">(</span><span class="nv">$#ARGV</span> <span class="o">&gt;=</span> <span class="nv">$argIdx</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">	<span class="k">for</span><span class="p">(</span><span class="k">my</span> <span class="nv">$i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nv">$i</span><span class="o">&lt;</span><span class="nv">$numberOfStreams</span><span class="p">;</span> <span class="nv">$i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">	    <span class="k">my</span> <span class="nv">$geometry</span> <span class="o">=</span> <span class="n">Arg</span><span class="p">(</span><span class="nv">$argIdx</span><span class="o">++</span><span class="p">);</span>
+</span><span class="line">	    <span class="nb">push</span> <span class="nv">@geometries</span><span class="p">,</span> <span class="nv">$geometry</span><span class="p">;</span>
+</span><span class="line">	    <span class="k">print</span> <span class="s">&quot;Stream &quot;</span><span class="o">.</span><span class="p">(</span><span class="nv">$i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="s">&quot; will use a geometry of &#39;$geometry&#39;\n&quot;</span><span class="p">;</span>
+</span><span class="line">	<span class="p">}</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">    <span class="k">my</span> <span class="nv">$terminal</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">;</span>
+</span><span class="line">    <span class="nb">open</span> <span class="n">GNUPLOT_TERM</span><span class="p">,</span> <span class="s">&quot;echo &#39;show terminal;&#39; | gnuplot 2&gt;&amp;1 |&quot;</span><span class="p">;</span>
+</span><span class="line">    <span class="k">while</span> <span class="p">(</span><span class="sr">&lt;GNUPLOT_TERM&gt;</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">	<span class="k">if</span> <span class="p">(</span><span class="sr">m/terminal type is (\w+)/</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">	    <span class="nv">$terminal</span><span class="o">=</span><span class="nv">$1</span><span class="p">;</span>
+</span><span class="line">	<span class="p">}</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">    <span class="nb">close</span> <span class="n">GNUPLOT_TERM</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line">    <span class="c1"># unfortunately, the wxt terminal type does not support positioning. </span>
+</span><span class="line">    <span class="c1"># hardcode it...</span>
+</span><span class="line">    <span class="nv">$terminal</span>  <span class="o">=</span> <span class="s">&quot;x11&quot;</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line">    <span class="k">my</span> <span class="nv">@gnuplots</span><span class="p">;</span>
+</span><span class="line">    <span class="k">my</span> <span class="nv">@buffers</span><span class="p">;</span>
+</span><span class="line">    <span class="k">my</span> <span class="nv">@xcounters</span><span class="p">;</span>
+</span><span class="line">    <span class="nb">shift</span> <span class="nv">@ARGV</span><span class="p">;</span> <span class="c1"># number of streams</span>
+</span><span class="line">    <span class="k">for</span><span class="p">(</span><span class="k">my</span> <span class="nv">$i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nv">$i</span><span class="o">&lt;</span><span class="nv">$numberOfStreams</span><span class="p">;</span> <span class="nv">$i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">		<span class="nb">shift</span> <span class="nv">@ARGV</span><span class="p">;</span> <span class="c1"># sample size</span>
+</span><span class="line">		<span class="nb">shift</span> <span class="nv">@ARGV</span><span class="p">;</span> <span class="c1"># title</span>
+</span><span class="line">		<span class="nb">shift</span> <span class="nv">@ARGV</span><span class="p">;</span> <span class="c1"># geometry</span>
+</span><span class="line">		<span class="nb">local</span> <span class="o">*</span><span class="n">PIPE</span><span class="p">;</span>
+</span><span class="line">		<span class="k">my</span> <span class="nv">$geometry</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">;</span>
+</span><span class="line">		<span class="k">if</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">!=</span> <span class="nv">$#geometries</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">		    <span class="nv">$geometry</span> <span class="o">=</span> <span class="s">&quot; -geometry &quot;</span><span class="o">.</span><span class="nv">$geometries</span><span class="p">[</span><span class="nv">$i</span><span class="p">];</span>
+</span><span class="line">		<span class="p">}</span>
+</span><span class="line">	<span class="nb">open</span> <span class="n">PIPE</span><span class="p">,</span> <span class="s">&quot;|gnuplot $geometry &quot;</span> <span class="o">||</span> <span class="nb">die</span> <span class="s">&quot;Can&#39;t initialize gnuplot number &quot;</span><span class="o">.</span><span class="p">(</span><span class="nv">$i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="s">&quot;\n&quot;</span><span class="p">;</span>
+</span><span class="line">	<span class="nb">select</span><span class="p">((</span><span class="nb">select</span><span class="p">(</span><span class="n">PIPE</span><span class="p">),</span> <span class="vg">$|</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]);</span>
+</span><span class="line">	<span class="nb">push</span> <span class="nv">@gnuplots</span><span class="p">,</span> <span class="o">*</span><span class="n">PIPE</span><span class="p">;</span>
+</span><span class="line">	<span class="k">print</span> <span class="n">PIPE</span> <span class="s">&quot;set xtics\n&quot;</span><span class="p">;</span>
+</span><span class="line">	<span class="k">print</span> <span class="n">PIPE</span> <span class="s">&quot;set ytics\n&quot;</span><span class="p">;</span>
+</span><span class="line">	<span class="k">print</span> <span class="n">PIPE</span> <span class="s">&quot;set style data lines\n&quot;</span><span class="p">;</span>
+</span><span class="line">	<span class="k">print</span> <span class="n">PIPE</span> <span class="s">&quot;set grid\n&quot;</span><span class="p">;</span>
+</span><span class="line">	<span class="k">if</span> <span class="p">(</span><span class="nv">$numberOfStreams</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">	    <span class="k">print</span> <span class="n">PIPE</span> <span class="s">&quot;set terminal $terminal title &#39;&quot;</span><span class="o">.</span><span class="nv">$titles</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="s">&quot;&#39; noraise\n&quot;</span><span class="p">;</span>
+</span><span class="line">	<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class="line">	    <span class="k">print</span> <span class="n">PIPE</span> <span class="s">&quot;set terminal $terminal noraise\n&quot;</span><span class="p">;</span>
+</span><span class="line">	<span class="p">}</span>
+</span><span class="line">	<span class="k">print</span> <span class="n">PIPE</span> <span class="s">&quot;set autoscale\n&quot;</span><span class="p">;</span>
+</span><span class="line">	<span class="k">my</span> <span class="nv">@data</span> <span class="o">=</span> <span class="o">[]</span><span class="p">;</span>
+</span><span class="line">	<span class="nb">push</span> <span class="nv">@buffers</span><span class="p">,</span> <span class="nv">@data</span><span class="p">;</span>
+</span><span class="line">	<span class="nb">push</span> <span class="nv">@xcounters</span><span class="p">,</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">    <span class="k">my</span> <span class="nv">$streamIdx</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line">    <span class="nb">select</span><span class="p">((</span><span class="nb">select</span><span class="p">(</span><span class="bp">STDOUT</span><span class="p">),</span> <span class="vg">$|</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]);</span>
+</span><span class="line">    <span class="k">while</span><span class="p">(</span><span class="o">&lt;&gt;</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">		<span class="nb">chomp</span><span class="p">;</span>
+</span><span class="line">		<span class="k">my</span> <span class="nv">@parts</span> <span class="o">=</span> <span class="nb">split</span> <span class="sr">/:/</span><span class="p">;</span>
+</span><span class="line">		<span class="nv">$streamIdx</span> <span class="o">=</span> <span class="nv">$parts</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+</span><span class="line">		<span class="k">my</span> <span class="nv">$buf</span> <span class="o">=</span> <span class="nv">$buffers</span><span class="p">[</span><span class="nv">$streamIdx</span><span class="p">];</span>
+</span><span class="line">		<span class="k">my</span> <span class="nv">$pip</span> <span class="o">=</span> <span class="nv">$gnuplots</span><span class="p">[</span><span class="nv">$streamIdx</span><span class="p">];</span>
+</span><span class="line">		<span class="k">my</span> <span class="nv">$xcounter</span> <span class="o">=</span> <span class="nv">$xcounters</span><span class="p">[</span><span class="nv">$streamIdx</span><span class="p">];</span>
+</span><span class="line">		<span class="k">my</span> <span class="nv">$title</span> <span class="o">=</span> <span class="nv">$titles</span><span class="p">[</span><span class="nv">$streamIdx</span><span class="p">];</span>
+</span><span class="line">
+</span><span class="line">	<span class="c1"># data buffering (up to stream sample size)</span>
+</span><span class="line">	<span class="nb">push</span> <span class="nv">@</span><span class="p">{</span><span class="nv">$buf</span><span class="p">},</span> <span class="nv">$parts</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+</span><span class="line">	<span class="c1">#print &quot;stream $streamIdx: &quot;;</span>
+</span><span class="line">	<span class="k">print</span> <span class="nv">$pip</span> <span class="s">&quot;set xrange [&quot;</span><span class="o">.</span><span class="p">(</span><span class="nv">$xcounter</span><span class="o">-</span><span class="nv">$sampleSizes</span><span class="p">[</span><span class="nv">$streamIdx</span><span class="p">])</span><span class="o">.</span><span class="s">&quot;:&quot;</span><span class="o">.</span><span class="p">(</span><span class="nv">$xcounter</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="s">&quot;]\n&quot;</span><span class="p">;</span>
+</span><span class="line">	<span class="k">if</span> <span class="p">(</span><span class="nv">$numberOfStreams</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">	    <span class="k">print</span> <span class="nv">$pip</span> <span class="s">&quot;plot \&quot;-\&quot;\n&quot;</span><span class="p">;</span>
+</span><span class="line">	<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class="line">	    <span class="k">print</span> <span class="nv">$pip</span> <span class="s">&quot;plot \&quot;-\&quot; title &#39;$title&#39;\n&quot;</span><span class="p">;</span>
+</span><span class="line">	<span class="p">}</span>
+</span><span class="line">	<span class="k">my</span> <span class="nv">$cnt</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line">	<span class="k">for</span> <span class="k">my</span> <span class="nv">$elem</span> <span class="p">(</span><span class="nb">reverse</span> <span class="nv">@</span><span class="p">{</span><span class="nv">$buf</span><span class="p">})</span> <span class="p">{</span>
+</span><span class="line">	    <span class="c1">#print &quot; &quot;.$elem;</span>
+</span><span class="line">	    <span class="k">print</span> <span class="nv">$pip</span> <span class="p">(</span><span class="nv">$xcounter</span><span class="o">-</span><span class="nv">$cnt</span><span class="p">)</span><span class="o">.</span><span class="s">&quot; &quot;</span><span class="o">.</span><span class="nv">$elem</span><span class="o">.</span><span class="s">&quot;\n&quot;</span><span class="p">;</span>
+</span><span class="line">	    <span class="nv">$cnt</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class="line">	<span class="p">}</span>
+</span><span class="line">	<span class="c1">#print &quot;\n&quot;;</span>
+</span><span class="line">	<span class="k">print</span> <span class="nv">$pip</span> <span class="s">&quot;e\n&quot;</span><span class="p">;</span>
+</span><span class="line">	<span class="k">if</span> <span class="p">(</span><span class="nv">$cnt</span><span class="o">&gt;=</span><span class="nv">$sampleSizes</span><span class="p">[</span><span class="nv">$streamIdx</span><span class="p">])</span> <span class="p">{</span>
+</span><span class="line">	    <span class="nb">shift</span> <span class="nv">@</span><span class="p">{</span><span class="nv">$buf</span><span class="p">};</span>
+</span><span class="line">	<span class="p">}</span>
+</span><span class="line">	<span class="nv">$xcounters</span><span class="p">[</span><span class="nv">$streamIdx</span><span class="p">]</span><span class="o">++</span><span class="p">;</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">    <span class="k">for</span><span class="p">(</span><span class="k">my</span> <span class="nv">$i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nv">$i</span><span class="o">&lt;</span><span class="nv">$numberOfStreams</span><span class="p">;</span> <span class="nv">$i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">	<span class="k">my</span> <span class="nv">$pip</span> <span class="o">=</span> <span class="nv">$gnuplots</span><span class="p">[</span><span class="nv">$i</span><span class="p">];</span>
+</span><span class="line">	<span class="k">print</span> <span class="nv">$pip</span> <span class="s">&quot;exit;\n&quot;</span><span class="p">;</span>
+</span><span class="line">	<span class="nb">close</span> <span class="nv">$pip</span><span class="p">;</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line">
+</span><span class="line"><span class="n">main</span><span class="p">;</span>
+</span><span class="line"><span class="nb">sleep</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[My Vim Setup]]></title>
+    <link href="http://simena86.github.com/blog/2013/04/12/my-vim-setup/"/>
+    <updated>2013-04-12T20:03:00+02:00</updated>
+    <id>http://simena86.github.com/blog/2013/04/12/my-vim-setup</id>
+    <content type="html"><![CDATA[<p>Vim is a very popular text editor for Unix-like systems, written by Bram Moolenaar. I have been using Vim for a couple of years now and have found some nice features that make it more efficient for my use.  </p>
+
+<!-- more -->
+
+<h2 id="basics">Basics</h2>
+
+<p>First of all one should look into the root configuration file /etc/vim/vimrc.
+I uncommented some things here that I found useful, like for instance 
+`</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>/etc/vim/vimrc </span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="vim"><span class="line"><span class="k">set</span> <span class="nb">showcmd</span>		<span class="c">&quot; Show (partial) command in status line.</span>
+</span><span class="line"><span class="k">set</span> <span class="nb">showmatch</span>		<span class="c">&quot; Show matching brackets.</span>
+</span><span class="line"><span class="k">set</span> <span class="nb">ignorecase</span>		<span class="c">&quot; Do case insensitive matching</span>
+</span><span class="line"><span class="k">set</span> <span class="nb">hidden</span>             <span class="c">&quot; Hide buffers when they are abandoned</span>
+</span><span class="line"><span class="k">set</span> <span class="nb">mouse</span><span class="p">=</span><span class="k">a</span>		<span class="c">&quot; Enable mouse usage (all modes)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>For the rest of the changes i updatet .vimrc and the .vim folder in the home directory. In my ~/.vimrc I have some basic commands :</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>~/.vimrc</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+</pre></td><td class="code"><pre><code class="vim"><span class="line"><span class="k">filetype</span> plugin <span class="k">on</span>
+</span><span class="line"><span class="k">set</span> <span class="nb">nocp</span>
+</span><span class="line"><span class="k">set</span> <span class="nb">autoindent</span>
+</span><span class="line"><span class="k">set</span> <span class="nb">cindent</span>
+</span><span class="line"><span class="k">set</span> <span class="k">ts</span><span class="p">=</span><span class="m">4</span>
+</span><span class="line"><span class="k">set</span> <span class="k">nu</span>
+</span><span class="line"><span class="k">set</span> <span class="nb">scrolloff</span><span class="p">=</span><span class="m">2</span>
+</span><span class="line"><span class="k">set</span> <span class="nb">clipboard</span><span class="p">=</span>unnamedplus
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>This changes things like the lenght of the indentation (which I found to be way too long with the default setup), as well as enabling plugins, setting the right clipboard etc.</p>
+
+<h2 id="plugins">Plugins</h2>
+
+<p>This is where it gets interesting. There is alot of plugins out there and I’ve found some really nice ones. 
+<a href="http://www.vim.org/scripts/script.php?script_id=2332" title="Pathogen">Pathogen</a> is used to make dealing with plugins very easy. To make this work follow the instructions from the plugin page and remember to add the following to ~/.vimrc :</p>
+
+<div class="highlight"><pre><code class="vim">execute pathogen#infect<span class="p">()</span>
+</code></pre></div>
+
+<h3 id="cc">C/C++</h3>
+
+<p><a href="http://ctags.sourceforge.net/">Exuberant Ctags</a> is another great plugin that makes a tags database wich is used by vim to autocomplete variables and functions. Together with <a href="http://www.vim.org/scripts/script.php?script_id=1764">code_complete</a> and <a href="http://www.vim.org/scripts/script.php?script_id=1520">omniCppComplete</a> it also offers autocompletion of function parameters and class and struct members much the same way that can be found with IDE’s like eclipse:</p>
+
+<p><img src="http://simena86.github.com/images/vim/autocomplete.png" width="420" height="200" /></p>
+
+<p>If your running a debian systems the easiest way to install ctags is to use</p>
+
+<div class="highlight"><pre><code class="vim">sudo apt<span class="p">-</span><span class="k">get</span> install exuberant<span class="p">-</span>ctags
+</code></pre></div>
+
+<p>Code_complete can just be downloaded <a href="http://www.vim.org/scripts/script.php?script_id=1764">here</a> and placed in the ~/.vim/plugin/ directory.</p>
+
+<p>To use these plugins tag-files is made by generating tags based on source code files. Im using the following command to do this:</p>
+
+<div class="highlight"><pre><code class="vim">ctags <span class="p">-</span>R * <span class="p">--</span><span class="k">c</span><span class="p">++-</span>kinds<span class="p">=+</span><span class="k">p</span> <span class="p">--</span>fields<span class="p">=+</span>iaS <span class="p">--</span>extra<span class="p">=+</span><span class="k">q</span>  
+</code></pre></div>
+
+<p>When executing this command it will generate a file in the current directory and make tags based on all source code in the current and all subdirectories. The tag file is used by ctags, code_complete and omniCppComplete. To let vim know where to look for tag files on has to specify this in vimrc by </p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>~/.vimrc</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="vim"><span class="line"><span class="k">set</span> <span class="k">tags</span><span class="p">=</span><span class="sr">/path/</span><span class="k">to</span>/tagdir1
+</span><span class="line"><span class="k">set</span> <span class="k">tags</span><span class="p">+=</span><span class="sr">/path/</span><span class="k">to</span>/tagdir2
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Ctags searches for tag-files which is specified in ~/.vimrc. I’m using the following in my .vimrc file to look for tag files </p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>~/.vimrc</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="vim"><span class="line"><span class="k">set</span> <span class="k">tags</span><span class="p">=</span><span class="sr">/usr/</span><span class="nb">include</span>/<span class="k">tags</span>
+</span><span class="line"><span class="k">set</span> <span class="k">tags</span><span class="p">+=</span>./<span class="k">tags</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Lastly I use git hooks to update tag files in projects. The best way to do this is to first make the directory ~/.git_template where you can define templates for git to use every time you run git init. In the .git_templates directory I have a directory for <a href="http://git-scm.com/book/en/Customizing-Git-Git-Hooks">git hooks</a> with two files: _    </p>
+
+<p>post-commit:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>~/.git_templates/hooks/post-commit</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="bash"><span class="line"><span class="c">#!/bin/sh</span>
+</span><span class="line">.git/hooks/ctags &gt;/dev/null 2&gt;&amp;1 &amp;
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>ctags:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>~/.git_templates/hooks/ctags</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="bash"><span class="line"><span class="c">#!/bin/sh</span>
+</span><span class="line"><span class="nb">set</span> -e
+</span><span class="line"><span class="nv">PATH</span><span class="o">=</span><span class="s2">&quot;/usr/local/bin:$PATH&quot;</span>
+</span><span class="line"><span class="nb">trap</span> <span class="s2">&quot;rm -f .git/tags.$$&quot;</span> EXIT
+</span><span class="line">ctags  --c++-kinds<span class="o">=</span>+p --fields<span class="o">=</span>+iaS --extra<span class="o">=</span>+q --tag-relative -Rf.git/tags.<span class="nv">$$</span>  --exclude<span class="o">=</span>.git --languages<span class="o">=</span>-javascript,sql
+</span><span class="line">mv .git/tags.<span class="nv">$$</span> .git/tags
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>With these scripts you will generate a new tag file in the local .git directory of the current project every time you make a commit. </p>
+
+<h3 id="python">Python</h3>
+
+<p>For python source code I use the wonderful jedi-vim. Which is a really great and advanced plugin, providing the same functionality ctags and omniCppComplete provides for C/C++. </p>
+
+<p>Install it with the following</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="bash"><span class="line"><span class="nb">cd</span> ~/.vim/bundle/;
+</span><span class="line">git clone git://github.com/davidhalter/jedi-vim.git;
+</span><span class="line"><span class="nb">cd </span>jedi-vim;
+</span><span class="line">git submodule update --init
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>I also found installing supertab useful</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="bash"><span class="line"><span class="nb">cd</span> ~/.vim/bundle/;
+</span><span class="line">git clone git://github.com/ervandew/supertab.git
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>To configure jedi-vim and supertab, put the following in your .vimrc file</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>~/.vimrc</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="bash"><span class="line"><span class="nb">let </span>g:SuperTabDefaultCompletionType <span class="o">=</span> <span class="s2">&quot;context&quot;</span>
+</span><span class="line"><span class="nb">let </span>g:jedi#popup_on_dot <span class="o">=</span> 0  <span class="c"># disables the autocomplete to popup whenever you press .</span>
+</span><span class="line">syntax on
+</span><span class="line">filetype plugin indent on
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Convert Math equations to Java or C++ syntax]]></title>
+    <link href="http://simena86.github.com/blog/2013/01/26/convert-math-equations-to-java-or-c-plus-plus-syntax/"/>
+    <updated>2013-01-26T09:28:00+01:00</updated>
+    <id>http://simena86.github.com/blog/2013/01/26/convert-math-equations-to-java-or-c-plus-plus-syntax</id>
+    <content type="html"><![CDATA[<p>When writing programs that uses alot of math equations, e.g. in simulations, animations etc I found it tiresome to have to convert equations I got from symbolic math software like Maxima and Maple into c++ or java syntax. I therefor wrote a simple JavaScript that does this automatically, and can be found <a href="http://simena86.github.com/blog/math2javacpp/">here</a>. The source is available at <a href="https://github.com/simena86/math2javacpp" title="Math2javacpp">github</a> .</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Auto login WiFi – University, hotels etc]]></title>
+    <link href="http://simena86.github.com/blog/2013/01/26/auto-login-wifi-university/"/>
+    <updated>2013-01-26T01:23:00+01:00</updated>
+    <id>http://simena86.github.com/blog/2013/01/26/auto-login-wifi-university</id>
+    <content type="html"><![CDATA[<p>When using the University WiFi I found it annoying that I always had to login through a browser using my university username and password. Using the simple scripts below, this bothersome procedure can be done automatically each time the computer discovers a network.
+<!-- more -->
+I am using Wicd Network Manager, which has a nice feature where one can include scripts that you want to run when the computer connects and disconnects to a network ( see wicd documentation). Using this feature I made a short script to run different tasks when the computer discovered different Wifi’s. I have a file called perform_on_post_connect.sh in the directory /etc/wicd/scripts/postconnect on my linux machine with the following code:</p>
+
+<div class="highlight"><pre><code class="bash"><span class="c">#!/bin/bash</span>
+
+<span class="nv">essid</span><span class="o">=</span><span class="nv">$2</span>
+<span class="nv">connection_type</span><span class="o">=</span><span class="nv">$1</span>
+
+<span class="k">if</span> 	<span class="o">[</span> <span class="s2">&quot;${essid}&quot;</span> <span class="o">==</span> <span class="s2">&quot;Foo network&quot;</span> <span class="o">]</span>; <span class="k">then</span>
+	<span class="c"># do something when logging into &#39;Foo network&#39;</span>
+	./myscripts/foo_autologin.py
+<span class="k">elif</span> <span class="o">[</span> <span class="s2">&quot;${essid}&quot;</span> <span class="o">==</span> <span class="s2">&quot;Bar network&quot;</span> <span class="o">]</span>; <span class="k">then</span>
+	<span class="c"># do something else when connecting to &#39;Bar network&#39;</span>
+<span class="k">fi</span>
+</code></pre></div>
+
+<p>I then use a python script called foo_autologin.py that performs the nessecary login procedure. If I am not mistaken, with Wicd one has to have this in a directory with only root access. The source for foo_autologin.py:</p>
+
+<div class="highlight"><pre><code class="python"><span class="c">#!/usr/bin/python</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="c">#</span>
+<span class="c"># AUTO LOGIN TO Foo NETWORK</span>
+<span class="c">#</span>
+
+<span class="k">print</span> <span class="s">&quot;This is an automatic login to Foo network&quot;</span>
+<span class="n">URL</span><span class="o">=</span><span class="s">&#39;&lt;login url&gt;&#39;</span> 
+<span class="n">EMAIL</span> <span class="o">=</span> <span class="s">&#39;&lt;your email&gt;&#39;</span>
+<span class="n">PASSWORD</span> <span class="o">=</span> <span class="s">&#39;&lt;your password&gt;&#39;</span>
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+   <span class="c"># Start a session so we can have persistant cookies</span>
+   <span class="n">session</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">session</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;verbose&#39;</span><span class="p">:</span> <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">})</span>
+   <span class="c"># use headers that is posted in the HTML POSt method</span>
+   <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;Connection&#39;</span><span class="p">:</span><span class="s">&#39;keep-alive&#39;</span><span class="p">}</span>
+   <span class="c"># use data originally in your html-login</span>
+   <span class="n">login_data</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">&#39;username&#39;</span><span class="p">:</span> <span class="n">EMAIL</span><span class="p">,</span>
+        <span class="s">&#39;password&#39;</span><span class="p">:</span> <span class="n">PASSWORD</span><span class="p">,</span>
+        <span class="s">&#39;buttonClicked&#39;</span><span class="p">:</span><span class="s">&#39;4&#39;</span><span class="p">,</span>
+		<span class="s">&#39;err_flag&#39;</span><span class="p">:</span><span class="s">&#39;0&#39;</span><span class="p">,</span>		
+    <span class="p">}</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">URL</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">login_data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mf">10.00</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</code></pre></div>
+
+<p>When using the code above one has to use the headers and data used in the post method. The way I got the data from a login to the university was through using a Firefox Extension called Live HTTP Headers, as I found that chrome would not show HTTP traffic for HTTPS sites.</p>
+
+<p>After monitoring a login using Live HTTP headers one can fill in the headers and data. Im sure there is a way of automating this task So feel free to share.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Makefiles and autocomplete with Latex]]></title>
+    <link href="http://simena86.github.com/blog/2013/01/26/makefiles-and-autocomplete-with-latex/"/>
+    <updated>2013-01-26T00:14:00+01:00</updated>
+    <id>http://simena86.github.com/blog/2013/01/26/makefiles-and-autocomplete-with-latex</id>
+    <content type="html"><![CDATA[<p>I am using Latex a lot and have done some customization in order to speed up the process of writing academic reports. I am using the TeXworks editor. TeXworks is a clean and simple editor, and with the help of a make file and some autotyping it is very efficient.</p>
+
+<!-- more -->
+
+<p>Custom typesetting
+In order to use Texworks efficient i have done some modification to the typesetting process. Instead of using pdflatex which doesn’t allow vector graphics (at least not with the default settings), I am using the power of a make-file. I have written a linux bash script that is run from texworks:</p>
+
+<p>Edit&gt;Preferences&gt;Typesetting&gt;+ to add a Processing tool, and add the script below with the following arguments</p>
+
+<p>$basename</p>
+
+<p>-shell-escape</p>
+
+<p>-enable-write18</p>
+
+<p>The script I use is</p>
+
+<div class="highlight"><pre><code class="bash"><span class="c">#!/bin/sh</span>
+<span class="c">##</span>
+<span class="nv">main_file</span><span class="o">=</span><span class="k">$(</span>ls * | grep <span class="s1">&#39;.tex&#39;</span> | xargs grep <span class="s2">&quot;begin{document}&quot;</span> -sl<span class="k">)</span>
+<span class="nv">main_file</span><span class="o">=</span><span class="k">${</span><span class="nv">main_file</span><span class="p">%</span><span class="s2">&quot;.tex&quot;</span><span class="k">}</span>
+
+<span class="c">#compile two times to get the reference alright</span>
+latex -synctex<span class="o">=</span>1 <span class="s2">&quot;$main_file.tex&quot;</span>
+latex -synctex<span class="o">=</span>1 <span class="s2">&quot;$main_file.tex&quot;</span>
+dvips <span class="s2">&quot;$main_file.dvi&quot;</span> <span class="o">&amp;&amp;</span> ps2pdf <span class="s2">&quot;$main_file.ps&quot;</span>
+
+<span class="c">#searching for main_files that dosnt end with .tex and moving them to build</span>
+ls * | grep <span class="s2">&quot;$main_file&quot;</span> | 
+<span class="k">while </span><span class="nb">read </span>line ; <span class="k">do </span>
+<span class="k">	</span><span class="nb">echo</span> <span class="nv">$line</span>
+	<span class="k">if </span><span class="nb">echo</span> <span class="nv">$line</span> | grep -Eq <span class="s1">&#39;tex$|pdf$|gz$&#39;</span> 
+	<span class="k">then</span>
+<span class="k">		</span><span class="nb">echo</span> <span class="s2">&quot;not moving tex file&quot;</span>
+	<span class="k">else</span>
+<span class="k">		</span>mv <span class="nv">$line</span> ./build
+	<span class="k">fi</span>
+<span class="k">done</span>
+
+texworks <span class="nv">$main_file</span>.pdf
+</code></pre></div>
+
+<p>Put the script somewhere in your PATH and it is automatically run from Texworks every time you typeset the document. What the script does is find the main file for the latex document and typeset that. This allows you to typeset the whole document from a .tex-file included in the main document. One should note that there should be only one main tex file (the file with \begin{document}) in the directory. </p>
+
+<p>Auto complete
+For speeding up the process of writing latex code, auto completion comes in handy. On my computer auto completion is added in ~/.Texworks/completion/tw-basic.txt. Some of the entries in my tx-basic.txt</p>
+
+<div class="highlight"><pre><code class="bash">align:<span class="o">=</span><span class="se">\b</span>egin<span class="o">{</span>align<span class="o">}</span><span class="c">#RET#\label{eq:}#RET# #INS# #RET# \end{align}</span>
+
+figure:<span class="o">=</span><span class="se">\b</span>egin<span class="o">{</span>figure<span class="o">}[</span>h!<span class="o">]</span> <span class="c">#RET# \center #RET# \includegraphics[scale=]{./figures/#INS#}#RET# \caption{ \label{fig:}}#RET# \end{figure}#RET#</span>
+</code></pre></div>
+
+<p>With this in your tw-basic.txt you can just type “figure” in the Texworks editor, press tab and it is completed to the align environment with the cursor ready in place for writing your favourite differential equation, matrix or 1+1=3.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[JOGL - Animation and Dynamics of Furuta pendulum]]></title>
+    <link href="http://simena86.github.com/blog/2013/01/24/jogl-animation-and-dynamics-of-furuta-pendulum/"/>
+    <updated>2013-01-24T20:44:00+01:00</updated>
+    <id>http://simena86.github.com/blog/2013/01/24/jogl-animation-and-dynamics-of-furuta-pendulum</id>
+    <content type="html"><![CDATA[<p>I wanted to animate a furuta pendulum, and include the real dynamics in the animation. First off, what is a Furuta pendulum? It is a pendulum with two degrees of freedom (see wikipedia) where, from a control engineers’ point of view, one is interested in stabilizing the second arm of the pendulum, by applying torque to the first arm. This poses quite an interesting control problem (much the same as in e.g. a segway). First lets look at the dynamimcs of the furuta pendulum:
+<!-- more --> </p>
+
+<p>The dynamics of the furuta pendulum can be modeled with two second order differential equations. For simulations we will reduce the order and model the system with 4 first order ODE’s. The following state space vector will be used:</p>
+
+<script type="math/tex; mode=display">% &lt;![CDATA[
+
+ \begin{aligned} x=\begin{bmatrix} \\ \frac{d\theta_{1}}{dt} & \frac{d\theta_1}{dt}& \theta_{1}&\theta_{2}\end{bmatrix}  \end{aligned}
+ %]]&gt;</script>
+
+<p>With the use of Lagrangian or Newton dynamics one can model the system which yields the following 2. order ODE’s:</p>
+
+<script type="math/tex; mode=display">% &lt;![CDATA[
+
+\; \\ \; \\ \;
+{ \scriptsize
+\begin{aligned}
+& \frac{d^2\theta_1}{dt^2}= \\
+&  \frac{ (mx_1^2cos(x_4)
+sin(x_4)^3L_2^3+(gmsin(x_4)^3-2mx_1x_2cos(x_4)^2sin(x_4)L_1)L_2^2+((mx_1^2-mx_2^2)cos(x_4)sin(x_4)L_1^2+x_1^2cos(x_4)sin(x_4)J_1)
+L_2+gmsin(x_4)L_1^2+\tau cos(x_4)L_1+gsin(x_4)J_1)}{(msin(x_4)^2L_2^3+((m-mcos(x_4)^2)L_1^2+J_1)L_2)}
+\\
+&\frac{d^2\theta_2}{dt^2}=\\
+& \frac{(mx_1^2cos(x_4) 
+sin(x_4)^3L_2^3+(gmsin(x_4)^3-2mx_1x_2cos(x_4)^2sin(x_4)L_1)L_2^2+((mx_1^2-mx_2^2)cos(x_4)sin(x_4)L_1^2+x_1^2cos(x_4)sin(x_4)J_1)
+L_2+gmsin(x_4)L_1^2+taucos(x_4)L_1+gsin(x_4)J_1)}{(msin(x_4)^2L_2^3+((m-mcos(x_4)^2)L_1^2+J_1)L_2)}
+\end{aligned}
+}
+ %]]&gt;</script>
+
+<p>The following state space equations used in the simulation is therefor</p>
+
+<script type="math/tex; mode=display">
+\dot{x}= \begin{bmatrix}\ddot{\theta}_1 \\ \ddot{\theta}_2 \\ \theta_1 \\ \theta_2 \end{bmatrix} = f(x)
+</script>
+
+<p>And one can easily solve the dynamics by numerical integration. I have solved the system using Explicit Runge Kutta 4 which yields a discrete solution that can easily be used in a OpenGl 3d animation. The main idea for capturing the dynamics in the animation is to, in  each call to the display() function (each new frame of the animation), calculate the next iterate of the numerical integrator (RK4 in this case). This can be seen in the code below, where <script type="math/tex"> f_1=\ddot{\theta}_1 </script> and f2, f3,f4 (not shown in the code) each calculates their derrivatives which is used in one multiple input, multiple output function f. Lastly this is used in solve_dyn() to calculate an iterate from the RK4 method.</p>
+
+<div class="highlight"><pre><code class="java"><span class="kd">public</span> <span class="kt">double</span> <span class="nf">f1</span><span class="o">(</span><span class="n">Matrix</span> <span class="n">x</span><span class="o">,</span> <span class="kt">double</span> <span class="n">u</span> <span class="o">){</span>
+	<span class="kt">double</span> <span class="n">x1</span><span class="o">,</span><span class="n">x2</span><span class="o">,</span><span class="n">x4</span><span class="o">;</span>
+	<span class="kt">double</span> <span class="n">tau</span><span class="o">;</span>
+	<span class="n">x1</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span><span class="mi">0</span><span class="o">);</span> <span class="n">x2</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span><span class="mi">1</span><span class="o">);</span> <span class="n">x4</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span><span class="mi">3</span><span class="o">);</span>
+	<span class="kt">double</span> <span class="n">sign</span><span class="o">;</span>
+	<span class="k">if</span> <span class="o">(</span><span class="n">x1</span><span class="o">&lt;</span><span class="mi">0</span><span class="o">){</span><span class="n">sign</span><span class="o">=</span><span class="mi">1</span><span class="o">;}</span><span class="k">else</span><span class="o">{</span><span class="n">sign</span><span class="o">=-</span><span class="mi">1</span><span class="o">;}</span>
+	<span class="n">u</span><span class="o">=</span><span class="n">u</span><span class="o">+</span><span class="n">sign</span><span class="o">*</span><span class="mf">5.0</span><span class="o">;</span>
+	<span class="n">tau</span><span class="o">=</span><span class="n">u</span><span class="o">;</span>
+
+	<span class="kt">double</span> <span class="n">f_num</span><span class="o">=(</span><span class="n">arm1</span><span class="o">*</span><span class="n">arm2</span><span class="o">*</span><span class="n">m</span><span class="o">*</span><span class="n">Math</span><span class="o">.</span><span class="na">pow</span><span class="o">(</span><span class="n">x1</span><span class="o">,</span><span class="mi">2</span><span class="o">)*</span><span class="n">Math</span><span class="o">.</span><span class="na">pow</span><span class="o">((</span><span class="n">Math</span><span class="o">.</span><span class="na">cos</span><span class="o">(</span><span class="n">x4</span><span class="o">)),</span><span class="mi">2</span><span class="o">)+(</span><span class="n">arm1</span><span class="o">*</span><span class="n">g</span><span class="o">*</span><span class="n">m</span><span class="o">-</span>
+              <span class="mi">2</span><span class="o">*</span><span class="n">Math</span><span class="o">.</span><span class="na">pow</span><span class="o">(</span><span class="n">arm2</span><span class="o">,</span><span class="mi">2</span><span class="o">)*</span><span class="n">m</span><span class="o">*</span><span class="n">x1</span><span class="o">*</span><span class="n">x2</span><span class="o">)</span>
+	 	<span class="o">*(</span><span class="n">Math</span><span class="o">.</span><span class="na">cos</span><span class="o">(</span><span class="n">x4</span><span class="o">))-</span><span class="n">arm1</span><span class="o">*</span><span class="n">arm2</span><span class="o">*</span><span class="n">m</span><span class="o">*</span><span class="n">Math</span><span class="o">.</span><span class="na">pow</span><span class="o">(</span><span class="n">x2</span><span class="o">,</span><span class="mi">2</span><span class="o">))*(</span><span class="n">Math</span><span class="o">.</span><span class="na">sin</span><span class="o">(</span><span class="n">x4</span><span class="o">))+</span><span class="n">tau</span><span class="o">;</span>
+	<span class="kt">double</span> <span class="n">f_denum</span><span class="o">=</span><span class="n">Math</span><span class="o">.</span><span class="na">pow</span><span class="o">(</span><span class="n">arm2</span><span class="o">,</span><span class="mi">2</span><span class="o">)*</span><span class="n">m</span><span class="o">*</span><span class="n">Math</span><span class="o">.</span><span class="na">pow</span><span class="o">((</span><span class="n">Math</span><span class="o">.</span><span class="na">sin</span><span class="o">(</span><span class="n">x4</span><span class="o">)),</span><span class="mi">2</span><span class="o">)-</span><span class="n">Math</span><span class="o">.</span><span class="na">pow</span><span class="o">(</span><span class="n">arm1</span><span class="o">,</span><span class="mi">2</span><span class="o">)*</span><span class="n">m</span><span class="o">*</span><span class="n">Math</span><span class="o">.</span><span class="na">pow</span><span class="o">((</span><span class="n">Math</span><span class="o">.</span><span class="na">cos</span><span class="o">(</span><span class="n">x4</span><span class="o">)),</span><span class="mi">2</span><span class="o">)+</span>                  <span class="n">Math</span><span class="o">.</span><span class="na">pow</span><span class="o">(</span><span class="n">arm1</span><span class="o">,</span><span class="mi">2</span><span class="o">)*</span><span class="n">m</span><span class="o">+</span><span class="n">J1</span><span class="o">;</span>
+	<span class="k">if</span><span class="o">(</span><span class="n">f_denum</span><span class="o">==</span><span class="mi">0</span><span class="o">){</span>
+		<span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;divide by zero&quot;</span><span class="o">);</span>
+	        <span class="k">return</span> <span class="mf">1.0f</span><span class="o">;</span>
+	<span class="o">}</span><span class="k">else</span>
+	        <span class="k">return</span> <span class="n">f_num</span><span class="o">/</span><span class="n">f_denum</span><span class="o">;</span>
+	<span class="o">}</span>
+
+<span class="kd">public</span> <span class="n">Matrix</span> <span class="nf">f</span><span class="o">(</span><span class="n">Matrix</span> <span class="n">x</span><span class="o">,</span> <span class="kt">double</span> <span class="n">u</span><span class="o">){</span>
+       <span class="n">Matrix</span> <span class="n">retVal</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Matrix</span><span class="o">(</span><span class="k">new</span> <span class="kt">double</span><span class="o">[]{</span><span class="n">f1</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">u</span><span class="o">)</span> <span class="o">,</span><span class="n">f2</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">u</span><span class="o">),</span><span class="n">f3</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">u</span><span class="o">),</span><span class="n">f4</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">u</span><span class="o">)},</span><span class="mi">1</span><span class="o">);</span>
+       <span class="k">return</span> <span class="n">retVal</span><span class="o">;</span>
+ <span class="o">}</span>
+
+<span class="kd">public</span> <span class="kt">double</span> <span class="o">[]</span> <span class="n">solve_dyn</span><span class="o">(){</span>
+       <span class="n">k1</span><span class="o">=</span> <span class="n">f</span><span class="o">(</span><span class="n">x</span><span class="o">,</span><span class="n">tau</span><span class="o">).</span><span class="na">times</span><span class="o">(</span><span class="n">h</span><span class="o">);</span>
+       <span class="n">k2</span><span class="o">=</span> <span class="n">f</span><span class="o">(</span> <span class="n">x</span><span class="o">.</span><span class="na">plus</span><span class="o">(</span><span class="n">k1</span><span class="o">.</span><span class="na">times</span><span class="o">(</span><span class="mf">0.5</span><span class="o">)),</span><span class="n">tau</span><span class="o">).</span><span class="na">times</span><span class="o">(</span><span class="n">h</span><span class="o">);</span>
+       <span class="n">k3</span><span class="o">=</span> <span class="n">f</span><span class="o">(</span><span class="n">x</span><span class="o">.</span><span class="na">plus</span><span class="o">(</span><span class="n">k2</span><span class="o">.</span><span class="na">times</span><span class="o">(</span><span class="mf">0.5</span><span class="o">)),</span><span class="n">tau</span><span class="o">).</span><span class="na">times</span><span class="o">(</span><span class="n">h</span><span class="o">);</span>
+       <span class="n">k4</span><span class="o">=</span> <span class="n">f</span><span class="o">(</span> <span class="n">x</span><span class="o">.</span><span class="na">plus</span><span class="o">(</span><span class="n">k3</span><span class="o">),</span><span class="n">tau</span><span class="o">).</span><span class="na">times</span><span class="o">(</span><span class="n">h</span><span class="o">);</span>
+       <span class="n">x_next</span><span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="na">plus</span><span class="o">(</span><span class="n">k1</span><span class="o">.</span><span class="na">times</span><span class="o">((</span><span class="mf">1.0</span><span class="o">/</span><span class="mf">6.0</span><span class="o">))).</span><span class="na">plus</span><span class="o">(</span><span class="n">k2</span><span class="o">.</span><span class="na">times</span><span class="o">((</span><span class="mf">1.0</span><span class="o">/</span><span class="mf">3.0</span><span class="o">))).</span>
+               <span class="n">plus</span><span class="o">(</span><span class="n">k3</span><span class="o">.</span><span class="na">times</span><span class="o">(</span><span class="mf">1.0</span><span class="o">/</span><span class="mf">3.0</span><span class="o">)).</span><span class="na">plus</span><span class="o">(</span><span class="n">k4</span><span class="o">.</span><span class="na">times</span><span class="o">(</span><span class="mf">1.0</span><span class="o">/</span><span class="mf">6.0</span><span class="o">));</span>
+       <span class="n">x</span><span class="o">=</span><span class="n">x_next</span><span class="o">;</span>
+       <span class="k">return</span> <span class="k">new</span> <span class="kt">double</span> <span class="o">[]</span> <span class="o">{</span><span class="n">x</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span><span class="mi">2</span><span class="o">)*</span><span class="n">rad2deg</span><span class="o">,</span> <span class="n">x</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span><span class="mi">3</span><span class="o">)*</span><span class="n">rad2deg</span><span class="o">};</span>
+ <span class="o">}</span>
+</code></pre></div>
+
+<p>The animation:</p>
+
+<div class="embed-video-container"><iframe src="http://www.youtube.com/embed/Lmvn_uDE4HE "></iframe></div>
+
+<p>The source can now be cloned from git <a href="https://github.com/simena86/furuta_pendulum" title="gitlink">here</a>.</p>
+]]></content>
+  </entry>
+  
+</feed>
