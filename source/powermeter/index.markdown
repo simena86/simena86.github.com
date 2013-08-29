@@ -269,7 +269,7 @@ footer: true
 				'options': {
 					'hAxis':{'direction': direction},
 					// Use the same chart area width as the control for axis alignment.
-					title: "Temperature Measurement, Trondheim",
+					title: "Temperature Measurement, Trondheim - Only showing yesterdays temperature",
 					'legend': {	'position': 'none'	}
 					//'chartArea': {
 					//	'height': '80%',
