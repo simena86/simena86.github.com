@@ -1,4 +1,0 @@
-User-agent: *
-Disallow: 
-
-Sitemap: http://simena86.github.com/sitemap.xml 
