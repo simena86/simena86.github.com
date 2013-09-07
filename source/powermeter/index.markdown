@@ -80,7 +80,7 @@ footer: true
 					'legend': {	'position': 'none'	},
 					'hAxis':{
 							'direction': direction 
-						//,	'format':'dd/MM/yyyy HH:mm'
+						,	'format':'dd/MM/yy HH:mm'
 					}
 				},
 				view:{'columns':[0,1,2] }
@@ -176,7 +176,7 @@ footer: true
 				'options': {
 					'hAxis':{
 						'direction':direction,
-						'format':'dd/MM/yyyy HH:mm'
+						'format':'dd/MM/yy HH:mm'
 					},
 					// Use the same chart area width as the control for axis alignment.
 					colors:['orange'],
@@ -247,7 +247,7 @@ footer: true
 							'hAxis': {
 								'baselineColor': 'none',
 								'direction' : direction,
-								'format':'dd/MM/yyyy HH:mm'
+								'format':'dd/MM/yy HH:mm'
 							}
 						},
 						// Display a single series that shows the closing value of the stock.
@@ -274,7 +274,7 @@ footer: true
 				'options': {
 					'hAxis':{
 						'direction': direction,
-						'format':'dd/MM/yyyy HH:mm'
+						'format':'dd/MM/yy HH:mm'
 					},
 					// Use the same chart area width as the control for axis alignment.
 					title: "Temperature Measurement, Trondheim - Only showing yesterdays temperature",
