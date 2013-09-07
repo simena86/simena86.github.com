@@ -80,6 +80,7 @@ footer: true
 					'legend': {	'position': 'none'	},
 					'hAxis':{
 							'direction': direction 
+						//,	'format':'dd/MM/yyyy HH:mm'
 					}
 				},
 				view:{'columns':[0,1,2] }
@@ -173,7 +174,10 @@ footer: true
 				'chartType': 'AreaChart',
 				'containerId': 'priceChart',
 				'options': {
-					'hAxis':{'direction':direction},
+					'hAxis':{
+						'direction':direction,
+						'format':'dd/MM/yyyy HH:mm'
+					},
 					// Use the same chart area width as the control for axis alignment.
 					colors:['orange'],
 					title:"Power Prices Trondheim",
@@ -242,7 +246,8 @@ footer: true
 						//	},
 							'hAxis': {
 								'baselineColor': 'none',
-								'direction' : direction
+								'direction' : direction,
+								'format':'dd/MM/yyyy HH:mm'
 							}
 						},
 						// Display a single series that shows the closing value of the stock.
@@ -267,7 +272,10 @@ footer: true
 				'chartType': 'AreaChart',
 				'containerId': 'tempChart',
 				'options': {
-					'hAxis':{'direction': direction},
+					'hAxis':{
+						'direction': direction,
+						'format':'dd/MM/yyyy HH:mm'
+					},
 					// Use the same chart area width as the control for axis alignment.
 					title: "Temperature Measurement, Trondheim - Only showing yesterdays temperature",
 					'legend': {	'position': 'none'	}
@@ -335,20 +343,20 @@ footer: true
    </script>
 </head>
 <body>
-	Site under construction
+	Site under construction. Data means nothing yet
 	<br> </br>
 <div id='gagueChart' align='center'  ></div>
 <div align="center">Power usage now</div>
 
 <div id="dashboard">
-<div id="powerChart" style='height: 110px;' ></div>
+<div id="powerChart" style='height: 130px;' ></div>
 <div id="powerControl" style="display:none"></div>
 <br></br>
-<div id="priceChart" style='height: 110px;'></div>
+<div id="priceChart" style='height: 130px;'></div>
 <div id="priceControl" style="display:none"></div>
 
 <br></br>
-<div id="tempChart" style='height: 110px;' ></div>
+<div id="tempChart" style='height: 130px;' ></div>
 <br></br>
 <div id="tempControl" style='height: 40px;'></div>
 

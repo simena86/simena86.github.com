@@ -6,7 +6,7 @@ comments: true
 categories: [C++, OpenCV, Computer Vision] 
 ---
 
-Computer Vision is in many ways the ultimate sensor, and has endless potential applications to robotics. Me and 2 classmates (Vegar Østhus and Martin Stokkeland) did a project in Computer Vision at UCSB and wrote a program to recognize and track finger movements.
+Computer Vision is in many ways the ultimate sensor, and has endless potential applications to robotics. Me and 2 classmates (Vegar Østhus and Martin Stokkeland ) did a project in Computer Vision at UCSB and wrote a program to recognize and track finger movements.
 
 <!-- more --> 
 
