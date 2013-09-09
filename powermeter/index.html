@@ -413,7 +413,7 @@ MathJax.Hub.Config({
 			$.get("./data/power_data.csv", function(csvString) {
 			var arrayData = $.csv.toArrays(csvString, {onParseValue: $.csv.hooks.castToScalar});
 			var row = arrayData[arrayData.length-1]
-			var powerNow=row[5]
+			var powerNow=row[6]
 			var data = google.visualization.arrayToDataTable([
 	          ['Label', 'Value'],
     	      ['Power',powerNow ],
