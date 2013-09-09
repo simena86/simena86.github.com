@@ -4,7 +4,7 @@
   <title><![CDATA[]]></title>
   <link href="http://simena86.github.com/atom.xml" rel="self"/>
   <link href="http://simena86.github.com/"/>
-  <updated>2013-09-01T17:36:44+02:00</updated>
+  <updated>2013-09-09T09:56:04+02:00</updated>
   <id>http://simena86.github.com/</id>
   <author>
     <name><![CDATA[Simen Andresen]]></name>
@@ -14,11 +14,20 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Master Project Procatination part 1: Set desktop background to newest XKCD comic strip]]></title>
+    <link href="http://simena86.github.com/blog/2013/09/06/master-project-procatination-part-1-set-desktop-background-to-newest-xkcd-comic-strip/"/>
+    <updated>2013-09-06T13:48:00+02:00</updated>
+    <id>http://simena86.github.com/blog/2013/09/06/master-project-procatination-part-1-set-desktop-background-to-newest-xkcd-comic-strip</id>
+    <content type="html"><![CDATA[
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Hand Tracking And Recognition with OpenCV]]></title>
     <link href="http://simena86.github.com/blog/2013/08/12/hand-tracking-and-recognition-with-opencv/"/>
     <updated>2013-08-12T21:52:00+02:00</updated>
     <id>http://simena86.github.com/blog/2013/08/12/hand-tracking-and-recognition-with-opencv</id>
-    <content type="html"><![CDATA[<p>Computer Vision is in many ways the ultimate sensor, and has endless potential applications to robotics. Me and 2 classmates (Vegar Østhus and Martin Stokkeland) did a project in Computer Vision at UCSB and wrote a program to recognize and track finger movements.</p>
+    <content type="html"><![CDATA[<p>Computer Vision is in many ways the ultimate sensor, and has endless potential applications to robotics. Me and 2 classmates (Vegar Østhus and Martin Stokkeland ) did a project in Computer Vision at UCSB and wrote a program to recognize and track finger movements.</p>
 
 <!-- more -->
 
