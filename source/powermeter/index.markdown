@@ -343,7 +343,7 @@ footer: true
    </script>
 </head>
 <body>
-	Site under construction. Data means nothing yet
+	Site under construction. Data means nothing yet.
 	<br> </br>
 <div id='gagueChart' align='center'  ></div>
 <div align="center">Power usage now</div>
