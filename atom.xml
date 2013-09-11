@@ -4,7 +4,7 @@
   <title><![CDATA[]]></title>
   <link href="http://simena86.github.com/atom.xml" rel="self"/>
   <link href="http://simena86.github.com/"/>
-  <updated>2013-09-11T14:20:20+02:00</updated>
+  <updated>2013-09-11T14:22:32+02:00</updated>
   <id>http://simena86.github.com/</id>
   <author>
     <name><![CDATA[Simen Andresen]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Master Project Procrastination part 1: Set desktop background to newest XKCD comic strip]]></title>
+    <title type="html"><![CDATA[Master project procrastination part 1: Set desktop background to newest XKCD comic strip]]></title>
     <link href="http://simena86.github.com/blog/2013/09/06/master-project-procrastination-part-1-set-desktop-background-to-newest-xkcd-comic-strip/"/>
     <updated>2013-09-06T13:48:00+02:00</updated>
     <id>http://simena86.github.com/blog/2013/09/06/master-project-procrastination-part-1-set-desktop-background-to-newest-xkcd-comic-strip</id>
@@ -48,7 +48,7 @@
 <span class="n">getImage</span><span class="p">()</span>
 </code></pre></div>
 
-<p>Using selenium is probably not a very efficient way of doing this, but after having used selenium+phantomjs virtual browser for some days, it seemed like a good idea. 
+<p>Using selenium is probably not a very efficient way of doing this, but after having messed around with selenium+phantomjs virtual browser for some days, it seemed like a good idea. 
 To make the script work you have to install the python binding for selenium and the phantomjs binary. </p>
 
 <p>If your’re using a Unix based OS you can schedule the script to run e.g. every  Monday, Wednesday and Friday using <a href="http://www.adminschoice.com/crontab-quick-reference/">crontab</a> </p>
