@@ -4,7 +4,7 @@
   <title><![CDATA[]]></title>
   <link href="http://simena86.github.com/atom.xml" rel="self"/>
   <link href="http://simena86.github.com/"/>
-  <updated>2013-09-11T14:22:32+02:00</updated>
+  <updated>2013-09-11T14:23:25+02:00</updated>
   <id>http://simena86.github.com/</id>
   <author>
     <name><![CDATA[Simen Andresen]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Master project procrastination part 1: Set desktop background to newest XKCD comic strip]]></title>
+    <title type="html"><![CDATA[Automatically Set desktop background to newest XKCD comic strip using python]]></title>
     <link href="http://simena86.github.com/blog/2013/09/06/master-project-procrastination-part-1-set-desktop-background-to-newest-xkcd-comic-strip/"/>
     <updated>2013-09-06T13:48:00+02:00</updated>
     <id>http://simena86.github.com/blog/2013/09/06/master-project-procrastination-part-1-set-desktop-background-to-newest-xkcd-comic-strip</id>
