@@ -4,7 +4,7 @@
   <title><![CDATA[]]></title>
   <link href="http://simena86.github.com/atom.xml" rel="self"/>
   <link href="http://simena86.github.com/"/>
-  <updated>2013-09-11T11:55:46+02:00</updated>
+  <updated>2013-09-11T14:20:20+02:00</updated>
   <id>http://simena86.github.com/</id>
   <author>
     <name><![CDATA[Simen Andresen]]></name>
@@ -51,6 +51,7 @@
 <p>Using selenium is probably not a very efficient way of doing this, but after having used selenium+phantomjs virtual browser for some days, it seemed like a good idea. 
 To make the script work you have to install the python binding for selenium and the phantomjs binary. </p>
 
+<p>If your’re using a Unix based OS you can schedule the script to run e.g. every  Monday, Wednesday and Friday using <a href="http://www.adminschoice.com/crontab-quick-reference/">crontab</a> </p>
 ]]></content>
   </entry>
   
