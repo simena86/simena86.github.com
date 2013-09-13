@@ -208,11 +208,16 @@ footer: true
 			var now=new Date();
 			var daysAgo= Math.floor((powerArray.length / (6*24)));
 			var price;
+			var row;
+			var priceArrIndex=0;
 			for(var i = 0; i < powerArray.length; i++) {
-				price=priceArray[Math.floor( (i+1)/6  )][6]
-				//temp++
-				var row = powerArray[i];
-				price=price*row[6]*0.001;
+				row = powerArray[i];
+				price=priceArray[priceArrIndex][6];
+				if (i % 6 == 0) {
+					priceArrIndex++;	
+				} 	
+				price=price*(1+row[6])*0.001;
+				price=Math.round(price*100000)/100000;
 				var aDate=new Date(row[0],row[1]-1,row[2],row[3],row[4]);
 				if (isNowDate(aDate,now,true)==true && nowIsSet==false){
 					my_price_data.addRow([aDate,price,'Now']);
