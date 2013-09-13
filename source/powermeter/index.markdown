@@ -27,16 +27,21 @@ footer: true
 
 		function drawVisualization(){
 			powerControl=drawPower();
+			myPriceControl=drawMyPrice();
 			priceControl=drawPrice();
 			tempControl=drawTemp();
 			powerControl.setState(tempControl.getState());
 			powerControl.draw();
+			myPriceControl.setState(tempControl.getState());
+			myPriceControl.draw();
 			priceControl.setState(tempControl.getState());
 			priceControl.draw();
 
 			google.visualization.events.addListener(tempControl, 'statechange', function() {
 					powerControl.setState(tempControl.getState());
 					powerControl.draw();
+					myPriceControl.setState(tempControl.getState());
+					myPriceControl.draw();
 					priceControl.setState(tempControl.getState());
 					priceControl.draw();
 			});
@@ -78,6 +83,7 @@ footer: true
 					colors:['green'],
 					title:"Power Consumption",
 					'legend': {	'position': 'none'	},
+					'vAxis':{'title':'[W]'},
 					'hAxis':{
 							'direction': direction 
 						,	'format':'dd/MM/yy HH:mm'
@@ -100,17 +106,27 @@ footer: true
 			power_data.addColumn('number','Power [W]');
 			power_data.addColumn({type:'string', role:'annotation'}	);
 			var temp = 1;
+			var power;
 			var nowIsSet=false;
 			var now=new Date();
+			var daysAgo= Math.floor((arrayData.length / (6*24)));
 			for(var i = 0; i < arrayData.length; i++) {
 				temp++
 				var row = arrayData[i];
+				power=getPower(row[6])
 				var aDate=new Date(row[0],row[1]-1,row[2],row[3],row[4]);
 				if (isNowDate(aDate,now,true)==true && nowIsSet==false){
-					power_data.addRow([aDate,row[6],'Now']);
+					power_data.addRow([aDate,power,'Now']);
 					nowIsSet=true;
+				}else if(row[3]==0 && row[4]==0){
+					if (daysAgo==0){
+						power_data.addRow([aDate,power,'Today']);
+					}else{
+						power_data.addRow([aDate,power,daysAgo.toString() + ' Days ago']);
+					}
+					daysAgo--;
 				}else{
-					power_data.addRow([aDate,row[6],null]);
+					power_data.addRow([aDate,power,null]);
 				}
 			}
 
@@ -118,7 +134,112 @@ footer: true
 			dashboard.draw(power_data);
 			return powerControl;
 		}
+
+		function drawMyPrice() {
+			var dashboard = new google.visualization.Dashboard(
+				document.getElementById('dashboard'));
+
+			var myPriceControl = new google.visualization.ControlWrapper({
+				'controlType': 'ChartRangeFilter',
+				'containerId': 'myPriceControl',
+				'options': {
+					// Filter by the date axis.
+					'filterColumnIndex': 0,
+					'ui': {
+						'chartType': 'LineChart',
+						'chartOptions': {
+							'hAxis': {
+								'baselineColor': 'none',
+								'direction': direction 
+							}
+						},
+						'chartView': {
+							'columns': [0, 1]
+						},
+						// 1 day in milliseconds = 24 * 60 * 60 * 1000 = 86,400,000
+						'minRangeSize': 8640
+					}
+				},
+				// Initial range: 2012-02-09 to 2012-03-20.
+			});
+
+			var myPriceChart = new google.visualization.ChartWrapper({
+				'chartType': 'AreaChart',
+				'containerId': 'myPriceChart',
+				'options': {
+					// Use the same chart area width as the control for axis alignment.
+					colors:['red'],
+					title:"Cost of consumed power",
+					'legend': {	'position': 'none'	},
+					'vAxis':{'title':'[NOK]'},
+					'hAxis':{
+							'direction': direction 
+						,	'format':'dd/MM/yy HH:mm'
+					}
+				},
+				view:{'columns':[0,1,2] }
+			});
+	
+			var priceArray=null
+			$.ajax({
+				url:'./data/price_data.csv', type:'get',async:false, success:
+					function(csvString) {
+						temp = $.csv.toArrays(csvString, {onParseValue: $.csv.hooks.castToScalar});
+						priceArray=temp;
+					}
+			});
+
+			var powerArray=null
+			$.ajax({
+				url:'./data/power_data.csv', type:'get',async:false, success:
+					function(csvString) {
+						temp = $.csv.toArrays(csvString, {onParseValue: $.csv.hooks.castToScalar});
+						powerArray=temp;
+					}
+			});
+
+			var my_price_data = new google.visualization.DataTable();
+			my_price_data.addColumn('datetime','Time');
+			my_price_data.addColumn('number','Cost');
+			my_price_data.addColumn({type:'string', role:'annotation'}	);
+			var temp = 1;
+			var power;
+			var nowIsSet=false;
+			var now=new Date();
+			var daysAgo= Math.floor((powerArray.length / (6*24)));
+			var price;
+			for(var i = 0; i < powerArray.length; i++) {
+				price=priceArray[Math.floor( (i+1)/6  )][6]
+				//temp++
+				var row = powerArray[i];
+				price=price*row[6]*0.001;
+				var aDate=new Date(row[0],row[1]-1,row[2],row[3],row[4]);
+				if (isNowDate(aDate,now,true)==true && nowIsSet==false){
+					my_price_data.addRow([aDate,price,'Now']);
+					nowIsSet=true;
+				}else if(row[3]==0 && row[4]==0){
+					if (daysAgo==0){
+						my_price_data.addRow([aDate,price,'Today']);
+					}else{
+						my_price_data.addRow([aDate,price,daysAgo.toString() + ' Days ago']);
+					}
+					daysAgo--;
+				}else{
+					my_price_data.addRow([aDate,price,null]);
+				}
+			}
+
+			dashboard.bind(myPriceControl,myPriceChart);
+			dashboard.draw(my_price_data);
+			return myPriceControl;
+		}
+
+		// get the energy per impulses
+		function getPower(imps){
+			return imps*6;
+		}
 		
+
 		function isNowDate(aDate,d,useMinutePrec){
 			var year=d.getFullYear();
 			var day=d.getDate();
@@ -174,6 +295,7 @@ footer: true
 				'chartType': 'AreaChart',
 				'containerId': 'priceChart',
 				'options': {
+					'vAxis':{'title':'price [NOK]'},
 					'hAxis':{
 						'direction':direction,
 						'format':'dd/MM/yy HH:mm'
@@ -200,6 +322,8 @@ footer: true
 			price_data.addColumn('datetime','Time');
 			price_data.addColumn('number','Price [øre/KWh]')
 			price_data.addColumn({type:'string', role:'annotation'}	);
+			var daysAgo;
+			daysAgo= Math.floor((arrayData.length / 24)-1);
 			var temp = 1
 			var now=new Date();
 			for(var i = 0; i < arrayData.length; i++) {
@@ -208,6 +332,13 @@ footer: true
 				var aDate=new Date(row[0],row[1]-1,row[2],row[3],row[4]);
 				if (isNowDate(aDate,now,false)==true){
 					price_data.addRow([aDate,row[6],'Now']);
+				}else if( row[3]==0){
+					if (daysAgo==0){
+						price_data.addRow([aDate,row[6],'Today']);
+					}else{
+						price_data.addRow([aDate,row[6],daysAgo.toString() + ' Days ago']);
+					}
+					daysAgo--;
 				}else{
 					price_data.addRow([aDate,row[6],null]);
 				}
@@ -272,6 +403,7 @@ footer: true
 				'chartType': 'AreaChart',
 				'containerId': 'tempChart',
 				'options': {
+					'vAxis':{'title':'temp [C]'},
 					'hAxis':{
 						'direction': direction,
 						'format':'dd/MM/yy HH:mm'
@@ -300,8 +432,8 @@ footer: true
 			var temp_data = new google.visualization.DataTable();
 			temp_data.addColumn('datetime','Time');
 			temp_data.addColumn('number','Temperature [C]')
-
 			temp_data.addColumn({type:'string', role:'annotation'}	);
+			var daysAgo= Math.floor((arrayData.length / 24)-1);
 			var temp = 1
 			var now=new Date();
 			for(var i = 0; i < arrayData.length; i++) {
@@ -310,6 +442,13 @@ footer: true
 				var aDate=new Date(row[0],row[1]-1,row[2],row[3],row[4]);
 				if (isNowDate(aDate,now,false)==true){
 					temp_data.addRow([aDate,row[6],'Now']);
+				}else if( row[3]==0){
+					if (daysAgo==0){
+						temp_data.addRow([aDate,row[6],'Today']);
+					}else{
+						temp_data.addRow([aDate,row[6],daysAgo.toString() + ' Days ago']);
+					}
+					daysAgo--;
 				}else{
 					temp_data.addRow([aDate,row[6],null]);
 				}
@@ -326,7 +465,7 @@ footer: true
 			$.get("./data/power_data.csv", function(csvString) {
 			var arrayData = $.csv.toArrays(csvString, {onParseValue: $.csv.hooks.castToScalar});
 			var row = arrayData[arrayData.length-1]
-			var powerNow=row[5]
+			var powerNow=row[6]
 			var data = google.visualization.arrayToDataTable([
 	          ['Label', 'Value'],
     	      ['Power',powerNow ],
@@ -351,6 +490,9 @@ footer: true
 <div id="dashboard">
 <div id="powerChart" style='height: 130px;' ></div>
 <div id="powerControl" style="display:none"></div>
+<br></br>
+<div id="myPriceChart" style='height: 130px;' ></div>
+<div id="myPriceControl" style="display:none"></div>
 <br></br>
 <div id="priceChart" style='height: 130px;'></div>
 <div id="priceControl" style="display:none"></div>
