@@ -164,11 +164,11 @@ footer: true
 			});
 
 			var myPriceChart = new google.visualization.ChartWrapper({
-				'chartType': 'AreaChart',
+				'chartType': 'ColumnChart',
 				'containerId': 'myPriceChart',
 				'options': {
 					// Use the same chart area width as the control for axis alignment.
-					colors:['red'],
+				    //	colors:['red'],
 					title:"Cost of consumed power",
 					'legend': {	'position': 'none'	},
 					'vAxis':{'title':'[NOK]'},
