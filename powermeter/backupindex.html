@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://simena86.github.com/powermeter/">
+  <link rel="canonical" href="http://simena86.github.com/powermeter/backup">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -239,7 +239,7 @@ MathJax.Hub.Config({
 				'containerId': 'myPriceChart',
 				'options': {
 					// Use the same chart area width as the control for axis alignment.
-				    colors:['#CC0000'],
+				    //	colors:['red'],
 					title:"Cost of consumed power",
 					'legend': {	'position': 'none'	},
 					'vAxis':{'title':'[NOK]'},
@@ -274,29 +274,34 @@ MathJax.Hub.Config({
 			my_price_data.addColumn('number','Cost');
 			my_price_data.addColumn({type:'string', role:'annotation'}	);
 			var temp = 1;
+			var power;
 			var nowIsSet=false;
 			var now=new Date();
-			var daysAgo= Math.floor((priceArray.length / (24))-1);
-			var hourPrice;
+			var daysAgo= Math.floor((powerArray.length / (6*24)));
+			var price;
 			var row;
-			var powerArrayIndex=0;
-			for(var i = 0; i < priceArray.length; i++) {
-				priceRow=priceArray[i];		
-				hourPrice=getHourPrice(priceRow,powerArray);	
-				console.log('hei');
-				var aDate=new Date(priceRow[0],priceRow[1]-1,priceRow[2],priceRow[3],priceRow[4]);
+			var priceArrIndex=0;
+			for(var i = 0; i < powerArray.length; i++) {
+				row = powerArray[i];
+				price=priceArray[priceArrIndex][6];
+				if (i % 6 == 0) {
+					priceArrIndex++;	
+				} 	
+				price=price*(1+row[6])*0.001;
+				price=Math.round(price*100000)/100000;
+				var aDate=new Date(row[0],row[1]-1,row[2],row[3],row[4]);
 				if (isNowDate(aDate,now,true)==true && nowIsSet==false){
-					my_price_data.addRow([aDate,hourPrice,'Now']);
+					my_price_data.addRow([aDate,price,'Now']);
 					nowIsSet=true;
-				}else if(priceRow[3]==0 && priceRow[4]==0){
+				}else if(row[3]==0 && row[4]==0){
 					if (daysAgo==0){
-						my_price_data.addRow([aDate,hourPrice,'Today']);
+						my_price_data.addRow([aDate,price,'Today']);
 					}else{
-						my_price_data.addRow([aDate,hourPrice,daysAgo.toString() + ' Days ago']);
+						my_price_data.addRow([aDate,price,daysAgo.toString() + ' Days ago']);
 					}
 					daysAgo--;
 				}else{
-					my_price_data.addRow([aDate,hourPrice,null]);
+					my_price_data.addRow([aDate,price,null]);
 				}
 			}
 
@@ -310,39 +315,6 @@ MathJax.Hub.Config({
 			return imps*6;
 		}
 		
-		//get the total price of consumed power for the hour specified in priceRow
-		function getHourPrice(priceRow,powerArray){
-			var row;
-			var imps=0;
-			var sameHourIndex;
-			for(var i=0;i<powerArray.length;i++){
-				row=powerArray[i];		
-				if(row[0]==priceRow[0] && row[1]==priceRow[1] && row[2]==priceRow[2] && row[3]==priceRow[3]  ){
-					//console.log(row);
-					//console.log(priceRow);
-					sameHourIndex=i;
-					break;
-				}
-			}	
-			for(var j=sameHourIndex;j<powerArray.length;j++){
-				row=powerArray[j];
-
-				console.log(priceRow);
-				console.log(row);
-				if(row[0]==priceRow[0] && row[1]==priceRow[1] && row[2]==priceRow[2] && row[3]==priceRow[3]  ){
-					console.log('inside');	
-					console.log(row);
-					imps=imps+row[6];	
-				}else{
-					break;	
-				}
-			}
-			imps=imps+1;
-			var price=priceRow[6];
-			var hourPrice=price*imps*0.001;
-			hourPrice=Math.round(hourPrice*100000)/100000;
-			return hourPrice;
-		}
 
 		function isNowDate(aDate,d,useMinutePrec){
 			var year=d.getFullYear();
@@ -513,7 +485,7 @@ MathJax.Hub.Config({
 						'format':'dd/MM/yy HH:mm'
 					},
 					// Use the same chart area width as the control for axis alignment.
-					title: "Temperature Measurement, Trondheim",
+					title: "Temperature Measurement, Trondheim - Only showing yesterdays temperature",
 					'legend': {	'position': 'none'	}
 					//'chartArea': {
 					//	'height': '80%',
@@ -632,7 +604,7 @@ MathJax.Hub.Config({
       
         <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://simena86.github.com/powermeter/index.html" data-via="" data-counturl="http://simena86.github.com/powermeter/index.html" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://simena86.github.com/powermeter/backupindex.html" data-via="" data-counturl="http://simena86.github.com/powermeter/backupindex.html" >Tweet</a>
   
   
   
@@ -735,8 +707,8 @@ MathJax.Hub.Config({
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://simena86.github.com/powermeter/index.html';
-        var disqus_url = 'http://simena86.github.com/powermeter/index.html';
+        var disqus_identifier = 'http://simena86.github.com/powermeter/backupindex.html';
+        var disqus_url = 'http://simena86.github.com/powermeter/backupindex.html';
         var disqus_script = 'embed.js';
       
     (function () {
