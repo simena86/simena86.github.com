@@ -133,7 +133,7 @@ MathJax.Hub.Config({
   </header>
 
 
-<div class="entry-content"><p>This semester I’m writing my master’s project, which seems to be a time when procrastination thrives. When setting up Ubuntu on my school PC i had to decide what to use for desktop image. Between kinematics and lunch I wrote a script to update the desktop background to the most recent XKCD comic strip:</p>
+<div class="entry-content"><p>This semester I’m writing my master’s project, which seems to be a time when procrastination thrives. When setting up Ubuntu on my school PC i had to decide what to use for desktop image. I therefor wrote a script to update the desktop background to the most recent XKCD comic strip:</p>
 
 <!-- more -->
 
@@ -161,9 +161,6 @@ MathJax.Hub.Config({
 <span class="c"># set the comic as background</span>
 <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s">&#39;gsettings set org.gnome.desktop.background picture-uri file://&#39;</span><span class="o">+</span><span class="n">imgPath</span> <span class="o">+</span>  <span class="s">&#39;/todaysXkcd.png&#39;</span><span class="p">)</span>
 </code></pre></div>
-
-<p>Using selenium is probably not a very efficient way of doing this, but after having messed around with selenium+phantomjs virtual browser for some days, it seemed like a good idea. 
-To make the script work you have to install the python binding for selenium and the phantomjs binary. </p>
 
 <p>If your’re using a Unix based OS you can schedule the script to run e.g. every  Monday, Wednesday and Friday using <a href="http://www.adminschoice.com/crontab-quick-reference/">crontab</a> </p>
 </div>
