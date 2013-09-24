@@ -4,7 +4,7 @@
   <title><![CDATA[]]></title>
   <link href="http://simena86.github.com/atom.xml" rel="self"/>
   <link href="http://simena86.github.com/"/>
-  <updated>2013-09-24T12:53:53+02:00</updated>
+  <updated>2013-09-24T12:56:41+02:00</updated>
   <id>http://simena86.github.com/</id>
   <author>
     <name><![CDATA[Simen Andresen]]></name>
@@ -18,7 +18,7 @@
     <link href="http://simena86.github.com/blog/2013/09/06/master-project-procrastination-part-1-set-desktop-background-to-newest-xkcd-comic-strip/"/>
     <updated>2013-09-06T13:48:00+02:00</updated>
     <id>http://simena86.github.com/blog/2013/09/06/master-project-procrastination-part-1-set-desktop-background-to-newest-xkcd-comic-strip</id>
-    <content type="html"><![CDATA[<p>This semester I’m writing my master’s project, which seems to be a time when procrastination thrives. When setting up Ubuntu on my school PC i had to decide what to use for desktop image. I therefor wrote a script to update the desktop background to the most recent XKCD comic strip:</p>
+    <content type="html"><![CDATA[<p>This semester I’m writing my master’s project, which seems to be a time when procrastination thrives. When setting up Ubuntu on my school PC i had to decide what to use for desktop image. I therefor wrote a script to update the desktop background to the most recent <a href="http://www.xkcd.com">XKCD</a> comic strip:</p>
 
 <!-- more -->
 
