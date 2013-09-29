@@ -81,9 +81,9 @@ footer: true
 				'options': {
 					// Use the same chart area width as the control for axis alignment.
 					colors:['green'],
-					title:"Power Consumption",
+					title:"Energy Consumption",
 					'legend': {	'position': 'none'	},
-					'vAxis':{'title':'[W]'},
+					'vAxis':{'title':'[KWh]'},
 					'hAxis':{
 							'direction': direction 
 						,	'format':'dd/MM/yy HH:mm'
@@ -103,7 +103,7 @@ footer: true
 
 			var power_data = new google.visualization.DataTable();
 			power_data.addColumn('datetime','Time');
-			power_data.addColumn('number','Power [W]');
+			power_data.addColumn('number','Energy [KWh]');
 			power_data.addColumn({type:'string', role:'annotation'}	);
 			var temp = 1;
 			var power;
@@ -168,10 +168,10 @@ footer: true
 				'containerId': 'myPriceChart',
 				'options': {
 					// Use the same chart area width as the control for axis alignment.
-				    //	colors:['red'],
-					title:"Cost of consumed power",
+				    colors:['#CC0000'],
+					title:"Cost of consumed energy",
 					'legend': {	'position': 'none'	},
-					'vAxis':{'title':'[NOK]'},
+					'vAxis':{'title':'price [NOK]'},
 					'hAxis':{
 							'direction': direction 
 						,	'format':'dd/MM/yy HH:mm'
@@ -203,34 +203,28 @@ footer: true
 			my_price_data.addColumn('number','Cost');
 			my_price_data.addColumn({type:'string', role:'annotation'}	);
 			var temp = 1;
-			var power;
 			var nowIsSet=false;
 			var now=new Date();
-			var daysAgo= Math.floor((powerArray.length / (6*24)));
-			var price;
+			var daysAgo= Math.floor((priceArray.length / (24))-1);
+			var hourPrice;
 			var row;
-			var priceArrIndex=0;
-			for(var i = 0; i < powerArray.length; i++) {
-				row = powerArray[i];
-				price=priceArray[priceArrIndex][6];
-				if (i % 6 == 0) {
-					priceArrIndex++;	
-				} 	
-				price=price*(1+row[6])*0.001;
-				price=Math.round(price*100000)/100000;
-				var aDate=new Date(row[0],row[1]-1,row[2],row[3],row[4]);
+			var powerArrayIndex=0;
+			for(var i = 0; i < priceArray.length; i++) {
+				priceRow=priceArray[i];		
+				hourPrice=getHourPrice(priceRow,powerArray);	
+				var aDate=new Date(priceRow[0],priceRow[1]-1,priceRow[2],priceRow[3],priceRow[4]);
 				if (isNowDate(aDate,now,true)==true && nowIsSet==false){
-					my_price_data.addRow([aDate,price,'Now']);
+					my_price_data.addRow([aDate,hourPrice,'Now']);
 					nowIsSet=true;
-				}else if(row[3]==0 && row[4]==0){
+				}else if(priceRow[3]==0 && priceRow[4]==0){
 					if (daysAgo==0){
-						my_price_data.addRow([aDate,price,'Today']);
+						my_price_data.addRow([aDate,hourPrice,'Today']);
 					}else{
-						my_price_data.addRow([aDate,price,daysAgo.toString() + ' Days ago']);
+						my_price_data.addRow([aDate,hourPrice,daysAgo.toString() + ' Days ago']);
 					}
 					daysAgo--;
 				}else{
-					my_price_data.addRow([aDate,price,null]);
+					my_price_data.addRow([aDate,hourPrice,null]);
 				}
 			}
 
@@ -241,10 +235,39 @@ footer: true
 
 		// get the energy per impulses
 		function getPower(imps){
-			return imps*6;
+			return imps*0.001;
 		}
 		
-
+		//get the total price of consumed power for the hour specified in priceRow
+		function getHourPrice(priceRow,powerArray){
+			var row;
+			var imps=0;
+			var sameHourIndex;
+			for(var i=0;i<powerArray.length;i++){
+				row=powerArray[i];		
+				if(row[0]==priceRow[0] && row[1]==priceRow[1] && row[2]==priceRow[2] && row[3]==priceRow[3]  ){
+					sameHourIndex=i;
+					break;
+				}
+			}	
+			for(var j=sameHourIndex;j<powerArray.length;j++){
+				row=powerArray[j];
+				if(row[0]==priceRow[0] && row[1]==priceRow[1] && row[2]==priceRow[2] && row[3]==priceRow[3]  ){
+					console.log('inside');	
+					console.log(row);
+					imps=imps+row[6];	
+				}else{
+					break;	
+				}
+			}
+			imps=imps+1;
+			var price=priceRow[6];
+			var hourPrice=price*imps*0.001;
+			hourPrice=Math.round(hourPrice*100000)/100000;
+			return hourPrice;
+		}
+		
+		// check if the datetime data is the current datetime
 		function isNowDate(aDate,d,useMinutePrec){
 			var year=d.getFullYear();
 			var day=d.getDate();
@@ -285,8 +308,6 @@ footer: true
 
 							}
 						},
-						// Display a single series that shows the closing value of the stock.
-						// Thus, this view has two columns: the date (axis) and the stock value (line series).
 						'chartView': {
 							'columns': [0, 1]
 						},
@@ -386,12 +407,9 @@ footer: true
 								'format':'dd/MM/yy HH:mm'
 							}
 						},
-						// Display a single series that shows the closing value of the stock.
-						// Thus, this view has two columns: the date (axis) and the stock value (line series).
 						'chartView': {
 							'columns': [0, 1]
 						},
-						// 1 day in milliseconds = 24 * 60 * 60 * 1000 = 86,400,000
 						'minRangeSize': 86400
 					}
 				},
@@ -414,7 +432,7 @@ footer: true
 						'format':'dd/MM/yy HH:mm'
 					},
 					// Use the same chart area width as the control for axis alignment.
-					title: "Temperature Measurement, Trondheim - Only showing yesterdays temperature",
+					title: "Temperature Measurement, Trondheim",
 					'legend': {	'position': 'none'	}
 					//'chartArea': {
 					//	'height': '80%',
@@ -469,8 +487,8 @@ footer: true
 		function drawGagueChart() {
 			$.get("./data/power_data.csv", function(csvString) {
 			var arrayData = $.csv.toArrays(csvString, {onParseValue: $.csv.hooks.castToScalar});
-			var row = arrayData[arrayData.length-1]
-			var powerNow=row[6]
+			var row = arrayData[arrayData.length-1];
+			var powerNow=(row[6])*6;
 			var data = google.visualization.arrayToDataTable([
 	          ['Label', 'Value'],
     	      ['Power',powerNow ],
@@ -487,10 +505,9 @@ footer: true
    </script>
 </head>
 <body>
-	Site under construction. Data means nothing yet.
 	<br> </br>
 <div id='gagueChart' align='center'  ></div>
-<div align="center">Power usage now</div>
+<div align="center">Power usage now [W]</div>
 
 <div id="dashboard">
 <div id="powerChart" style='height: 130px;' ></div>
@@ -508,5 +525,10 @@ footer: true
 <div id="tempControl" style='height: 40px;'></div>
 
 </div>
-
+<div align="center">
+<br>
+<form action="simena86.github.com">
+    <input type="submit" value="Back to main page">
+</form>
+</div>
 </body>
