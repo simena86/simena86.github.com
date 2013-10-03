@@ -253,8 +253,6 @@ footer: true
 			for(var j=sameHourIndex;j<powerArray.length;j++){
 				row=powerArray[j];
 				if(row[0]==priceRow[0] && row[1]==priceRow[1] && row[2]==priceRow[2] && row[3]==priceRow[3]  ){
-					console.log('inside');	
-					console.log(row);
 					imps=imps+row[6];	
 				}else{
 					break;	
