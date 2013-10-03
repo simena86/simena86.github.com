@@ -6,7 +6,7 @@ comments: true
 categories: 
 ---
 
-This semester I'm writing my master's project, which seems to be a time when procrastination thrives. When setting up Ubuntu on my school PC i had to decide what to use for desktop image. Between kinematics and lunch I wrote a script to update the desktop background to the most recent XKCD comic strip:
+This semester I'm writing my master's project, which seems to be a time when procrastination thrives. When setting up Ubuntu on my school PC i had to decide what to use for desktop image. I therefor wrote a script to update the desktop background to the most recent [XKCD](http://www.xkcd.com) comic strip:
 
 <!-- more -->
 
@@ -19,30 +19,23 @@ This semester I'm writing my master's project, which seems to be a time when pro
 #	by simen andresen
 
 import urllib
-from selenium import webdriver
+from lxml import etree, html
 import os
 
 # get the comic and save it as png
-def getImage(imgPath,phantomJsPath):
-	URL='http://www.xkcd.com'
-	browser=webdriver.PhantomJS(phJsPath +'phantomjs')
-	browser.get(URL)
-	imageDiv=browser.find_element_by_id('comic')
-	img=imageDiv.find_element_by_tag_name('img')
-	imgURL=img.get_attribute('src')
-	urllib.urlretrieve(imgURL, imgPath+ 'todaysXkcd.png')
-	browser.close()
+def getImage(imgPath):
+	url='http://www.xkcd.com'
+	page = html.fromstring(urllib.urlopen(url).read())
+	img=page.xpath('//div[@id="comic"]/img/@src')
+	img=img[0]
+	urllib.urlretrieve(img, imgPath+ 'todaysXkcd.png')
 
-phantomJsPath='/my/path/to/phantonjs/' 
-imgPath='/path/to/image/'
-getImage(imgPath,phantomJsPath)
+imgPath='full/path/to/image/'
+getImage(imgPath)
 
 # set the comic as background
 os.system('gsettings set org.gnome.desktop.background picture-uri file://'+imgPath +  '/todaysXkcd.png')
 
 {%endhighlight%}
-
-Using selenium is probably not a very efficient way of doing this, but after having messed around with selenium+phantomjs virtual browser for some days, it seemed like a good idea. 
-To make the script work you have to install the python binding for selenium and the phantomjs binary. 
  
 If your're using a Unix based OS you can schedule the script to run e.g. every  Monday, Wednesday and Friday using [crontab](http://www.adminschoice.com/crontab-quick-reference/) 
