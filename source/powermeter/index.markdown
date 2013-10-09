@@ -521,11 +521,17 @@ footer: true
 <div id="tempChart" style='height: 130px;' ></div>
 <br></br>
 <div id="tempControl" style='height: 40px;'></div>
-
 </div>
+<br>
+RasPi Powermeter is made with a <a href="(http://www.raspberrypi.org/"> Raspberry Pi </a> logging led blinks which can be found in most houses (at least in Norway)
+)
+<br>
+The powerprices and temperature is scraped from <a href="http://www.nordpoolspot.com/">nordpoolspot</a> and <a href="http://www.yr.no/sted/Norge/S%C3%B8r-Tr%C3%B8ndelag/Trondheim/V%C3%A6re/almanakk.html">yr.no</a> respectively.
+
+
 <div align="center">
 <br>
-<form action="www.simena86.github.com">
+<form action="http://simena86.github.com">
     <input type="submit" value="Back to main page">
 </form>
 </div>
