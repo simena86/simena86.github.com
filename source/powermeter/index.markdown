@@ -83,7 +83,7 @@ footer: true
 					colors:['green'],
 					title:"Energy Consumption",
 					'legend': {	'position': 'none'	},
-					'vAxis':{'title':'[KWh]'},
+					'vAxis':{'title':'power [W]'},
 					'hAxis':{
 							'direction': direction 
 						,	'format':'dd/MM/yy HH:mm'
@@ -103,7 +103,7 @@ footer: true
 
 			var power_data = new google.visualization.DataTable();
 			power_data.addColumn('datetime','Time');
-			power_data.addColumn('number','Energy [KWh]');
+			power_data.addColumn('number','Power [W]');
 			power_data.addColumn({type:'string', role:'annotation'}	);
 			var temp = 1;
 			var power;
@@ -235,7 +235,8 @@ footer: true
 
 		// get the energy per impulses
 		function getPower(imps){
-			return imps*0.001;
+			//return imps*0.001;
+			return imps*6;
 		}
 		
 		//get the total price of consumed power for the hour specified in priceRow
@@ -522,12 +523,13 @@ footer: true
 <br></br>
 <div id="tempControl" style='height: 40px;'></div>
 </div>
+<div style='width: 500px'>
 <br>
-RasPi Powermeter is made with a <a href="(http://www.raspberrypi.org/"> Raspberry Pi </a> logging led blinks which can be found in most houses (at least in Norway)
-)
 <br>
-The powerprices and temperature is scraped from <a href="http://www.nordpoolspot.com/">nordpoolspot</a> and <a href="http://www.yr.no/sted/Norge/S%C3%B8r-Tr%C3%B8ndelag/Trondheim/V%C3%A6re/almanakk.html">yr.no</a> respectively.
-
+RasPi Powermeter is made with a <a href="(http://www.raspberrypi.org/"> Raspberry Pi </a> logging led impulses in my apartment's fuse box.
+The powerprices and temperature is fetched from <a href="http://www.nordpoolspot.com/">nordpoolspot</a> and <a href="http://www.yr.no/sted/Norge/S%C3%B8r-Tr%C3%B8ndelag/Trondheim/V%C3%A6re/almanakk.html">yr.no</a> respectively, using a python script.
+All source code can be found on my <a href="https://github.com/simena86?tab=repositories">github</a>
+</div>
 
 <div align="center">
 <br>
