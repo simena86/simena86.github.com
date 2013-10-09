@@ -83,7 +83,7 @@ footer: true
 					colors:['green'],
 					title:"Energy Consumption",
 					'legend': {	'position': 'none'	},
-					'vAxis':{'title':'[KWh]'},
+					'vAxis':{'title':'energy [KWh]'},
 					'hAxis':{
 							'direction': direction 
 						,	'format':'dd/MM/yy HH:mm'
@@ -527,7 +527,7 @@ footer: true
 </div>
 <div align="center">
 <br>
-<form action="simena86.github.com">
+<form action="http://simena86.github.com">
     <input type="submit" value="Back to main page">
 </form>
 </div>
