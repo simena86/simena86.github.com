@@ -13,16 +13,10 @@ footer: true
    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
    <script src="jquery.csv-0.71.js"></script>
    <script>
-   		// load the visualization library from Google and set a listener
-		//	google.load("visualization", "1", {packages: ['annotatedtimeline']});
-		//google.load("visualization", "1", {packages:["corechart"]});
 		google.load('visualization', '1.1', {packages: ['corechart', 'controls']});
-		//google.load("visualization", "1", {packages:["corechart"]});
 		google.load('visualization', '1', {packages:['gauge']});
 		google.setOnLoadCallback(drawGagueChart);
 		google.setOnLoadCallback(drawVisualization);
-	
-		// direction of the graphs
 		var direction=1;
 
 		function drawVisualization(){
