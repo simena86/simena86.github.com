@@ -60,7 +60,7 @@ execute pathogen#infect()
 
 {% img /images/vim/autocomplete.png 420 200 %}
 
-If your running a debian systems the easiest way to install ctags is to use
+If you're running a debian systems the easiest way to install ctags is to use
 
 {% highlight vim %}
 sudo apt-get install exuberant-ctags
