@@ -16,7 +16,7 @@ Below is a flowchart representation of the program
 {% img /images/handRecognition/gesture_flowchart.png 420 200  %}
 
 
-The hand tracking is based on color recognitin. The program is therefor initialized by sampling color from the hand:
+The hand tracking is based on color recognition. The program is therefore initialized by sampling color from the hand:
 
 
 {% img /images/handRecognition/waitforpalm.png  %}

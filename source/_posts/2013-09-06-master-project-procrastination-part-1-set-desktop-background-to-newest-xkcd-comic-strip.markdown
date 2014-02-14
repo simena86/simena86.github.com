@@ -6,7 +6,7 @@ comments: true
 categories: 
 ---
 
-This semester I'm writing my master's project, which seems to be a time when procrastination thrives. When setting up Ubuntu on my school PC i had to decide what to use for desktop image. I therefor wrote a script to update the desktop background to the most recent [XKCD](http://www.xkcd.com) comic strip:
+This semester I'm writing my master's project, which seems to be a time when procrastination thrives. When setting up Ubuntu on my school PC i had to decide what to use for desktop image. I therefore wrote a script to update the desktop background to the most recent [XKCD](http://www.xkcd.com) comic strip:
 
 <!-- more -->
 
